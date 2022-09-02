@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "magicmod:mana_crystal"
+    }
+  ],
+  "result": {
+    "item": "magicmod:mana_dust",
+    "count": 4
+  }
+}
