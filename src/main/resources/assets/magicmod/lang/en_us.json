@@ -2,6 +2,8 @@
   "item.magicmod.mana_dust": "Mana Dust",
   "item.magicmod.mana_crystal": "Mana Crystal",
 
+  "item.magicmod.magic_missile": "Magic Missile",
+
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
   "block.magicmod.deepslate_mana_crystal_ore": "Deepslate Mana Crystal Ore",
