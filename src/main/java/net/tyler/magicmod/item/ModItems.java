@@ -1,5 +1,6 @@
 package net.tyler.magicmod.item;
 
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,7 +14,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagicMod.MOD_ID);
 
     public static final RegistryObject<Item> MANA_DUST = ITEMS.register("mana_dust",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
+            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).food(ModFoods.MANA_DUST)));
     public static final RegistryObject<Item> MANA_CRYSTAL = ITEMS.register("mana_crystal",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
