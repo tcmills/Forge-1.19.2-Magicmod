@@ -25,7 +25,7 @@ public class JumpyBlock extends Block {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
 
         if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            player.level.playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 10f, 1f);
+            player.level.playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 1f, 1f);
         }
 
         return super.use(state, level, pos, player, hand, blockHitResult);

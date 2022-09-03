@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=true": { "model": "magicmod:block/mana_crystal_lamp_off" },
+    "lit=false": { "model": "magicmod:block/mana_crystal_lamp_on" }
+  }
+}
