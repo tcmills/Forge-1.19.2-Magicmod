@@ -1,6 +1,7 @@
 {
   "item.magicmod.mana_dust": "Mana Dust",
   "item.magicmod.mana_crystal": "Mana Crystal",
+  "item.magicmod.coins": "Coins",
 
   "item.magicmod.magic_missile": "Magic Missile",
 
@@ -8,8 +9,15 @@
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
   "block.magicmod.deepslate_mana_crystal_ore": "Deepslate Mana Crystal Ore",
 
+  "block.magicmod.unobtainable": "Unobtainable",
+
   "block.magicmod.jumpy_block": "Jumpy Block",
   "block.magicmod.mana_crystal_lamp": "Mana Crystal Lamp",
 
-  "itemGroup.magictab": "Magic"
+  "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
+
+  "itemGroup.magictab": "Magic",
+
+  "key.category.magicmod.magic": "Magic",
+  "key.magicmod.press_j": "J"
 }

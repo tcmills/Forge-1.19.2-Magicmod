@@ -37,9 +37,13 @@ public class ModBlocks {
                     .sound(SoundType.DEEPSLATE),
                     UniformInt.of(3, 7)), ModCreativeModeTab.MAGIC_TAB);
 
+    public static final RegistryObject<Block> UNOBTAINABLE = registerBlock("unobtainable",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(-1f, 3600000.0F)), ModCreativeModeTab.MAGIC_TAB);
+
     public static final RegistryObject<Block> JUMPY_BLOCK = registerBlock("jumpy_block",
             () -> new JumpyBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(1.5f).requiresCorrectToolForDrops()), ModCreativeModeTab.MAGIC_TAB);
+                    .strength(-1.0f, 3600000.0F).sound(SoundType.SLIME_BLOCK)), ModCreativeModeTab.MAGIC_TAB);
     public static final RegistryObject<Block> MANA_CRYSTAL_LAMP = registerBlock("mana_crystal_lamp",
             () -> new ManaCrystalLampBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(0.3f).sound(SoundType.GLASS).lightLevel(state -> state.getValue(ManaCrystalLampBlock.LIT) ? 0 : 15)), ModCreativeModeTab.MAGIC_TAB);

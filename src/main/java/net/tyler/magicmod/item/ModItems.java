@@ -15,6 +15,8 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).food(ModFoods.MANA_DUST)));
     public static final RegistryObject<Item> MANA_CRYSTAL = ITEMS.register("mana_crystal",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
+    public static final RegistryObject<Item> COINS = ITEMS.register("coins",
+            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
     public static final RegistryObject<Item> MAGIC_MISSILE = ITEMS.register("magic_missile",
             () -> new Neutral_1_MagicMissile_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));

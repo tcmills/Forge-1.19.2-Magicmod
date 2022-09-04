@@ -21,20 +21,20 @@ public class JumpyBlock extends Block {
         super(p_49795_);
     }
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-
-        if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            player.level.playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 1f, 1f);
-        }
-
-        return super.use(state, level, pos, player, hand, blockHitResult);
-    }
+//    @Override
+//    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+//
+//        if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+//            player.level.playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 1f, 1f);
+//        }
+//
+//        return super.use(state, level, pos, player, hand, blockHitResult);
+//    }
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if(entity instanceof LivingEntity livingEntity){
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 10, 2));
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 10, 2, false, false));
         }
 
         super.stepOn(level, pos, state, entity);
