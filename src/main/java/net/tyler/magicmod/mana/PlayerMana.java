@@ -11,6 +11,10 @@ public class PlayerMana {
         return mana;
     }
 
+    public int getMaxMana() {
+        return max_mana;
+    }
+
     public void addMana(int add) {
         this.mana = Math.min(mana + add, max_mana);
     }
@@ -33,14 +37,17 @@ public class PlayerMana {
     }
 
     public void copyFrom(PlayerMana source) {
-        this.mana = source.mana;
+        this.mana = 0;
+        this.max_mana = source.max_mana;
     }
 
     public void saveNBTData(CompoundTag nbt) {
         nbt.putInt("mana", mana);
+        nbt.putInt("max_mana", max_mana);
     }
 
     public void loadNBTData(CompoundTag nbt) {
         mana = nbt.getInt("mana");
+        max_mana = nbt.getInt("max_mana");
     }
 }

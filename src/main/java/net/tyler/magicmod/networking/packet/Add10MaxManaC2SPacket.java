@@ -11,13 +11,13 @@ import net.tyler.magicmod.networking.ModMessages;
 
 import java.util.function.Supplier;
 
-public class Add100ManaC2SPacket {
+public class Add10MaxManaC2SPacket {
 
-    public Add100ManaC2SPacket() {
+    public Add10MaxManaC2SPacket() {
 
     }
 
-    public Add100ManaC2SPacket(FriendlyByteBuf buf) {
+    public Add10MaxManaC2SPacket(FriendlyByteBuf buf) {
 
     }
 
@@ -33,8 +33,8 @@ public class Add100ManaC2SPacket {
             ServerLevel level = player.getLevel();
 
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                mana.addMana(100);
-                player.sendSystemMessage(Component.literal("Current Mana " + mana.getMana())
+                mana.addMaxMana(10);
+                player.sendSystemMessage(Component.literal("Current Max Mana " + mana.getMaxMana())
                         .withStyle(ChatFormatting.AQUA));
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
             });

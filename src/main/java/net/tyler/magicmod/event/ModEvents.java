@@ -24,11 +24,14 @@ import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import net.tyler.magicmod.villager.ModVillagers;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MagicMod.MOD_ID)
 public class ModEvents {
+    private static final Logger LOGGER = LogManager.getLogger();
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if(event.getType() == ModVillagers.ARCANIST.get()) {
@@ -54,8 +57,9 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
-            event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore -> {
-                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->{
+            event.getOriginal().revive();
+            event.getEntity().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(newStore ->{
+                event.getOriginal().getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(oldStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
@@ -72,7 +76,7 @@ public class ModEvents {
         if (!event.getLevel().isClientSide()) {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), player);
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
                 });
             }
         }

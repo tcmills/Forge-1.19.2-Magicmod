@@ -30,9 +30,9 @@ public class Neutral_1_MagicMissile_Item extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && mana.getMana() >= 10) {
-                mana.subMana(10);
-                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana()), (ServerPlayer) player);
+            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && mana.getMana() >= 5) {
+                mana.subMana(5);
+                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
                 shootBolt(player);
                 player.getCooldowns().addCooldown(this, 80);
             }

@@ -8,6 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.networking.packet.Add100ManaC2SPacket;
+import net.tyler.magicmod.networking.packet.Add10MaxManaC2SPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 
 public class ModMessages {
@@ -32,6 +33,12 @@ public class ModMessages {
                 .decoder(Add100ManaC2SPacket::new)
                 .encoder(Add100ManaC2SPacket::toBytes)
                 .consumerMainThread(Add100ManaC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(Add10MaxManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(Add10MaxManaC2SPacket::new)
+                .encoder(Add10MaxManaC2SPacket::toBytes)
+                .consumerMainThread(Add10MaxManaC2SPacket::handle)
                 .add();
 
         net.messageBuilder(ManaDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
