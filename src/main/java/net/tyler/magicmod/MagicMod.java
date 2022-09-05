@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tyler.magicmod.block.ModBlocks;
 import net.tyler.magicmod.item.ModItems;
+import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.painting.ModPaintings;
 import net.tyler.magicmod.villager.ModVillagers;
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ public class MagicMod {
         event.enqueueWork(() -> {
             ModVillagers.registerPOIs();
         });
+
+        ModMessages.register();
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
