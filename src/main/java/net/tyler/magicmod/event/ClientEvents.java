@@ -11,6 +11,7 @@ import net.tyler.magicmod.client.ManaHudOverlay;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.Add100ManaC2SPacket;
 import net.tyler.magicmod.networking.packet.Add10MaxManaC2SPacket;
+import net.tyler.magicmod.networking.packet.Set100MaxManaC2SPacket;
 import net.tyler.magicmod.util.KeyBinding;
 
 public class ClientEvents {
@@ -20,8 +21,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             if (KeyBinding.PRESS_J_KEY.consumeClick()) {
-                ModMessages.sendToServer(new Add10MaxManaC2SPacket());
-                ModMessages.sendToServer(new Add100ManaC2SPacket());
+                ModMessages.sendToServer(new Set100MaxManaC2SPacket());
             }
         }
     }

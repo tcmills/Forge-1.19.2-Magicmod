@@ -1,8 +1,6 @@
 package net.tyler.magicmod.networking.packet;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -11,13 +9,13 @@ import net.tyler.magicmod.networking.ModMessages;
 
 import java.util.function.Supplier;
 
-public class Add10MaxManaC2SPacket {
+public class Add30ManaC2SPacket {
 
-    public Add10MaxManaC2SPacket() {
+    public Add30ManaC2SPacket() {
 
     }
 
-    public Add10MaxManaC2SPacket(FriendlyByteBuf buf) {
+    public Add30ManaC2SPacket(FriendlyByteBuf buf) {
 
     }
 
@@ -33,7 +31,7 @@ public class Add10MaxManaC2SPacket {
             ServerLevel level = player.getLevel();
 
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                mana.addMaxMana(10);
+                mana.addMana(30);
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
             });
 

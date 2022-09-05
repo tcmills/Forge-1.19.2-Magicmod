@@ -36,6 +36,13 @@ public class PlayerMana {
         }
     }
 
+    public void setMaxMana(int set) {
+        this.max_mana = set;
+        if (mana > max_mana) {
+            this.mana = max_mana;
+        }
+    }
+
     public void copyFrom(PlayerMana source) {
         this.mana = 0;
         this.max_mana = source.max_mana;

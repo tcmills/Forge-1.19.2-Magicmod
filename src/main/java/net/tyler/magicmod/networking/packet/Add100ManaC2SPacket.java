@@ -34,8 +34,6 @@ public class Add100ManaC2SPacket {
 
             player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 mana.addMana(100);
-                player.sendSystemMessage(Component.literal("Current Mana " + mana.getMana())
-                        .withStyle(ChatFormatting.AQUA));
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
             });
 
