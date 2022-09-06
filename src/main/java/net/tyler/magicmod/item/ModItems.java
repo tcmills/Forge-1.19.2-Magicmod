@@ -21,7 +21,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
     public static final RegistryObject<Item> MANA_POTION = ITEMS.register("mana_potion",
-            () -> new ManaPotion_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(16)));
+            () -> new ManaPotion_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> MAGIC_MISSILE = ITEMS.register("magic_missile",
             () -> new Neutral_1_MagicMissile_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
