@@ -74,12 +74,12 @@ public class ManaPotion_Item extends Item {
 
     @Override
     public SoundEvent getDrinkingSound() {
-        return SoundEvents.HONEY_DRINK;
+        return SoundEvents.GENERIC_DRINK;
     }
 
     @Override
     public SoundEvent getEatingSound() {
-        return SoundEvents.HONEY_DRINK;
+        return SoundEvents.GENERIC_DRINK;
     }
 
     @Override
