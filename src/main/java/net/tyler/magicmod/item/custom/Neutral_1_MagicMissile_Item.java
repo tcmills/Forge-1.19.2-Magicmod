@@ -66,7 +66,7 @@ public class Neutral_1_MagicMissile_Item extends Item {
         double y = player.getY() + player.getLookAngle().y;
         double z = player.getZ() + player.getLookAngle().z;
 
-        MagicBoltEntity bolt = new MagicBoltEntity(EntityType.SMALL_FIREBALL, player.level);
+        MagicBoltEntity bolt = new MagicBoltEntity(ModEntityTypes.MAGIC_BOLT.get(), player.level);
         bolt.setPos(x, y+1.5, z);
         //bolt.setDeltaMovement(player.getLookAngle().x, player.getLookAngle().y, player.getLookAngle().z);
         bolt.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
