@@ -25,6 +25,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> MAGIC_MISSILE = ITEMS.register("magic_missile",
             () -> new Neutral_1_MagicMissile_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

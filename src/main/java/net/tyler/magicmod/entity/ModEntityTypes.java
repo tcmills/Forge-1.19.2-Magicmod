@@ -8,15 +8,15 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
-import net.tyler.magicmod.entity.custom.MagicBoltEntity;
+import net.tyler.magicmod.entity.custom.MagicMissileEntity;
 
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MagicMod.MOD_ID);
 
-    public static final RegistryObject<EntityType<MagicBoltEntity>> MAGIC_BOLT = ENTITY_TYPES.register("magic_bolt",
-        () -> EntityType.Builder.of(MagicBoltEntity::new, MobCategory.MISC).sized(0.25f, 0.25f)
-                //.clientTrackingRange(4).updateInterval(10)
-                .build(new ResourceLocation(MagicMod.MOD_ID, "magic_bolt").toString()));
+    public static final RegistryObject<EntityType<MagicMissileEntity>> MAGIC_MISSILE = ENTITY_TYPES.register("magic_missile",
+        () -> EntityType.Builder.<MagicMissileEntity>of(MagicMissileEntity::new, MobCategory.MISC)
+                .sized(0.25f, 0.25f)
+                .build(new ResourceLocation(MagicMod.MOD_ID, "magic_missile").toString()));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
