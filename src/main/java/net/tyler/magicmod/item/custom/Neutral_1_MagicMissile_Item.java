@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.tyler.magicmod.entity.custom.MagicMissileEntity;
+import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
@@ -43,9 +43,9 @@ public class Neutral_1_MagicMissile_Item extends Item {
                 double y = player.getY() + player.getLookAngle().y;
                 double z = player.getZ() + player.getLookAngle().z;
 
-                MagicMissileEntity magic_missile = new MagicMissileEntity(player, player.level);
+                MagicMissileProjectileEntity magic_missile = new MagicMissileProjectileEntity(player, player.level);
                 magic_missile.setItem(ModItems.MAGIC_MISSILE_PROJECTILE.get().getDefaultInstance());
-                //magic_missile.setPos(x, y+1.5, z);
+//                magic_missile.setPos(x, y+1.5, z);
                 magic_missile.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
                 player.level.addFreshEntity(magic_missile);
 

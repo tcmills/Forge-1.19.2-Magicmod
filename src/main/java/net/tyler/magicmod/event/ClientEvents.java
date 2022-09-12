@@ -45,7 +45,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void initRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.MAGIC_MISSILE.get(),
+        event.registerEntityRenderer(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(),
                 ThrownItemRenderer::new);
     }
 

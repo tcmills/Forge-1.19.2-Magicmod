@@ -17,30 +17,30 @@ import net.minecraftforge.network.NetworkHooks;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.item.ModItems;
 
-public class MagicMissileEntity extends ThrowableItemProjectile {
+public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 
     private int baseDamage = 9;
 
     // Three constructors, also make sure not to miss this line when altering it for copy-pasting
-    public MagicMissileEntity(EntityType<MagicMissileEntity> type, Level world) {
+    public MagicMissileProjectileEntity(EntityType<MagicMissileProjectileEntity> type, Level world) {
         super(type, world);
         this.setNoGravity(true);
     }
 
-    public MagicMissileEntity(LivingEntity entity, Level world) {
-        super(ModEntityTypes.MAGIC_MISSILE.get(), entity, world);
+    public MagicMissileProjectileEntity(LivingEntity entity, Level world) {
+        super(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(), entity, world);
         this.setNoGravity(true);
     }
 
-    public MagicMissileEntity(double x, double y, double z, Level world) {
-        super(ModEntityTypes.MAGIC_MISSILE.get(), x, y, z, world);
+    public MagicMissileProjectileEntity(double x, double y, double z, Level world) {
+        super(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(), x, y, z, world);
         this.setNoGravity(true);
     }
 
     // Get the item that the projectile is thrown from, blocks require ".asItem()" as well
     @Override
     protected Item getDefaultItem() {
-        return ModItems.MAGIC_MISSILE.get().asItem();
+        return ModItems.MAGIC_MISSILE_PROJECTILE.get().asItem();
     }
 
     // Spawns the entity, just as important as the above method
