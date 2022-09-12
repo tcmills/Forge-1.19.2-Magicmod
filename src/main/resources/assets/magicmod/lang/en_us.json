@@ -1,8 +1,11 @@
 {
   "item.magicmod.mana_dust": "Mana Dust",
   "item.magicmod.mana_crystal": "Mana Crystal",
-  "item.magicmod.coins": "Coins",
   "item.magicmod.mana_potion": "Mana Potion",
+  "item.magicmod.wisp_core": "Wisp Core",
+  "item.magicmod.arcane_powder": "Arcane Powder",
+
+  "item.magicmod.coins": "Coins",
 
   "item.magicmod.magic_missile": "Magic Missile",
 
