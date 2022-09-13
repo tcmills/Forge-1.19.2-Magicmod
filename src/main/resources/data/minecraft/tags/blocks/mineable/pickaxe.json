@@ -3,6 +3,7 @@
   "values": [
     "magicmod:mana_crystal_ore",
     "magicmod:mana_crystal_block",
-    "magicmod:deepslate_mana_crystal_ore"
+    "magicmod:deepslate_mana_crystal_ore",
+    "magicmod:mana_distiller"
   ]
 }

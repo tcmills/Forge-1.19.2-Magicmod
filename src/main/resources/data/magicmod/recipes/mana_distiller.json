@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:cobblestone"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "W": {
+      "item": "magicmod:wisp_core"
+    }
+  },
+  "pattern": [
+    "###",
+    "CWC",
+    "###"
+  ],
+  "result": {
+    "item": "magicmod:mana_distiller"
+  }
+}

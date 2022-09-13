@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magicmod:block/mana_distiller"
+    },
+    "facing=south": {
+      "model": "magicmod:block/mana_distiller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magicmod:block/mana_distiller",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "magicmod:block/mana_distiller",
+      "y": 90
+    }
+  }
+}
