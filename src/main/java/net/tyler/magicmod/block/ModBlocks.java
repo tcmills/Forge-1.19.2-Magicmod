@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.block.custom.JumpyBlock;
 import net.tyler.magicmod.block.custom.ManaCrystalLampBlock;
-import net.tyler.magicmod.block.custom.ManaDistiller;
+import net.tyler.magicmod.block.custom.ManaDistillerBlock;
 import net.tyler.magicmod.item.ModCreativeModeTab;
 import net.tyler.magicmod.item.ModItems;
 
@@ -53,7 +53,7 @@ public class ModBlocks {
                     .lightLevel(state -> state.getValue(ManaCrystalLampBlock.LIT) ? 0 : 15)), ModCreativeModeTab.MAGIC_TAB);
 
     public static final RegistryObject<Block> MANA_DISTILLER = registerBlock("mana_distiller",
-            () -> new ManaDistiller(BlockBehaviour.Properties.of(Material.STONE)
+            () -> new ManaDistillerBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(3.5f, 3.5f).requiresCorrectToolForDrops().noOcclusion()), ModCreativeModeTab.MAGIC_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
