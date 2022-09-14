@@ -23,10 +23,13 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.tyler.magicmod.block.custom.ManaDistillerBlock;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.screen.ManaDistillerMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -35,9 +38,38 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         protected void onContentsChanged(int slot) {
             setChanged();
         }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return switch (slot) {
+                case 0 -> stack.getItem() == ModItems.ARCANE_POWDER.get();
+                case 1 -> stack.getItem() == ModItems.MANA_CRYSTAL.get();
+                case 2 -> stack.getItem() == PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER).getItem();
+                default -> super.isItemValid(slot, stack);
+            };
+        }
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+            Map.of(Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
+                            (i, s) -> itemHandler.isItemValid(0, s) || itemHandler.isItemValid(1, s))),
+
+                    Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 2,
+                            (i, s) -> itemHandler.isItemValid(1, s) || itemHandler.isItemValid(2, s))),
+
+                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
+                            (i, s) -> itemHandler.isItemValid(0, s) || itemHandler.isItemValid(2, s))),
+
+                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
+                            (i, s) -> itemHandler.isItemValid(0, s) || itemHandler.isItemValid(2, s))),
+
+                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
+                            (i, s) -> itemHandler.isItemValid(0, s) || itemHandler.isItemValid(2, s))),
+
+                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
+                            (i, s) -> itemHandler.isItemValid(0, s) || itemHandler.isItemValid(2, s))));
 
     protected final ContainerData data;
     private int progress = 0;
@@ -84,7 +116,24 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+            if(side == null) {
+                return lazyItemHandler.cast();
+            }
+
+            if(directionWrappedHandlerMap.containsKey(side)) {
+                Direction localDir = this.getBlockState().getValue(ManaDistillerBlock.FACING);
+
+                if(side == Direction.UP || side == Direction.DOWN) {
+                    return directionWrappedHandlerMap.get(side).cast();
+                }
+
+                return switch (localDir) {
+                    default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
+                    case EAST -> directionWrappedHandlerMap.get(side.getClockWise()).cast();
+                    case SOUTH -> directionWrappedHandlerMap.get(side).cast();
+                    case WEST -> directionWrappedHandlerMap.get(side.getCounterClockWise()).cast();
+                };
+            }
         }
 
         return super.getCapability(cap, side);
