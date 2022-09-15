@@ -9,6 +9,8 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.block.entity.ModBlockEntities;
+import net.tyler.magicmod.block.entity.renderer.ManaDistillerBlockEntityRenderer;
 import net.tyler.magicmod.client.ManaHudOverlay;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.networking.ModMessages;
@@ -40,6 +42,12 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
+        }
+
+        @SubscribeEvent
+        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(ModBlockEntities.MANA_DISTILLER.get(),
+                    ManaDistillerBlockEntityRenderer::new);
         }
     }
 

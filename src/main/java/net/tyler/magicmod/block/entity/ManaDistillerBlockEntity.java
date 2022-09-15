@@ -32,6 +32,7 @@ import net.tyler.magicmod.block.custom.ManaDistillerBlock;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.EnergySyncS2CPacket;
+import net.tyler.magicmod.networking.packet.ItemStackSyncS2CPacket;
 import net.tyler.magicmod.screen.ManaDistillerMenu;
 import net.tyler.magicmod.util.ModEnergyStorage;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,9 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()) {
+                ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+            }
         }
 
         @Override
@@ -57,6 +61,20 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
             };
         }
     };
+
+    public ItemStack getRenderStack() {
+        ItemStack stack;
+
+        stack = itemHandler.getStackInSlot(2);
+
+        return stack;
+    }
+
+    public void setHandler(ItemStackHandler itemStackHandler) {
+        for (int i = 0; i < itemStackHandler.getSlots(); i++) {
+            itemHandler.setStackInSlot(i, itemStackHandler.getStackInSlot(i));
+        }
+    }
 
     private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(670, 670) {
         @Override
