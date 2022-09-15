@@ -1,7 +1,9 @@
 package net.tyler.magicmod.block.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -46,6 +48,15 @@ public class ManaDistillerBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    @Override
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
+        double d0 = (double)pPos.getX() + 0.3D + ((double)pRandom.nextFloat() * 0.4D);
+        double d1 = (double)pPos.getY() + 0.3D + ((double)pRandom.nextFloat() * 0.2D);
+        double d2 = (double)pPos.getZ() + 0.3D + ((double)pRandom.nextFloat() * 0.4D);
+        pLevel.addParticle(ParticleTypes.GLOW, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+
     }
 
     /* BLOCK ENTITY */

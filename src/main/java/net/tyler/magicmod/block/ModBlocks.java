@@ -54,7 +54,8 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> MANA_DISTILLER = registerBlock("mana_distiller",
             () -> new ManaDistillerBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(3.5f, 3.5f).requiresCorrectToolForDrops().noOcclusion()), ModCreativeModeTab.MAGIC_TAB);
+                    .strength(3.5f, 3.5f).requiresCorrectToolForDrops().noOcclusion()
+                    .lightLevel(state -> 3)), ModCreativeModeTab.MAGIC_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

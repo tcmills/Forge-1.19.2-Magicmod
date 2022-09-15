@@ -57,6 +57,12 @@ public class ModMessages {
                 .consumerMainThread(ManaDataSyncS2CPacket::handle)
                 .add();
 
+        net.messageBuilder(EnergySyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(EnergySyncS2CPacket::new)
+                .encoder(EnergySyncS2CPacket::toBytes)
+                .consumerMainThread(EnergySyncS2CPacket::handle)
+                .add();
+
     }
 
     public static <MSG> void sendToServer(MSG message) {
@@ -67,4 +73,7 @@ public class ModMessages {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
+    public static <MSG> void sendToClients(MSG message) {
+        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
+    }
 }

@@ -2,8 +2,12 @@ package net.tyler.magicmod.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -21,11 +25,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.tyler.magicmod.block.custom.ManaDistillerBlock;
 import net.tyler.magicmod.item.ModItems;
+import net.tyler.magicmod.networking.ModMessages;
+import net.tyler.magicmod.networking.packet.EnergySyncS2CPacket;
 import net.tyler.magicmod.screen.ManaDistillerMenu;
+import net.tyler.magicmod.util.ModEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +58,19 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         }
     };
 
+    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(670, 670) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+            ModMessages.sendToClients(new EnergySyncS2CPacket(this.energy, getBlockPos()));
+        }
+    };
+
+    private static final int ENERGY_REQ = 1;
+
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(Direction.UP, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> false,
@@ -73,7 +93,7 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 78;
+    private int maxProgress = 134;
 
     public ManaDistillerBlockEntity(BlockPos blockPos, BlockState state) {
         super(ModBlockEntities.MANA_DISTILLER.get(), blockPos, state);
@@ -110,11 +130,31 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+
+        if (this.ENERGY_STORAGE.getEnergyStored() == 670) {
+            this.ENERGY_STORAGE.extractEnergy(1, false);
+            this.ENERGY_STORAGE.receiveEnergy(1, false);
+        } else {
+            this.ENERGY_STORAGE.receiveEnergy(1, false);
+            this.ENERGY_STORAGE.extractEnergy(1, false);
+        }
         return new ManaDistillerMenu(id, inventory, this, this.data);
+    }
+
+    public IEnergyStorage getEnergyStorage() {
+        return ENERGY_STORAGE;
+    }
+
+    public void setEnergyLevel(int energy) {
+        this.ENERGY_STORAGE.setEnergy(energy);
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
+
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             if(side == null) {
                 return lazyItemHandler.cast();
@@ -143,18 +183,21 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("mana_distiller.progress", this.progress);
+        nbt.putInt("mana_distiller.energy", ENERGY_STORAGE.getEnergyStored());
 
         super.saveAdditional(nbt);
     }
@@ -164,6 +207,7 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("mana_distiller.progress");
+        ENERGY_STORAGE.setEnergy(nbt.getInt("mana_distiller.energy"));
     }
 
     public void drops() {
@@ -180,17 +224,36 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
             return;
         }
 
-        if (hasRecipe(pEntity)) {
+        if (hasPowderInFirstSlot(pEntity) && pEntity.ENERGY_STORAGE.getEnergyStored() == 0) {
+            pEntity.ENERGY_STORAGE.receiveEnergy(670, false);
+            pEntity.itemHandler.extractItem(0, 1, false);
+        }
+
+        if (hasRecipe(pEntity) && hasEnoughEnergy(pEntity)) {
             pEntity.progress++;
+            extractEnergy(pEntity);
             setChanged(level, pos, state);
 
             if (pEntity.progress >= pEntity.maxProgress) {
+                level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1f, 0.6f);
                 craftItem(pEntity);
             }
         } else {
             pEntity.resetProgress();
             setChanged(level, pos, state);
         }
+    }
+
+    private static void extractEnergy(ManaDistillerBlockEntity pEntity) {
+        pEntity.ENERGY_STORAGE.extractEnergy(ENERGY_REQ, false);
+    }
+
+    private static boolean hasEnoughEnergy(ManaDistillerBlockEntity pEntity) {
+        return pEntity.ENERGY_STORAGE.getEnergyStored() > 0;
+    }
+
+    private static boolean hasPowderInFirstSlot(ManaDistillerBlockEntity pEntity) {
+        return pEntity.itemHandler.getStackInSlot(0).getItem() == ModItems.ARCANE_POWDER.get();
     }
 
     private void resetProgress() {

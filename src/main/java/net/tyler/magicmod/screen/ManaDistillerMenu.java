@@ -1,5 +1,6 @@
 package net.tyler.magicmod.screen;
 
+import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,8 +34,8 @@ public class ManaDistillerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 12, 15));
-            this.addSlot(new SlotItemHandler(handler, 1, 86, 15));
+            this.addSlot(new SlotItemHandler(handler, 0, 47, 17));
+            this.addSlot(new SlotItemHandler(handler, 1, 86, 17));
             this.addSlot(new SlotItemHandler(handler, 2, 86, 60));
         });
 
@@ -44,6 +45,10 @@ public class ManaDistillerMenu extends AbstractContainerMenu {
 
     public boolean isCrafting() {
         return data.get(0) > 0;
+    }
+
+    public ManaDistillerBlockEntity getBlockEntity() {
+        return this.blockEntity;
     }
 
     public int getScaledProgress() {
