@@ -76,7 +76,7 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         }
     }
 
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(670, 670) {
+    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(5, 5) {
         @Override
         public void onEnergyChanged() {
             setChanged();
@@ -149,7 +149,7 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 
-        if (this.ENERGY_STORAGE.getEnergyStored() == 670) {
+        if (this.ENERGY_STORAGE.getEnergyStored() == 5) {
             this.ENERGY_STORAGE.extractEnergy(1, false);
             this.ENERGY_STORAGE.receiveEnergy(1, false);
         } else {
@@ -243,19 +243,20 @@ public class ManaDistillerBlockEntity extends BlockEntity implements MenuProvide
         }
 
         if (hasPowderInFirstSlot(pEntity) && pEntity.ENERGY_STORAGE.getEnergyStored() == 0) {
-            pEntity.ENERGY_STORAGE.receiveEnergy(670, false);
+            pEntity.ENERGY_STORAGE.receiveEnergy(5, false);
             pEntity.itemHandler.extractItem(0, 1, false);
         }
 
         if (hasRecipe(pEntity) && hasEnoughEnergy(pEntity)) {
             pEntity.progress++;
-            extractEnergy(pEntity);
-            setChanged(level, pos, state);
 
             if (pEntity.progress >= pEntity.maxProgress) {
+                extractEnergy(pEntity);
                 level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1f, 0.6f);
                 craftItem(pEntity);
             }
+
+            setChanged(level, pos, state);
         } else {
             pEntity.resetProgress();
             setChanged(level, pos, state);
