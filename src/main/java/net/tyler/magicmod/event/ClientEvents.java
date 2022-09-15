@@ -48,13 +48,9 @@ public class ClientEvents {
         public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ModBlockEntities.MANA_DISTILLER.get(),
                     ManaDistillerBlockEntityRenderer::new);
+            event.registerEntityRenderer(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(),
+                    ThrownItemRenderer::new);
         }
-    }
-
-    @SubscribeEvent
-    public static void initRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(),
-                ThrownItemRenderer::new);
     }
 
 }

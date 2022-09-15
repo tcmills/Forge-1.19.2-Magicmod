@@ -24,14 +24,11 @@ import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import net.tyler.magicmod.villager.ModVillagers;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MagicMod.MOD_ID)
 public class ModEvents {
-    private static final Logger LOGGER = LogManager.getLogger();
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if(event.getType() == ModVillagers.ARCANIST.get()) {
