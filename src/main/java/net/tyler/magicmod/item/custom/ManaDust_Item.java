@@ -38,7 +38,7 @@ public class ManaDust_Item extends Item {
         if (entity instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 mana.addMana(5);
-                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 240, 0));
+                serverplayer.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 240, 0));
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
             });
         }

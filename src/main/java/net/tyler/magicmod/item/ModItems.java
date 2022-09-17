@@ -6,9 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
-import net.tyler.magicmod.item.custom.ManaDust_Item;
-import net.tyler.magicmod.item.custom.ManaPotion_Item;
-import net.tyler.magicmod.item.custom.Neutral_1_MagicMissile_Item;
+import net.tyler.magicmod.item.custom.*;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagicMod.MOD_ID);
@@ -28,6 +26,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> MAGIC_MISSILE = ITEMS.register("magic_missile",
             () -> new Neutral_1_MagicMissile_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> AID = ITEMS.register("aid",
+            () -> new Neutral_1_Aid_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> TELEPORT = ITEMS.register("teleport",
+            () -> new Neutral_1_Teleport_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
             () -> new Item(new Item.Properties().stacksTo(1)));
 

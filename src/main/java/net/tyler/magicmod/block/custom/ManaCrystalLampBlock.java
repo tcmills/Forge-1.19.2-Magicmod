@@ -43,7 +43,7 @@ public class ManaCrystalLampBlock extends Block {
     public void animateTick(BlockState state, Level level, BlockPos blockPos, RandomSource source) {
         super.animateTick(state, level, blockPos, source);
         if (!state.getValue(ManaCrystalLampBlock.LIT)) {
-            level.addParticle(ParticleTypes.DOLPHIN, (double)blockPos.getX() + 0.5D + ((3*source.nextDouble()) - 1.5D), (double)blockPos.getY() + 0.5D + ((3*source.nextDouble()) - 1.5D), (double)blockPos.getZ() + 0.5D +  + ((3*source.nextDouble()) - 1.5D), 0.0D, 0.0D, 0.0D);
+            level.addParticle(ParticleTypes.DOLPHIN, (double)blockPos.getX() + 0.5D + ((3*source.nextDouble()) - 1.5D), (double)blockPos.getY() + 0.5D + ((3*source.nextDouble()) - 1.5D), (double)blockPos.getZ() + 0.5D + ((3*source.nextDouble()) - 1.5D), 0.0D, 0.0D, 0.0D);
         }
     }
 
