@@ -4,6 +4,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.multiplayer.chat.report.ReportEnvironment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -13,11 +15,13 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.mana.PlayerMana;
 import net.tyler.magicmod.mana.PlayerManaProvider;
@@ -76,6 +80,13 @@ public class ModEvents {
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
                 });
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDamage(LivingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            player.addEffect(new MobEffectInstance(ModEffects.COMBAT.get(), 200, 0, false, false, true));
         }
     }
 

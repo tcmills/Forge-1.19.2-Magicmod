@@ -11,6 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tyler.magicmod.block.ModBlocks;
 import net.tyler.magicmod.block.entity.ModBlockEntities;
+import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.networking.ModMessages;
@@ -36,6 +37,7 @@ public class MagicMod {
         ModEntityTypes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

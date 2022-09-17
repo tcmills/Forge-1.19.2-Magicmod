@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
@@ -36,7 +37,7 @@ public class Neutral_1_Teleport_Item extends Item {
 
         if (player instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if (mana.getMana() >= 10) {
+                if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get())) {
                     mana.subMana(10);
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
 
@@ -66,7 +67,7 @@ public class Neutral_1_Teleport_Item extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-            if (mana.getMana() >= 10) {
+            if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get())) {
                 cast = true;
             } else {
                 cast = false;

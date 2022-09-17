@@ -21,6 +21,8 @@
   "block.magicmod.mana_crystal_lamp": "Mana Crystal Lamp",
   "block.magicmod.mana_distiller": "Mana Distiller",
 
+  "effect.magicmod.combat": "In Combat",
+
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 
   "itemGroup.magictab": "Magic",
