@@ -1,21 +1,21 @@
 package net.tyler.magicmod.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.client.multiplayer.chat.report.ReportEnvironment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,10 +29,14 @@ import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import net.tyler.magicmod.villager.ModVillagers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MagicMod.MOD_ID)
 public class ModEvents {
+
+    private static ArrayList<Item> items = new ArrayList<>();
+
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if(event.getType() == ModVillagers.ARCANIST.get()) {
@@ -64,6 +68,10 @@ public class ModEvents {
                     newStore.copyFrom(oldStore);
                 });
             });
+            for (int i = 0; i < items.size(); i++) {
+                event.getEntity().addItem(new ItemStack(items.get(i)));
+            }
+            items.clear();
         }
     }
 
@@ -87,6 +95,29 @@ public class ModEvents {
     public static void onPlayerDamage(LivingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             player.addEffect(new MobEffectInstance(ModEffects.COMBAT.get(), 200, 0, false, false, true));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDrop(LivingDropsEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ItemEntity[] droppedItems = new ItemEntity[event.getDrops().size()];
+            droppedItems = event.getDrops().toArray(droppedItems);
+
+            for (int i = 0; i < droppedItems.length; i++) {
+                if (droppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
+                    droppedItems[i].kill();
+                    items.add(ModItems.MAGIC_MISSILE.get());
+                }
+                if (droppedItems[i].getItem().getItem() == ModItems.AID.get()) {
+                    droppedItems[i].kill();
+                    items.add(ModItems.AID.get());
+                }
+                if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
+                    droppedItems[i].kill();
+                    items.add(ModItems.TELEPORT.get());
+                }
+            }
         }
     }
 
