@@ -108,12 +108,10 @@ public class ModEvents {
                 if (droppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
                     droppedItems[i].kill();
                     items.add(ModItems.MAGIC_MISSILE.get());
-                }
-                if (droppedItems[i].getItem().getItem() == ModItems.AID.get()) {
+                } else if (droppedItems[i].getItem().getItem() == ModItems.AID.get()) {
                     droppedItems[i].kill();
                     items.add(ModItems.AID.get());
-                }
-                if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
+                } else if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
                     droppedItems[i].kill();
                     items.add(ModItems.TELEPORT.get());
                 }
