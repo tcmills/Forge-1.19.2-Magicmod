@@ -27,30 +27,6 @@ public class ModMessages {
 
         INSTANCE = net;
 
-        net.messageBuilder(Add100ManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(Add100ManaC2SPacket::new)
-                .encoder(Add100ManaC2SPacket::toBytes)
-                .consumerMainThread(Add100ManaC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(Add10MaxManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(Add10MaxManaC2SPacket::new)
-                .encoder(Add10MaxManaC2SPacket::toBytes)
-                .consumerMainThread(Add10MaxManaC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(Set100MaxManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(Set100MaxManaC2SPacket::new)
-                .encoder(Set100MaxManaC2SPacket::toBytes)
-                .consumerMainThread(Set100MaxManaC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(Add30ManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(Add30ManaC2SPacket::new)
-                .encoder(Add30ManaC2SPacket::toBytes)
-                .consumerMainThread(Add30ManaC2SPacket::handle)
-                .add();
-
         net.messageBuilder(ManaDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ManaDataSyncS2CPacket::new)
                 .encoder(ManaDataSyncS2CPacket::toBytes)

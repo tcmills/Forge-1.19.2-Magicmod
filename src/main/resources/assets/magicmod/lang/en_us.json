@@ -1,4 +1,6 @@
 {
+  "item.magicmod.star_fruit": "Star Fruit",
+  "item.magicmod.mana_fruit": "Mana Fruit",
   "item.magicmod.mana_dust": "Mana Dust",
   "item.magicmod.mana_crystal": "Mana Crystal",
   "item.magicmod.mana_potion": "Mana Potion",
@@ -25,8 +27,5 @@
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 
-  "itemGroup.magictab": "Magic",
-
-  "key.category.magicmod.magic": "Magic",
-  "key.magicmod.press_j": "Restore Mana"
+  "itemGroup.magictab": "Magic"
 }

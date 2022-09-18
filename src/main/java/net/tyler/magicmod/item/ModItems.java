@@ -11,6 +11,10 @@ import net.tyler.magicmod.item.custom.*;
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagicMod.MOD_ID);
 
+    public static final RegistryObject<Item> STAR_FRUIT = ITEMS.register("star_fruit",
+            () -> new StarFruit_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).food(ModFoods.STAR_FRUIT)));
+    public static final RegistryObject<Item> MANA_FRUIT = ITEMS.register("mana_fruit",
+            () -> new ManaFruit_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).food(ModFoods.MANA_FRUIT)));
     public static final RegistryObject<Item> MANA_DUST = ITEMS.register("mana_dust",
             () -> new ManaDust_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
     public static final RegistryObject<Item> MANA_CRYSTAL = ITEMS.register("mana_crystal",
@@ -21,6 +25,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
     public static final RegistryObject<Item> ARCANE_POWDER = ITEMS.register("arcane_powder",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
+
     public static final RegistryObject<Item> COINS = ITEMS.register("coins",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
