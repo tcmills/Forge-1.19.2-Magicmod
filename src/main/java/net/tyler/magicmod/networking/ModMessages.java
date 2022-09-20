@@ -33,6 +33,12 @@ public class ModMessages {
                 .consumerMainThread(ManaDataSyncS2CPacket::handle)
                 .add();
 
+        net.messageBuilder(InfoDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(InfoDataSyncS2CPacket::new)
+                .encoder(InfoDataSyncS2CPacket::toBytes)
+                .consumerMainThread(InfoDataSyncS2CPacket::handle)
+                .add();
+
         net.messageBuilder(EnergySyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(EnergySyncS2CPacket::new)
                 .encoder(EnergySyncS2CPacket::toBytes)

@@ -22,10 +22,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.effect.ModEffects;
+import net.tyler.magicmod.info.PlayerInfo;
+import net.tyler.magicmod.info.PlayerInfoProvider;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.mana.PlayerMana;
 import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
+import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import net.tyler.magicmod.villager.ModVillagers;
 
@@ -56,6 +59,9 @@ public class ModEvents {
             if (!event.getObject().getCapability(PlayerManaProvider.PLAYER_MANA).isPresent()) {
                 event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties"), new PlayerManaProvider());
             }
+            if (!event.getObject().getCapability(PlayerInfoProvider.PLAYER_INFO).isPresent()) {
+                event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties2"), new PlayerInfoProvider());
+            }
         }
     }
 
@@ -68,16 +74,27 @@ public class ModEvents {
                     newStore.copyFrom(oldStore);
                 });
             });
-            for (int i = 0; i < items.size(); i++) {
-                event.getEntity().addItem(new ItemStack(items.get(i)));
+            event.getEntity().getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(newStore2 ->{
+                event.getOriginal().getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(oldStore2 -> {
+                    newStore2.copyFrom(oldStore2);
+                });
+            });
+
+            if (items.size() > 0) {
+                for (int i = 0; i < items.size(); i++) {
+                    event.getEntity().addItem(new ItemStack(items.get(i)));
+                }
+                items.clear();
             }
-            items.clear();
+
+            event.getOriginal().invalidateCaps();
         }
     }
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(PlayerMana.class);
+        event.register(PlayerInfo.class);
     }
 
     @SubscribeEvent
@@ -86,6 +103,12 @@ public class ModEvents {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                     ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), player);
+                });
+                player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
+                    ModMessages.sendToPlayer(new InfoDataSyncS2CPacket(info.getSchoolLevel(), info.getFire(),
+                            info.getWater(), info.getEarth(), info.getAir(), info.getSummoning(), info.getForge(),
+                            info.getStorm(), info.getEnder(), info.getLife(), info.getDeath(), info.getSun(),
+                            info.getMoon(), info.getDungeonParty()), player);
                 });
             }
         }
