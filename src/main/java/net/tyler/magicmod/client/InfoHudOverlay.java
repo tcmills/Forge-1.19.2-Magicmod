@@ -80,6 +80,8 @@ public class InfoHudOverlay {
             "textures/info/moon_two.png");
     private static final ResourceLocation MOON_3 = new ResourceLocation(MagicMod.MOD_ID,
             "textures/info/moon_three.png");
+    private static final ResourceLocation DUNGEON_PARTY = new ResourceLocation(MagicMod.MOD_ID,
+            "textures/info/dungeon_party.png");
 
     public static final IGuiOverlay HUD_INFO = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         int x = screenWidth / 2;
@@ -231,6 +233,11 @@ public class InfoHudOverlay {
         else if  (ClientInfoData.getPlayerMoon() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, MOON_3);
             GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+        }
+
+        if (ClientInfoData.getPlayerDungeonParty()) {
+            RenderSystem.setShaderTexture(0, DUNGEON_PARTY);
+            GuiComponent.blit(poseStack, x - 238, y - 230, 0, 0, 18, 18, 18, 18);
         }
 
     });

@@ -55,6 +55,9 @@ public class ModItems {
     public static final RegistryObject<Item> MOON_GEM = ITEMS.register("moon_gem",
             () -> new MoonGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
+    public static final RegistryObject<Item> DUNGEON_BELL = ITEMS.register("dungeon_bell",
+            () -> new DungeonBell_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+
     public static final RegistryObject<Item> COINS = ITEMS.register("coins",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 

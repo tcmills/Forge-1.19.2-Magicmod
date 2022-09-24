@@ -3,6 +3,7 @@ package net.tyler.magicmod.entity.custom;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,7 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
 import net.tyler.magicmod.entity.ModEntityTypes;
+import net.tyler.magicmod.info.PlayerInfoProvider;
 import net.tyler.magicmod.item.ModItems;
+import net.tyler.magicmod.networking.ModMessages;
+import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 
 public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 
@@ -91,7 +95,18 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 //            }
 //            else entity.hurt(DamageSource.thrown(this, this.getOwner()), damage);
 
-            entity.hurt(DamageSource.thrown(this, this.getOwner()), baseDamage);
+            if (entity instanceof ServerPlayer serverplayer2 && this.getOwner() instanceof ServerPlayer serverplayer1) {
+                serverplayer1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                    serverplayer2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                        if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                            entity.hurt(DamageSource.thrown(this, this.getOwner()), baseDamage);
+                        }
+                    });
+                });
+            }
+            else {
+                entity.hurt(DamageSource.thrown(this, this.getOwner()), baseDamage);
+            }
 
             if (!level.isClientSide) {
                 this.playSound((SoundEvent)SoundEvents.FIREWORK_ROCKET_BLAST, 5.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
