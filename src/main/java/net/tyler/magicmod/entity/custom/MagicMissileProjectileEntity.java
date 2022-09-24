@@ -103,8 +103,7 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
                         }
                     });
                 });
-            }
-            else {
+            } else {
                 entity.hurt(DamageSource.thrown(this, this.getOwner()), baseDamage);
             }
 
