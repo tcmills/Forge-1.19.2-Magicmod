@@ -26,6 +26,35 @@ public class ModItems {
     public static final RegistryObject<Item> ARCANE_POWDER = ITEMS.register("arcane_powder",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
+    public static final RegistryObject<Item> FURTHER_STUDIES = ITEMS.register("further_studies",
+            () -> new FurtherStudies_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> CLEAR_GEM = ITEMS.register("clear_gem",
+            () -> new ClearGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> FIRE_GEM = ITEMS.register("fire_gem",
+            () -> new FireGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> WATER_GEM = ITEMS.register("water_gem",
+            () -> new WaterGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> EARTH_GEM = ITEMS.register("earth_gem",
+            () -> new EarthGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> AIR_GEM = ITEMS.register("air_gem",
+            () -> new AirGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SUMMONING_GEM = ITEMS.register("summoning_gem",
+            () -> new SummoningGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> FORGE_GEM = ITEMS.register("forge_gem",
+            () -> new ForgeGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> STORM_GEM = ITEMS.register("storm_gem",
+            () -> new StormGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> ENDER_GEM = ITEMS.register("ender_gem",
+            () -> new EnderGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> LIFE_GEM = ITEMS.register("life_gem",
+            () -> new LifeGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> DEATH_GEM = ITEMS.register("death_gem",
+            () -> new DeathGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SUN_GEM = ITEMS.register("sun_gem",
+            () -> new SunGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> MOON_GEM = ITEMS.register("moon_gem",
+            () -> new MoonGem_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+
     public static final RegistryObject<Item> COINS = ITEMS.register("coins",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 

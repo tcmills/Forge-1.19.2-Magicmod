@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.block.entity.ModBlockEntities;
 import net.tyler.magicmod.block.entity.renderer.ManaDistillerBlockEntityRenderer;
+import net.tyler.magicmod.client.InfoHudOverlay;
 import net.tyler.magicmod.client.ManaHudOverlay;
 import net.tyler.magicmod.entity.ModEntityTypes;
 
@@ -21,6 +22,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
+            event.registerAboveAll("info", InfoHudOverlay.HUD_INFO);
         }
 
         @SubscribeEvent

@@ -7,6 +7,21 @@
   "item.magicmod.wisp_core": "Wisp Core",
   "item.magicmod.arcane_powder": "Arcane Powder",
 
+  "item.magicmod.further_studies": "Further Studies",
+  "item.magicmod.clear_gem": "Clear Gem",
+  "item.magicmod.fire_gem": "Fire Gem",
+  "item.magicmod.water_gem": "Water Gem",
+  "item.magicmod.earth_gem": "Earth Gem",
+  "item.magicmod.air_gem": "Air Gem",
+  "item.magicmod.summoning_gem": "Summoning Gem",
+  "item.magicmod.forge_gem": "Forge Gem",
+  "item.magicmod.storm_gem": "Storm Gem",
+  "item.magicmod.ender_gem": "Ender Gem",
+  "item.magicmod.life_gem": "Life Gem",
+  "item.magicmod.death_gem": "Death Gem",
+  "item.magicmod.sun_gem": "Sun Gem",
+  "item.magicmod.moon_gem": "Moon Gem",
+
   "item.magicmod.coins": "Coins",
 
   "item.magicmod.magic_missile": "Magic Missile",

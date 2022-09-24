@@ -31,7 +31,9 @@ public class PlayerInfo {
     }
 
     public void schoolLevelUp() {
-        schoolLevel++;
+        if (schoolLevel < 3) {
+            schoolLevel++;
+        }
     }
 
     public void expel() {
