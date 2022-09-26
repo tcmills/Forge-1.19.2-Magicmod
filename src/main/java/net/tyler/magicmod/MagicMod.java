@@ -2,6 +2,8 @@ package net.tyler.magicmod;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +15,7 @@ import net.tyler.magicmod.block.ModBlocks;
 import net.tyler.magicmod.block.entity.ModBlockEntities;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
+import net.tyler.magicmod.entity.client.WispRenderer;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.painting.ModPaintings;
@@ -20,6 +23,7 @@ import net.tyler.magicmod.screen.ManaDistillerScreen;
 import net.tyler.magicmod.screen.ModMenuTypes;
 import net.tyler.magicmod.villager.ModVillagers;
 import org.slf4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MagicMod.MOD_ID)
@@ -41,6 +45,8 @@ public class MagicMod {
 
         modEventBus.addListener(this::commonSetup);
 
+        GeckoLib.initialize();
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -57,6 +63,8 @@ public class MagicMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(ModMenuTypes.MANA_DISTILLER_MENU.get(), ManaDistillerScreen::new);
+
+            EntityRenderers.register(ModEntityTypes.WISP.get(), WispRenderer::new);
         }
     }
 }

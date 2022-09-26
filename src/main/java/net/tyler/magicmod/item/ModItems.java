@@ -1,11 +1,13 @@
 package net.tyler.magicmod.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.item.custom.*;
 
 public class ModItems {
@@ -69,6 +71,10 @@ public class ModItems {
             () -> new Neutral_1_Teleport_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
             () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,
+                    new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
 
 
     public static void register(IEventBus eventBus){
