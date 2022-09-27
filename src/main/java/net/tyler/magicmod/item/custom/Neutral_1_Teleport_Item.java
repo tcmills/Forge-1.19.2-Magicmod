@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.tyler.magicmod.effect.ModEffects;
+import net.tyler.magicmod.info.PlayerInfoProvider;
 import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
@@ -37,17 +38,19 @@ public class Neutral_1_Teleport_Item extends Item {
 
         if (player instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get())) {
-                    mana.subMana(10);
-                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
+                serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
+                    if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty()) {
+                        mana.subMana(10);
+                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
 
-                    serverplayer.teleportTo(0.0D, 0.0D, 0.0D);
-                    serverplayer.resetFallDistance();
+                        serverplayer.teleportTo(0.0D, 0.0D, 0.0D);
+                        serverplayer.resetFallDistance();
 
-                    player.level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
+                        player.level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
 
-                    serverplayer.getCooldowns().addCooldown(this, 3600);
-                }
+                        serverplayer.getCooldowns().addCooldown(this, 3600);
+                    }
+                });
             });
         }
 
@@ -67,11 +70,13 @@ public class Neutral_1_Teleport_Item extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-            if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get())) {
-                cast = true;
-            } else {
-                cast = false;
-            }
+            player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
+                if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty()) {
+                    cast = true;
+                } else {
+                    cast = false;
+                }
+            });
         });
 
         if (cast) {

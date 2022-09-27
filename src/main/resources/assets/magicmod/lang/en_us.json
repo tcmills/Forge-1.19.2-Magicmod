@@ -41,6 +41,8 @@
   "block.magicmod.jumpy_block": "Jumpy Block",
   "block.magicmod.mana_crystal_lamp": "Mana Crystal Lamp",
   "block.magicmod.mana_distiller": "Mana Distiller",
+  "block.magicmod.dungeon_block": "Dungeon Brick Entrance",
+  "block.magicmod.dungeon2_block": "Dungeon Brick Exit",
 
   "effect.magicmod.combat": "In Combat",
 

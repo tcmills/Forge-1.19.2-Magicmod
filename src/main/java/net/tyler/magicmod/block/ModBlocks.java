@@ -14,9 +14,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
-import net.tyler.magicmod.block.custom.JumpyBlock;
-import net.tyler.magicmod.block.custom.ManaCrystalLampBlock;
-import net.tyler.magicmod.block.custom.ManaDistillerBlock;
+import net.tyler.magicmod.block.custom.*;
 import net.tyler.magicmod.item.ModCreativeModeTab;
 import net.tyler.magicmod.item.ModItems;
 
@@ -51,6 +49,12 @@ public class ModBlocks {
             () -> new ManaCrystalLampBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(0.3f, 0.3f).sound(SoundType.GLASS)
                     .lightLevel(state -> state.getValue(ManaCrystalLampBlock.LIT) ? 0 : 15)), ModCreativeModeTab.MAGIC_TAB);
+    public static final RegistryObject<Block> DUNGEON_BLOCK = registerBlock("dungeon_block",
+            () -> new DungeonBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(-1.0f, 3600000.0F)), ModCreativeModeTab.MAGIC_TAB);
+    public static final RegistryObject<Block> DUNGEON2_BLOCK = registerBlock("dungeon2_block",
+            () -> new Dungeon2Block(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(-1.0f, 3600000.0F)), ModCreativeModeTab.MAGIC_TAB);
 
     public static final RegistryObject<Block> MANA_DISTILLER = registerBlock("mana_distiller",
             () -> new ManaDistillerBlock(BlockBehaviour.Properties.of(Material.STONE)
