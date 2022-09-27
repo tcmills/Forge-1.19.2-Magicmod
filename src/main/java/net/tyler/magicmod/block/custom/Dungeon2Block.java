@@ -19,7 +19,9 @@ public class Dungeon2Block extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && entity instanceof ServerPlayer serverplayer) {
-            serverplayer.setRespawnPosition(null, null, 0.0F, true, true);
+            if (serverplayer.getRespawnDimension() != level.dimension() || !pos.equals(serverplayer.getRespawnPosition())) {
+                serverplayer.setRespawnPosition(null, null, 0.0F, true, true);
+            }
             serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 info.leaveDungeonParty();
                 ModMessages.sendToPlayer(new InfoDataSyncS2CPacket(info.getSchoolLevel(), info.getFire(),

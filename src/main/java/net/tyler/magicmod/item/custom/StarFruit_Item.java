@@ -44,6 +44,7 @@ public class StarFruit_Item extends Item {
         if (entity instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 info.expel();
+                info.leaveDungeonParty();
                 info.setSchoolLevel(0);
                 ModMessages.sendToPlayer(new InfoDataSyncS2CPacket(info.getSchoolLevel(), info.getFire(),
                         info.getWater(), info.getEarth(), info.getAir(), info.getSummoning(), info.getForge(),
