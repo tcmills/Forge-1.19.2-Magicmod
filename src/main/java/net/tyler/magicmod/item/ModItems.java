@@ -59,6 +59,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> DUNGEON_BELL = ITEMS.register("dungeon_bell",
             () -> new DungeonBell_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SET_HOME_CHARGE = ITEMS.register("set_home_charge",
+            () -> new SetHomeCharge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> COINS = ITEMS.register("coins",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB)));
@@ -69,6 +71,8 @@ public class ModItems {
             () -> new Neutral_1_Aid_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> TELEPORT = ITEMS.register("teleport",
             () -> new Neutral_1_Teleport_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> TELEPORT_HOME = ITEMS.register("teleport_home",
+            () -> new Neutral_1_TeleportHome_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
             () -> new Item(new Item.Properties().stacksTo(1)));
 

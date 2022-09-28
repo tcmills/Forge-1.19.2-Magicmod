@@ -23,6 +23,7 @@
   "item.magicmod.moon_gem": "Moon Gem",
 
   "item.magicmod.dungeon_bell": "Dungeon Bell",
+  "item.magicmod.set_home_charge": "'Set Home' Charge",
 
   "item.magicmod.coins": "Coins",
 
@@ -31,6 +32,7 @@
   "item.magicmod.magic_missile": "Magic Missile",
   "item.magicmod.aid": "Aid",
   "item.magicmod.teleport": "Teleport(Spawn)",
+  "item.magicmod.teleport_home": "Teleport(Home)",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",

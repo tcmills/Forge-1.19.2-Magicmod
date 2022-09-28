@@ -28,6 +28,8 @@ import net.tyler.magicmod.entity.custom.WispEntity;
 import net.tyler.magicmod.info.PlayerInfo;
 import net.tyler.magicmod.info.PlayerInfoProvider;
 import net.tyler.magicmod.item.ModItems;
+import net.tyler.magicmod.location.PlayerLocation;
+import net.tyler.magicmod.location.PlayerLocationProvider;
 import net.tyler.magicmod.mana.PlayerMana;
 import net.tyler.magicmod.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
@@ -66,6 +68,9 @@ public class ModEvents {
                 if (!event.getObject().getCapability(PlayerInfoProvider.PLAYER_INFO).isPresent()) {
                     event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties2"), new PlayerInfoProvider());
                 }
+                if (!event.getObject().getCapability(PlayerLocationProvider.PLAYER_LOCATION).isPresent()) {
+                    event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties3"), new PlayerLocationProvider());
+                }
             }
         }
 
@@ -80,6 +85,11 @@ public class ModEvents {
                 });
                 event.getEntity().getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(newStore2 ->{
                     event.getOriginal().getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(oldStore2 -> {
+                        newStore2.copyFrom(oldStore2);
+                    });
+                });
+                event.getEntity().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(newStore2 ->{
+                    event.getOriginal().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(oldStore2 -> {
                         newStore2.copyFrom(oldStore2);
                     });
                 });
@@ -99,6 +109,7 @@ public class ModEvents {
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
             event.register(PlayerMana.class);
             event.register(PlayerInfo.class);
+            event.register(PlayerLocation.class);
         }
 
         @SubscribeEvent
@@ -141,6 +152,9 @@ public class ModEvents {
                     } else if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
                         droppedItems[i].kill();
                         items.add(ModItems.TELEPORT.get());
+                    } else if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
+                        droppedItems[i].kill();
+                        items.add(ModItems.TELEPORT_HOME.get());
                     }
                 }
             }
