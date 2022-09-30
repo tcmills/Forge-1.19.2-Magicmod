@@ -1,4 +1,4 @@
-package net.tyler.magicmod.capability.location;
+package net.tyler.magicmod.capability.cooldowns;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,24 +11,24 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerLocationProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerCooldownsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<PlayerLocation> PLAYER_LOCATION = CapabilityManager.get(new CapabilityToken<PlayerLocation>() { });
+    public static Capability<PlayerCooldowns> PLAYER_COOLDOWNS = CapabilityManager.get(new CapabilityToken<PlayerCooldowns>() { });
 
-    private PlayerLocation location = null;
-    private final LazyOptional<PlayerLocation> optional = LazyOptional.of(this::createPlayerLocation);
+    private PlayerCooldowns COOLDOWNS = null;
+    private final LazyOptional<PlayerCooldowns> optional = LazyOptional.of(this::createPlayerCooldowns);
 
-    private PlayerLocation createPlayerLocation() {
-        if (this.location == null) {
-            this.location = new PlayerLocation();
+    private PlayerCooldowns createPlayerCooldowns() {
+        if (this.COOLDOWNS == null) {
+            this.COOLDOWNS = new PlayerCooldowns();
         }
 
-        return this.location;
+        return this.COOLDOWNS;
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == PLAYER_LOCATION) {
+        if (cap == PLAYER_COOLDOWNS) {
             return optional.cast();
         }
 
@@ -38,12 +38,12 @@ public class PlayerLocationProvider implements ICapabilityProvider, INBTSerializ
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerLocation().saveNBTData(nbt);
+        createPlayerCooldowns().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerLocation().loadNBTData(nbt);
+        createPlayerCooldowns().loadNBTData(nbt);
     }
 }
