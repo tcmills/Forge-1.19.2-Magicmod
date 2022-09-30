@@ -1,4 +1,4 @@
-package net.tyler.magicmod.info;
+package net.tyler.magicmod.capability.info;
 
 import net.minecraft.nbt.CompoundTag;
 

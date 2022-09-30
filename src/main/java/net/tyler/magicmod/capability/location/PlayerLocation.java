@@ -1,4 +1,4 @@
-package net.tyler.magicmod.location;
+package net.tyler.magicmod.capability.location;
 
 import net.minecraft.nbt.CompoundTag;
 

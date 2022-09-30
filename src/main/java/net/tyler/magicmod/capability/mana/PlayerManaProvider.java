@@ -1,4 +1,4 @@
-package net.tyler.magicmod.info;
+package net.tyler.magicmod.capability.mana;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,24 +11,23 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerInfoProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerManaProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public static Capability<PlayerMana> PLAYER_MANA = CapabilityManager.get(new CapabilityToken<PlayerMana>() { });
 
-    public static Capability<PlayerInfo> PLAYER_INFO = CapabilityManager.get(new CapabilityToken<PlayerInfo>() { });
+    private PlayerMana mana = null;
+    private final LazyOptional<PlayerMana> optional = LazyOptional.of(this::createPlayerMana);
 
-    private PlayerInfo info = null;
-    private final LazyOptional<PlayerInfo> optional = LazyOptional.of(this::createPlayerInfo);
-
-    private PlayerInfo createPlayerInfo() {
-        if (this.info == null) {
-            this.info = new PlayerInfo();
+    private PlayerMana createPlayerMana() {
+        if (this.mana == null) {
+            this.mana = new PlayerMana();
         }
 
-        return this.info;
+        return this.mana;
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == PLAYER_INFO) {
+        if (cap == PLAYER_MANA) {
             return optional.cast();
         }
 
@@ -38,12 +37,12 @@ public class PlayerInfoProvider implements ICapabilityProvider, INBTSerializable
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerInfo().saveNBTData(nbt);
+        createPlayerMana().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerInfo().loadNBTData(nbt);
+        createPlayerMana().loadNBTData(nbt);
     }
 }

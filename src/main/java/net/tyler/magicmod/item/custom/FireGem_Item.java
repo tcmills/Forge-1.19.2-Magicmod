@@ -2,7 +2,6 @@ package net.tyler.magicmod.item.custom;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -13,11 +12,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.tyler.magicmod.info.PlayerInfoProvider;
-import net.tyler.magicmod.mana.PlayerManaProvider;
+import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
-import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 
 public class FireGem_Item extends Item {
     private static final int EAT_DURATION = 1;

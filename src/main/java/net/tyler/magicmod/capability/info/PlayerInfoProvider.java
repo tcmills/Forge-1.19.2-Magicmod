@@ -1,4 +1,4 @@
-package net.tyler.magicmod.location;
+package net.tyler.magicmod.capability.info;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,24 +11,24 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerLocationProvider  implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerInfoProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<PlayerLocation> PLAYER_LOCATION = CapabilityManager.get(new CapabilityToken<PlayerLocation>() { });
+    public static Capability<PlayerInfo> PLAYER_INFO = CapabilityManager.get(new CapabilityToken<PlayerInfo>() { });
 
-    private PlayerLocation location = null;
-    private final LazyOptional<PlayerLocation> optional = LazyOptional.of(this::createPlayerLocation);
+    private PlayerInfo info = null;
+    private final LazyOptional<PlayerInfo> optional = LazyOptional.of(this::createPlayerInfo);
 
-    private PlayerLocation createPlayerLocation() {
-        if (this.location == null) {
-            this.location = new PlayerLocation();
+    private PlayerInfo createPlayerInfo() {
+        if (this.info == null) {
+            this.info = new PlayerInfo();
         }
 
-        return this.location;
+        return this.info;
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == PLAYER_LOCATION) {
+        if (cap == PLAYER_INFO) {
             return optional.cast();
         }
 
@@ -38,12 +38,12 @@ public class PlayerLocationProvider  implements ICapabilityProvider, INBTSeriali
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerLocation().saveNBTData(nbt);
+        createPlayerInfo().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerLocation().loadNBTData(nbt);
+        createPlayerInfo().loadNBTData(nbt);
     }
 }

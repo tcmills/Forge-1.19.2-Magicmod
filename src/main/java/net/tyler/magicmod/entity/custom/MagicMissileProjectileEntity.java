@@ -16,10 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
 import net.tyler.magicmod.entity.ModEntityTypes;
-import net.tyler.magicmod.info.PlayerInfoProvider;
+import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.item.ModItems;
-import net.tyler.magicmod.networking.ModMessages;
-import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 
 public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 
