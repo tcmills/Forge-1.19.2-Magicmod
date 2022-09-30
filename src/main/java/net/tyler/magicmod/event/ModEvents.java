@@ -23,6 +23,8 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.capability.drops.PlayerDrops;
+import net.tyler.magicmod.capability.drops.PlayerDropsProvider;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.entity.custom.WispEntity;
@@ -45,7 +47,7 @@ public class ModEvents {
 
     @Mod.EventBusSubscriber(modid = MagicMod.MOD_ID)
     public static class ForgeEvents {
-        private static ArrayList<Item> items = new ArrayList<>();
+        //private static ArrayList<Item> items = new ArrayList<>();
         private static float[] cooldowns = new float[4];
 
         @SubscribeEvent
@@ -73,6 +75,9 @@ public class ModEvents {
                 if (!event.getObject().getCapability(PlayerLocationProvider.PLAYER_LOCATION).isPresent()) {
                     event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties3"), new PlayerLocationProvider());
                 }
+                if (!event.getObject().getCapability(PlayerDropsProvider.PLAYER_DROPS).isPresent()) {
+                    event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties4"), new PlayerDropsProvider());
+                }
             }
         }
 
@@ -90,18 +95,31 @@ public class ModEvents {
                         newStore2.copyFrom(oldStore2);
                     });
                 });
-                event.getEntity().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(newStore2 ->{
-                    event.getOriginal().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(oldStore2 -> {
-                        newStore2.copyFrom(oldStore2);
+                event.getEntity().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(newStore3 ->{
+                    event.getOriginal().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(oldStore3 -> {
+                        newStore3.copyFrom(oldStore3);
                     });
                 });
 
-                if (items.size() > 0) {
-                    for (int i = 0; i < items.size(); i++) {
-                        event.getEntity().addItem(new ItemStack(items.get(i)));
+                event.getOriginal().getCapability(PlayerDropsProvider.PLAYER_DROPS).ifPresent(oldStore4 -> {
+                    int[] items = oldStore4.getDrops();
+
+                    for (int i = 0; i < items[0]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.MAGIC_MISSILE.get()));
                     }
-                    items.clear();
-                }
+
+                    for (int i = 0; i < items[1]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.AID.get()));
+                    }
+
+                    for (int i = 0; i < items[2]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.TELEPORT.get()));
+                    }
+
+                    for (int i = 0; i < items[3]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.TELEPORT_HOME.get()));
+                    }
+                });
 
                 event.getOriginal().invalidateCaps();
             }
@@ -112,6 +130,7 @@ public class ModEvents {
             event.register(PlayerMana.class);
             event.register(PlayerInfo.class);
             event.register(PlayerLocation.class);
+            event.register(PlayerDrops.class);
         }
 
         @SubscribeEvent
@@ -161,21 +180,24 @@ public class ModEvents {
                 ItemEntity[] droppedItems = new ItemEntity[event.getDrops().size()];
                 droppedItems = event.getDrops().toArray(droppedItems);
 
-                for (int i = 0; i < droppedItems.length; i++) {
-                    if (droppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
-                        droppedItems[i].kill();
-                        items.add(ModItems.MAGIC_MISSILE.get());
-                    } else if (droppedItems[i].getItem().getItem() == ModItems.AID.get()) {
-                        droppedItems[i].kill();
-                        items.add(ModItems.AID.get());
-                    } else if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
-                        droppedItems[i].kill();
-                        items.add(ModItems.TELEPORT.get());
-                    } else if (droppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
-                        droppedItems[i].kill();
-                        items.add(ModItems.TELEPORT_HOME.get());
+                ItemEntity[] finalDroppedItems = droppedItems;
+                event.getEntity().getCapability(PlayerDropsProvider.PLAYER_DROPS).ifPresent(drops -> {
+                    for (int i = 0; i < finalDroppedItems.length; i++) {
+                        if (finalDroppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(0);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AID.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(1);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(2);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(3);
+                        }
                     }
-                }
+                });
             }
         }
     }
