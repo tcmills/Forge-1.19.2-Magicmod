@@ -1,7 +1,6 @@
 package net.tyler.magicmod.location;
 
 import net.minecraft.nbt.CompoundTag;
-import net.tyler.magicmod.info.PlayerInfo;
 
 public class PlayerLocation {
 

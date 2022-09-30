@@ -15,6 +15,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -45,6 +46,7 @@ public class ModEvents {
     @Mod.EventBusSubscriber(modid = MagicMod.MOD_ID)
     public static class ForgeEvents {
         private static ArrayList<Item> items = new ArrayList<>();
+        private static float[] cooldowns = new float[4];
 
         @SubscribeEvent
         public static void addCustomTrades(VillagerTradesEvent event) {
@@ -125,6 +127,23 @@ public class ModEvents {
                                 info.getStorm(), info.getEnder(), info.getLife(), info.getDeath(), info.getSun(),
                                 info.getMoon(), info.getDungeonParty()), player);
                     });
+
+                    player.getCooldowns().addCooldown(ModItems.MAGIC_MISSILE.get(), (int)(80 * cooldowns[0]));
+                    player.getCooldowns().addCooldown(ModItems.AID.get(), (int)(160 * cooldowns[1]));
+                    player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cooldowns[2]));
+                    player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cooldowns[3]));
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLeaveWorld(EntityLeaveLevelEvent event) {
+            if (!event.getLevel().isClientSide()) {
+                if (event.getEntity() instanceof ServerPlayer player) {
+                    cooldowns[0] = player.getCooldowns().getCooldownPercent(ModItems.MAGIC_MISSILE.get(), 0.0F);
+                    cooldowns[1] = player.getCooldowns().getCooldownPercent(ModItems.AID.get(), 0.0F);
+                    cooldowns[2] = player.getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F);
+                    cooldowns[3] = player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F);
                 }
             }
         }
