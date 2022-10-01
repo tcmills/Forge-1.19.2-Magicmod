@@ -1,6 +1,5 @@
 package net.tyler.magicmod.screen;
 
-import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +11,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import net.tyler.magicmod.block.ModBlocks;
 import net.tyler.magicmod.block.entity.ManaDistillerBlockEntity;
-import org.jetbrains.annotations.Nullable;
 
 public class ManaDistillerMenu extends AbstractContainerMenu {
     public final ManaDistillerBlockEntity blockEntity;

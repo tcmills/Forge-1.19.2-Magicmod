@@ -184,8 +184,7 @@ public class ModEvents {
         public static void onPlayerDrop(LivingDropsEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
                 ItemEntity[] droppedItems = new ItemEntity[event.getDrops().size()];
-                droppedItems = event.getDrops().toArray(droppedItems);
-                ItemEntity[] finalDroppedItems = droppedItems;
+                ItemEntity[] finalDroppedItems = event.getDrops().toArray(droppedItems);
                 event.getEntity().getCapability(PlayerDropsProvider.PLAYER_DROPS).ifPresent(drops -> {
                     for (int i = 0; i < finalDroppedItems.length; i++) {
                         if (finalDroppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {

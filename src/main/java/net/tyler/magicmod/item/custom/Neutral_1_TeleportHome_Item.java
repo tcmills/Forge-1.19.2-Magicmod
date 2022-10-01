@@ -37,7 +37,7 @@ public class Neutral_1_TeleportHome_Item extends Item {
 
         Player player = entity instanceof Player ? (Player)entity : null;
 
-        if (player instanceof ServerPlayer serverplayer && !level.isClientSide()) {
+        if (!level.isClientSide() && player instanceof ServerPlayer serverplayer) {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                     serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {

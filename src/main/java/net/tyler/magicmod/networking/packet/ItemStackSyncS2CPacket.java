@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 import net.tyler.magicmod.block.entity.ManaDistillerBlockEntity;
-import net.tyler.magicmod.screen.ManaDistillerMenu;
 
 import java.util.ArrayList;
 import java.util.Collection;

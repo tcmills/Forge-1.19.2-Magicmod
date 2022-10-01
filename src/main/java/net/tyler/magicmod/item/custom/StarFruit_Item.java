@@ -1,6 +1,5 @@
 package net.tyler.magicmod.item.custom;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -36,10 +35,6 @@ public class StarFruit_Item extends Item {
         super.finishUsingItem(stack, level, entity);
 
         Player player = entity instanceof Player ? (Player)entity : null;
-
-        if (player instanceof ServerPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
-        }
 
         if (entity instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {

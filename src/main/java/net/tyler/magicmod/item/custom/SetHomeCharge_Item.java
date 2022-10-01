@@ -1,6 +1,5 @@
 package net.tyler.magicmod.item.custom;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.tyler.magicmod.capability.location.PlayerLocationProvider;
 
 public class SetHomeCharge_Item extends Item {
-    private static final int EAT_DURATION = 1;
+    private static final int USE_DURATION = 1;
 
     public SetHomeCharge_Item(Properties properties) {
         super(properties);
@@ -29,10 +28,6 @@ public class SetHomeCharge_Item extends Item {
         super.finishUsingItem(stack, level, entity);
 
         Player player = entity instanceof Player ? (Player)entity : null;
-
-        if (player instanceof ServerPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
-        }
 
         if (entity instanceof ServerPlayer serverplayer && !level.isClientSide()) {
             serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
@@ -53,7 +48,7 @@ public class SetHomeCharge_Item extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return EAT_DURATION;
+        return USE_DURATION;
     }
 
     @Override

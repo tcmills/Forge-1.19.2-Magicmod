@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.entity.custom.WispEntity;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class WispRenderer extends GeoEntityRenderer<WispEntity> {

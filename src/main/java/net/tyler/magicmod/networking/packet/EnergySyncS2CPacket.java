@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import net.tyler.magicmod.block.entity.ManaDistillerBlockEntity;
-import net.tyler.magicmod.client.ClientManaData;
 import net.tyler.magicmod.screen.ManaDistillerMenu;
 
 import java.util.function.Supplier;

@@ -35,9 +35,9 @@ public class Neutral_1_Aid_Item extends Item {
             if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && mana.getMana() >= 15) {
                 mana.subMana(15);
                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+
                 player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
 
-                //player.setHealth(player.getHealth() + 7.0f);
                 player.heal(7.0f);
 
                 player.getCooldowns().addCooldown(this, 160);

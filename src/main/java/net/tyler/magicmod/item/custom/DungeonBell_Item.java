@@ -17,7 +17,7 @@ import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 
 public class DungeonBell_Item extends Item {
-    private static final int EAT_DURATION = 1;
+    private static final int USE_DURATION = 1;
 
     public DungeonBell_Item(Properties properties) {
         super(properties);
@@ -48,7 +48,7 @@ public class DungeonBell_Item extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return EAT_DURATION;
+        return USE_DURATION;
     }
 
     @Override
