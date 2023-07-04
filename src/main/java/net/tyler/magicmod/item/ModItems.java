@@ -67,14 +67,16 @@ public class ModItems {
 
     public static final RegistryObject<Item> MAGIC_MISSILE = ITEMS.register("magic_missile",
             () -> new Neutral_1_MagicMissile_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
+            () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> AID = ITEMS.register("aid",
             () -> new Neutral_1_Aid_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> TELEPORT = ITEMS.register("teleport",
             () -> new Neutral_1_Teleport_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> TELEPORT_HOME = ITEMS.register("teleport_home",
             () -> new Neutral_1_TeleportHome_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
-    public static final RegistryObject<Item> MAGIC_MISSILE_PROJECTILE = ITEMS.register("magic_missile_projectile",
-            () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FLARE_BLITZ = ITEMS.register("flare_blitz",
+            () -> new Fire_1_FlareBlitz_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

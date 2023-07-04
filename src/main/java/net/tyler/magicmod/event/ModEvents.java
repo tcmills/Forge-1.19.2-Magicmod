@@ -118,6 +118,10 @@ public class ModEvents {
                     for (int i = 0; i < items[3]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.TELEPORT_HOME.get()));
                     }
+
+                    for (int i = 0; i < items[4]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.FLARE_BLITZ.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -156,6 +160,7 @@ public class ModEvents {
                         player.getCooldowns().addCooldown(ModItems.AID.get(), (int)(160 * cd.getAidCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
+                        player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(160 * cd.getFlareBlitzCD()));
 
                         cd.clearCD();
                     });
@@ -170,6 +175,7 @@ public class ModEvents {
                 cd.setAidCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.AID.get(), 0.0F));
                 cd.setTeleportCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
                 cd.setTeleportHomeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
+                cd.setFlareBlitzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
             });
         }
 
@@ -199,6 +205,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(3);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FLARE_BLITZ.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(4);
                         }
                     }
                 });
@@ -207,6 +216,7 @@ public class ModEvents {
                     cd.setAidCD(player.getCooldowns().getCooldownPercent(ModItems.AID.get(), 0.0F));
                     cd.setTeleportCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
                     cd.setTeleportHomeCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
+                    cd.setFlareBlitzCD(player.getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
                 });
             }
         }

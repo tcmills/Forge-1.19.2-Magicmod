@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 
 public class PlayerDrops {
 
-    private int[] drops = {0, 0, 0, 0};
+    private int[] drops = {0, 0, 0, 0, 0};
 
     public int[] getDrops() {
         return drops;

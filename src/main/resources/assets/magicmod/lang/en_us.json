@@ -33,6 +33,7 @@
   "item.magicmod.aid": "Aid",
   "item.magicmod.teleport": "Teleport(Spawn)",
   "item.magicmod.teleport_home": "Teleport(Home)",
+  "item.magicmod.flare_blitz": "Flare Blitz",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
