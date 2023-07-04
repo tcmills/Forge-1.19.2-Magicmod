@@ -161,8 +161,6 @@ public class ModEvents {
                         player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
                         player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(160 * cd.getFlareBlitzCD()));
-
-                        cd.clearCD();
                     });
                 }
             }
