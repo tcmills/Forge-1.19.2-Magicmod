@@ -1,7 +1,10 @@
 package net.tyler.magicmod.item.custom;
 
+import com.google.common.collect.Sets;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -15,6 +18,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.capability.mana.PlayerManaProvider;
@@ -25,6 +31,8 @@ import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class Fire_1_FlareBlitz_Item extends Item {
 
@@ -39,8 +47,7 @@ public class Fire_1_FlareBlitz_Item extends Item {
 
         int manaCost = 5;
 
-        if (level.isClientSide() && hand == InteractionHand.MAIN_HAND && ClientInfoData.getPlayerFire()
-                && ClientManaData.getPlayerMana() >= manaCost) {
+        if (hand == InteractionHand.MAIN_HAND && ClientInfoData.getPlayerFire() && ClientManaData.getPlayerMana() >= manaCost) {
             float f7 = player.getYRot();
             float f = player.getXRot();
             float f1 = -Mth.sin(f7 * ((float)Math.PI / 180F)) * Mth.cos(f * ((float)Math.PI / 180F));
@@ -55,6 +62,21 @@ public class Fire_1_FlareBlitz_Item extends Item {
             if (player.isOnGround()) {
                 float f6 = 1.1999999F;
                 player.move(MoverType.SELF, new Vec3(0.0D, (double)f6, 0.0D));
+            }
+
+            //Check in x-axis
+            for(int x = -2; x < 3; x++){
+                //Check in y-axis
+                for(int y = -2; y < 1; y++){
+                    //Check in z-axis
+                    for(int z = -2; z < 3; z++){
+                        //Only get the blocks that are 2 blocks out (For loop -can- be used here instead)
+                        BlockPos blockpos = new BlockPos(player.getX()+x, player.getY()+y, player.getZ()+z);
+                        if (level.getBlockState(blockpos).isAir() && level.getBlockState(blockpos.below()).isSolidRender(level, blockpos.below())) {
+                            level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(level, blockpos));
+                        }
+                    }
+                }
             }
         }
 
