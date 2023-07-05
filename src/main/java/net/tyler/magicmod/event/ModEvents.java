@@ -208,7 +208,11 @@ public class ModEvents {
         public static void onPlayerTick(LivingEvent.LivingTickEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
-                    if (cast.getFlareBlitzCasting() && !player.hasEffect(ModEffects.FLARE_BLITZ_EXPLOSION.get()) && player.isOnGround()) {
+                    if (cast.getFlareBlitzCasting()) {
+                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
+                    }
+
+                    if (cast.getFlareBlitzCasting() && player.isOnGround()) {
                         cast.setFlareBlitzCasting(false);
 
                         MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, (DamageSource)null, (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
