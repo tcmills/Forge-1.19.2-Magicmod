@@ -1,8 +1,13 @@
 package net.tyler.magicmod.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -10,17 +15,22 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.capability.casting.PlayerCasting;
+import net.tyler.magicmod.capability.casting.PlayerCastingProvider;
 import net.tyler.magicmod.capability.cooldowns.PlayerCooldowns;
 import net.tyler.magicmod.capability.cooldowns.PlayerCooldownsProvider;
 import net.tyler.magicmod.capability.drops.PlayerDrops;
@@ -30,6 +40,7 @@ import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.entity.custom.WispEntity;
 import net.tyler.magicmod.capability.info.PlayerInfo;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
+import net.tyler.magicmod.misc.MagicalExplosion;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.capability.location.PlayerLocation;
 import net.tyler.magicmod.capability.location.PlayerLocationProvider;
@@ -77,6 +88,9 @@ public class ModEvents {
                 }
                 if (!event.getObject().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).isPresent()) {
                     event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties5"), new PlayerCooldownsProvider());
+                }
+                if (!event.getObject().getCapability(PlayerCastingProvider.PLAYER_CASTING).isPresent()) {
+                    event.addCapability(new ResourceLocation(MagicMod.MOD_ID, "properties6"), new PlayerCastingProvider());
                 }
             }
         }
@@ -128,6 +142,11 @@ public class ModEvents {
                         newStore5.copyFrom(oldStore5);
                     });
                 });
+                event.getEntity().getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(newStore6 -> {
+                    event.getOriginal().getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(oldStore6 -> {
+                        newStore6.copyFrom(oldStore6);
+                    });
+                });
 
                 event.getOriginal().invalidateCaps();
             }
@@ -140,6 +159,7 @@ public class ModEvents {
             event.register(PlayerLocation.class);
             event.register(PlayerDrops.class);
             event.register(PlayerCooldowns.class);
+            event.register(PlayerCasting.class);
         }
 
         @SubscribeEvent
@@ -160,7 +180,7 @@ public class ModEvents {
                         player.getCooldowns().addCooldown(ModItems.AID.get(), (int)(160 * cd.getAidCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
-                        player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(160 * cd.getFlareBlitzCD()));
+                        player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
                     });
                 }
             }
@@ -181,6 +201,26 @@ public class ModEvents {
         public static void onPlayerDamage(LivingDamageEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.addEffect(new MobEffectInstance(ModEffects.COMBAT.get(), 200, 0, false, false, true));
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerTick(LivingEvent.LivingTickEvent event) {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
+                    if (cast.getFlareBlitzCasting() && !player.hasEffect(ModEffects.FLARE_BLITZ_EXPLOSION.get()) && player.isOnGround()) {
+                        cast.setFlareBlitzCasting(false);
+
+                        MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, (DamageSource)null, (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
+                        if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                            explosion.explode();
+
+                            player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
+
+                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                        }
+                    }
+                });
             }
         }
 
