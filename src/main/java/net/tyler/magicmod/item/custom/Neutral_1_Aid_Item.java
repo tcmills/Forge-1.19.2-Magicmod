@@ -58,7 +58,7 @@ public class Neutral_1_Aid_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Right click to heal!").withStyle(ChatFormatting.AQUA));
+            components.add(Component.literal("Mana Cost: 15\nCooldown Time: 8 seconds\nHeal: 7\n\nRight click to heal yourself!").withStyle(ChatFormatting.YELLOW));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }

@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -93,9 +94,9 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 //            }
 //            else entity.hurt(DamageSource.thrown(this, this.getOwner()), damage);
 
-            if (entity instanceof ServerPlayer serverplayer2 && this.getOwner() instanceof ServerPlayer serverplayer1) {
-                serverplayer1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                    serverplayer2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+            if (entity instanceof Player player2 && this.getOwner() instanceof Player player1) {
+                player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                    player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                         if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
                             entity.hurt(DamageSource.thrown(this, this.getOwner()), baseDamage);
                         }

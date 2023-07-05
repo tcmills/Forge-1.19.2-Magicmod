@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -146,7 +148,20 @@ public class MagicalExplosion extends Explosion {
                         double d14 = (double)getSeenPercent(vec3, entity);
                         double d10 = (1.0D - d12) * d14;
                         float num = (float)(d14  * (damage - 1.0D) + 1.0D);
-                        entity.hurt(this.getDamageSource(), num);
+
+                        if (entity instanceof Player player2 && source instanceof Player player1) {
+                            player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                    if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                        entity.hurt(this.getDamageSource(), num);
+                                    }
+                                });
+                            });
+                        } else {
+                            entity.hurt(this.getDamageSource(), num);
+                        }
+
+
                         double d11 = d10;
                         if (entity instanceof LivingEntity) {
                             d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity)entity, d10);

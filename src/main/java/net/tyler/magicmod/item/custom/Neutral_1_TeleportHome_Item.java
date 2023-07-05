@@ -95,7 +95,7 @@ public class Neutral_1_TeleportHome_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Hold down right click to teleport to Home!").withStyle(ChatFormatting.AQUA));
+            components.add(Component.literal("Mana Cost: 10\nCast Time: 10 seconds\nCooldown Time: 180 seconds\n\nHold down right click to teleport Home!").withStyle(ChatFormatting.YELLOW));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }

@@ -55,7 +55,7 @@ public class Neutral_1_MagicMissile_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Right click to shoot!").withStyle(ChatFormatting.AQUA));
+            components.add(Component.literal("Mana Cost: 5\nCooldown Time: 4 seconds\nDamage: 9\n\nRight click to create a magic missile!").withStyle(ChatFormatting.YELLOW));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }

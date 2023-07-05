@@ -98,7 +98,7 @@ public class Fire_1_FlareBlitz_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Right click to shoot!").withStyle(ChatFormatting.AQUA));
+            components.add(Component.literal("Mana Cost: 20\nCooldown Time: 30 seconds\nDamage: 14\n\nRight click to launch yourself forward!\nLand with a fiery explosion!").withStyle(ChatFormatting.RED));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
