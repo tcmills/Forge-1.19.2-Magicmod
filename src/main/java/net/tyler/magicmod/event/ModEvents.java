@@ -209,19 +209,26 @@ public class ModEvents {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
                     if (cast.getFlareBlitzCasting()) {
-                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
-                    }
+                        if (cast.getFlareBlitzTick() <= 100) {
+                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
+                            cast.addFlareBlitzTick(1);
 
-                    if (cast.getFlareBlitzCasting() && player.isOnGround()) {
-                        cast.setFlareBlitzCasting(false);
+                            if (player.isOnGround()) {
+                                cast.setFlareBlitzCasting(false);
+                                cast.setFlareBlitzTick(0);
 
-                        MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, (DamageSource)null, (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
-                        if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
-                            explosion.explode();
+                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, (DamageSource)null, (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
+                                if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                    explosion.explode();
 
-                            player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
+                                    player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
 
-                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                }
+                            }
+                        } else {
+                            cast.setFlareBlitzCasting(false);
+                            cast.setFlareBlitzTick(0);
                         }
                     }
                 });
