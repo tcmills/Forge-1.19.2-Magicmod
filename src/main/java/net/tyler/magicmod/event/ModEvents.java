@@ -37,6 +37,8 @@ import net.tyler.magicmod.capability.drops.PlayerDrops;
 import net.tyler.magicmod.capability.drops.PlayerDropsProvider;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
+import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
+import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
 import net.tyler.magicmod.entity.custom.WispEntity;
 import net.tyler.magicmod.capability.info.PlayerInfo;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
@@ -136,6 +138,10 @@ public class ModEvents {
                     for (int i = 0; i < items[4]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.FLARE_BLITZ.get()));
                     }
+
+                    for (int i = 0; i < items[5]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.SCORCHING_RAY.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -181,6 +187,7 @@ public class ModEvents {
                         player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
                         player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
                         player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
+                        player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
                     });
                 }
             }
@@ -194,6 +201,7 @@ public class ModEvents {
                 cd.setTeleportCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
                 cd.setTeleportHomeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
                 cd.setFlareBlitzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
+                cd.setScorchingRayCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
             });
         }
 
@@ -221,7 +229,7 @@ public class ModEvents {
                                 if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                     explosion.explode();
 
-                                    player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
+                                    player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
 
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                 }
@@ -230,6 +238,35 @@ public class ModEvents {
                             cast.setFlareBlitzCasting(false);
                             cast.setFlareBlitzTick(0);
                         }
+                    }
+
+                    if (cast.getScorchingRayCasting()) {
+
+                        if (cast.getScorchingRayTick() == 0) {
+                            int speed = 2;
+
+                            player.getLevel().playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+
+                            ScorchingRayProjectileEntity scorching_ray = new ScorchingRayProjectileEntity(player, player.level);
+                            scorching_ray.setItem(ModItems.SCORCHING_RAY_PROJECTILE.get().getDefaultInstance());
+                            scorching_ray.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
+                            player.level.addFreshEntity(scorching_ray);
+
+                            cast.subScorchingRayProjectiles(1);
+                            cast.addScorchingRayTick(1);
+                        }
+                        else if (cast.getScorchingRayTick() >= 10) {
+                            cast.setScorchingRayTick(0);
+                        } else {
+                            cast.addScorchingRayTick(1);
+                        }
+
+                        if (cast.getScorchingRayProjectiles() <= 0) {
+                            cast.setScorchingRayCasting(false);
+                            cast.setScorchingRayProjectiles(3);
+                            cast.setScorchingRayTick(0);
+                        }
+
                     }
                 });
             }
@@ -257,6 +294,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FLARE_BLITZ.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(4);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SCORCHING_RAY.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(5);
                         }
                     }
                 });
@@ -266,6 +306,7 @@ public class ModEvents {
                     cd.setTeleportCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
                     cd.setTeleportHomeCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
                     cd.setFlareBlitzCD(player.getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
+                    cd.setScorchingRayCD(player.getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
                 });
             }
         }

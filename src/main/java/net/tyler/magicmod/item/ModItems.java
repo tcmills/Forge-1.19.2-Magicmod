@@ -77,6 +77,10 @@ public class ModItems {
             () -> new Neutral_1_TeleportHome_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> FLARE_BLITZ = ITEMS.register("flare_blitz",
             () -> new Fire_1_FlareBlitz_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SCORCHING_RAY = ITEMS.register("scorching_ray",
+            () -> new Fire_1_ScorchingRay_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SCORCHING_RAY_PROJECTILE = ITEMS.register("scorching_ray_projectile",
+            () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

@@ -31,14 +31,14 @@ import java.util.List;
 
 public class Fire_1_FlareBlitz_Item extends Item {
 
+    private int manaCost = 20;
+
     public Fire_1_FlareBlitz_Item(Properties properties) {
         super(properties);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
-        int manaCost = 20;
 
         if (hand == InteractionHand.MAIN_HAND && ClientInfoData.getPlayerFire() && ClientManaData.getPlayerMana() >= manaCost) {
 

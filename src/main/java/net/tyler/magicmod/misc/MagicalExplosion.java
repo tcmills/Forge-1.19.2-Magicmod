@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
@@ -153,12 +154,12 @@ public class MagicalExplosion extends Explosion {
                             player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                 player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                     if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                        entity.hurt(this.getDamageSource(), num);
+                                        entity.hurt(ModDamageSource.flareBlitz(entity), num);
                                     }
                                 });
                             });
                         } else {
-                            entity.hurt(this.getDamageSource(), num);
+                            entity.hurt(ModDamageSource.flareBlitz(entity), num);
                         }
 
 

@@ -31,6 +31,8 @@ public class ClientEvents {
                     ManaDistillerBlockEntityRenderer::new);
             event.registerEntityRenderer(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(),
                     ThrownItemRenderer::new);
+            event.registerEntityRenderer(ModEntityTypes.SCORCHING_RAY_PROJECTILE.get(),
+                    ThrownItemRenderer::new);
         }
     }
 

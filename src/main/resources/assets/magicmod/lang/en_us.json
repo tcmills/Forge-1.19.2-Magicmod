@@ -34,6 +34,7 @@
   "item.magicmod.teleport": "Teleport(Spawn)",
   "item.magicmod.teleport_home": "Teleport(Home)",
   "item.magicmod.flare_blitz": "Flare Blitz",
+  "item.magicmod.scorching_ray": "Scorching Ray",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -50,6 +51,10 @@
   "effect.magicmod.combat": "In Combat",
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
+
+  "death.attack.magicMissile": "%1$s was killed by %2$s using Magic Missile",
+  "death.attack.flareBlitz": "%1$s was killed by %2$s using Flare Blitz",
+  "death.attack.scorchingRay": "%1$s was killed by %2$s using Scorching Ray",
 
   "itemGroup.magictab": "Magic"
 }

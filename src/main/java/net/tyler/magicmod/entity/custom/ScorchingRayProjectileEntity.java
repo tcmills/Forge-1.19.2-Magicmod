@@ -1,51 +1,56 @@
 package net.tyler.magicmod.entity.custom;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
+import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.misc.ModDamageSource;
 
-public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
+public class ScorchingRayProjectileEntity extends ThrowableItemProjectile {
 
-    private int baseDamage = 9;
+    private int baseDamage = 8;
 
     // Three constructors, also make sure not to miss this line when altering it for copy-pasting
-    public MagicMissileProjectileEntity(EntityType<MagicMissileProjectileEntity> type, Level world) {
+    public ScorchingRayProjectileEntity(EntityType<ScorchingRayProjectileEntity> type, Level world) {
         super(type, world);
         this.setNoGravity(true);
     }
 
-    public MagicMissileProjectileEntity(LivingEntity entity, Level world) {
-        super(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(), entity, world);
+    public ScorchingRayProjectileEntity(LivingEntity entity, Level world) {
+        super(ModEntityTypes.SCORCHING_RAY_PROJECTILE.get(), entity, world);
         this.setNoGravity(true);
     }
 
-    public MagicMissileProjectileEntity(double x, double y, double z, Level world) {
-        super(ModEntityTypes.MAGIC_MISSILE_PROJECTILE.get(), x, y, z, world);
+    public ScorchingRayProjectileEntity(double x, double y, double z, Level world) {
+        super(ModEntityTypes.SCORCHING_RAY_PROJECTILE.get(), x, y, z, world);
         this.setNoGravity(true);
     }
 
     // Get the item that the projectile is thrown from, blocks require ".asItem()" as well
     @Override
     protected Item getDefaultItem() {
-        return ModItems.MAGIC_MISSILE_PROJECTILE.get().asItem();
+        return ModItems.SCORCHING_RAY_PROJECTILE.get().asItem();
     }
 
     // Spawns the entity, just as important as the above method
@@ -68,7 +73,7 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
         }
 
         this.setDeltaMovement(vec3.scale((double)f));
-        this.level.addParticle(this.getTrailParticle(), d2, d0 + 0.125D, d1, 0.0D, 0.0D, 0.0D);
+        this.level.addParticle(this.getTrailParticle(), d2, d0 + 0.125D, d1, (this.level.random.nextDouble() - this.level.random.nextDouble()) / 10D, (this.level.random.nextDouble() - this.level.random.nextDouble()) / 10D, (this.level.random.nextDouble() - this.level.random.nextDouble()) / 10D);
 
         if (this.getY() > (double)(this.level.getMaxBuildHeight() + 64)) {
             this.outOfWorld();
@@ -76,7 +81,7 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
     }
 
     protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.DOLPHIN;
+        return ParticleTypes.FLAME;
     }
 
     // A method to do things on entity or block-hit
@@ -100,23 +105,30 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
                 player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                     player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                         if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                            entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
+                            entity.setSecondsOnFire(7);
+                            entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
                         }
                     });
                 });
             } else {
-                entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
+                entity.setSecondsOnFire(7);
+                entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
             }
 
             if (!level.isClientSide) {
-                this.playSound((SoundEvent)SoundEvents.FIREWORK_ROCKET_BLAST, 5.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                this.playSound((SoundEvent) SoundEvents.BLAZE_SHOOT, 5.0F, 1F / (this.random.nextFloat() * 0.2F + 0.9F));
                 this.discard();
             }
         }
         //Just like before this checks the result and if it hits a block this code will run
         if (result.getType() == HitResult.Type.BLOCK) {
             if (!level.isClientSide) {
-                this.playSound((SoundEvent)SoundEvents.FIREWORK_ROCKET_BLAST, 5.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                this.playSound((SoundEvent)SoundEvents.BLAZE_SHOOT, 5.0F, 1F / (this.random.nextFloat() * 0.2F + 0.9F));
+                BlockHitResult pResult = ((BlockHitResult)result);
+                BlockPos blockpos = pResult.getBlockPos().relative(pResult.getDirection());
+                if (this.level.isEmptyBlock(blockpos)) {
+                    this.level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(this.level, blockpos));
+                }
                 this.discard();
             }
         }
