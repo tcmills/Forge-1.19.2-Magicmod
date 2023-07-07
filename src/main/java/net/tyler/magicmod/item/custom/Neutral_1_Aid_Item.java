@@ -32,22 +32,26 @@ public class Neutral_1_Aid_Item extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && mana.getMana() >= 15) {
-                mana.subMana(15);
-                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                if (mana.getMana() >= 15) {
+                    mana.subMana(15);
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
+                    player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
 
-                player.heal(7.0f);
+                    player.heal(7.0f);
 
-                player.getCooldowns().addCooldown(this, 160);
+                    player.getCooldowns().addCooldown(this, 160);
 
-                if (level instanceof ServerLevel) {
-                    for (int i = 0; i < 360; i++) {
-                        if (i % 20 == 0) {
-                            ((ServerLevel)level).sendParticles(ParticleTypes.HEART, (double)player.getX() + Math.cos(i), (double)player.getY() + 1.0D, (double)player.getZ() + Math.sin(i), 1,0.0D, 0.0D, 0.0D, 0.0D);
+                    if (level instanceof ServerLevel) {
+                        for (int i = 0; i < 360; i++) {
+                            if (i % 20 == 0) {
+                                ((ServerLevel)level).sendParticles(ParticleTypes.HEART, (double)player.getX() + Math.cos(i), (double)player.getY() + 1.0D, (double)player.getZ() + Math.sin(i), 1,0.0D, 0.0D, 0.0D, 0.0D);
+                            }
                         }
                     }
+                } else {
+                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                 }
             }
         });

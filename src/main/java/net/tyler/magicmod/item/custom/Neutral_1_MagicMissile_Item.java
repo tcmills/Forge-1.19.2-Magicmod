@@ -34,18 +34,22 @@ public class Neutral_1_MagicMissile_Item extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && mana.getMana() >= 5) {
-                mana.subMana(5);
-                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+            if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                if (mana.getMana() >= 5) {
+                    mana.subMana(5);
+                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                player.level.playSound(null, player, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1f, 1f);
+                    player.level.playSound(null, player, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1f, 1f);
 
-                MagicMissileProjectileEntity magic_missile = new MagicMissileProjectileEntity(player, player.level);
-                magic_missile.setItem(ModItems.MAGIC_MISSILE_PROJECTILE.get().getDefaultInstance());
-                magic_missile.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
-                player.level.addFreshEntity(magic_missile);
+                    MagicMissileProjectileEntity magic_missile = new MagicMissileProjectileEntity(player, player.level);
+                    magic_missile.setItem(ModItems.MAGIC_MISSILE_PROJECTILE.get().getDefaultInstance());
+                    magic_missile.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
+                    player.level.addFreshEntity(magic_missile);
 
-                player.getCooldowns().addCooldown(this, 80);
+                    player.getCooldowns().addCooldown(this, 80);
+                } else {
+                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                }
             }
         });
 

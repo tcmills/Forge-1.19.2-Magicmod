@@ -44,13 +44,21 @@ public class Fire_1_ScorchingRay_Item extends Item {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
-                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && info.getFire() && mana.getMana() >= manaCost) {
-                        cast.setScorchingRayCasting(true);
+                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                        if (info.getFire()) {
+                            if (mana.getMana() >= manaCost) {
+                                cast.setScorchingRayCasting(true);
 
-                        mana.subMana(manaCost);
-                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                mana.subMana(manaCost);
+                                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                        player.getCooldowns().addCooldown(this, 600);
+                                player.getCooldowns().addCooldown(this, 600);
+                            } else {
+                                player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                            }
+                        } else {
+                            player.sendSystemMessage(Component.literal("You are unable to cast this spell!").withStyle(ChatFormatting.YELLOW));
+                        }
                     }
                 });
             });

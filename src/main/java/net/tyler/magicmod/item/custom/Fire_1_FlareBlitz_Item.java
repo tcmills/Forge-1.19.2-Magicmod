@@ -63,30 +63,38 @@ public class Fire_1_FlareBlitz_Item extends Item {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
-                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND && info.getFire() && mana.getMana() >= manaCost) {
-                        cast.setFlareBlitzCasting(true);
+                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                        if (info.getFire()) {
+                            if (mana.getMana() >= manaCost) {
+                                cast.setFlareBlitzCasting(true);
 
-                        mana.subMana(manaCost);
-                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                mana.subMana(manaCost);
+                                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                        player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1f, 0.6f);
+                                player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1f, 0.6f);
 
-                        //Check in x-axis
-                        for(int x = -2; x < 3; x++){
-                            //Check in y-axis
-                            for(int y = -1; y < 2; y++){
-                                //Check in z-axis
-                                for(int z = -2; z < 3; z++){
-                                    //Only get the blocks that are 2 blocks out (For loop -can- be used here instead)
-                                    BlockPos blockpos = new BlockPos(player.getX()+x, player.getY()+y, player.getZ()+z);
-                                    if (level.getBlockState(blockpos).isAir() && level.getBlockState(blockpos.below()).isSolidRender(level, blockpos.below())) {
-                                        level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(level, blockpos));
+                                //Check in x-axis
+                                for(int x = -2; x < 3; x++){
+                                    //Check in y-axis
+                                    for(int y = -1; y < 2; y++){
+                                        //Check in z-axis
+                                        for(int z = -2; z < 3; z++){
+                                            //Only get the blocks that are 2 blocks out (For loop -can- be used here instead)
+                                            BlockPos blockpos = new BlockPos(player.getX()+x, player.getY()+y, player.getZ()+z);
+                                            if (level.getBlockState(blockpos).isAir() && level.getBlockState(blockpos.below()).isSolidRender(level, blockpos.below())) {
+                                                level.setBlockAndUpdate(blockpos, BaseFireBlock.getState(level, blockpos));
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
 
-                        player.getCooldowns().addCooldown(this, 600);
+                                player.getCooldowns().addCooldown(this, 600);
+                            } else {
+                                player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                            }
+                        } else {
+                            player.sendSystemMessage(Component.literal("You are unable to cast this spell!").withStyle(ChatFormatting.YELLOW));
+                        }
                     }
                 });
             });

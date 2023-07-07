@@ -75,10 +75,27 @@ public class Neutral_1_TeleportHome_Item extends Item {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 player.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
-                    if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty() && location.isHomeSet()) {
-                        cast = true;
-                    } else {
-                        cast = false;
+                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                        if (!info.getDungeonParty()) {
+                            if (!player.hasEffect(ModEffects.COMBAT.get())) {
+                                if (mana.getMana() >= 10) {
+                                    if (location.isHomeSet()) {
+                                        cast = true;
+                                    } else {
+                                        player.sendSystemMessage(Component.literal("You do not have a home!").withStyle(ChatFormatting.YELLOW));
+                                    }
+                                } else {
+                                    cast = false;
+                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                }
+                            } else {
+                                cast = false;
+                                player.sendSystemMessage(Component.literal("You cannot teleport while in combat!").withStyle(ChatFormatting.DARK_RED));
+                            }
+                        } else {
+                            cast = false;
+                            player.sendSystemMessage(Component.literal("You cannot teleport while in a dungeon!").withStyle(ChatFormatting.YELLOW));
+                        }
                     }
                 });
             });

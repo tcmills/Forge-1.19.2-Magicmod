@@ -71,10 +71,23 @@ public class Neutral_1_Teleport_Item extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
-                if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty()) {
-                    cast = true;
-                } else {
-                    cast = false;
+                if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                    if (!info.getDungeonParty()) {
+                        if (!player.hasEffect(ModEffects.COMBAT.get())) {
+                            if (mana.getMana() >= 10) {
+                                cast = true;
+                            } else {
+                                cast = false;
+                                player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                            }
+                        } else {
+                            cast = false;
+                            player.sendSystemMessage(Component.literal("You cannot teleport while in combat!").withStyle(ChatFormatting.DARK_RED));
+                        }
+                    } else {
+                        cast = false;
+                        player.sendSystemMessage(Component.literal("You cannot teleport while in a dungeon!").withStyle(ChatFormatting.YELLOW));
+                    }
                 }
             });
         });
