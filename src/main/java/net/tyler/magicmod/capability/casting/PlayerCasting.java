@@ -66,7 +66,6 @@ public class PlayerCasting {
     }
 
     public void copyFrom(PlayerCasting source) {
-        //this.flareBlitzCasting = source.flareBlitzCasting;
         this.flareBlitzCasting = false;
         this.flareBlitzTick = 0;
         this.scorchingRayCasting = false;

@@ -225,7 +225,7 @@ public class ModEvents {
                                 cast.setFlareBlitzCasting(false);
                                 cast.setFlareBlitzTick(0);
 
-                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, (DamageSource)null, (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
+                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
                                 if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                     explosion.explode();
 

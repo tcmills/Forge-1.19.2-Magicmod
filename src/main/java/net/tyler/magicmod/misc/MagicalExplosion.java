@@ -46,7 +46,7 @@ public class MagicalExplosion extends Explosion {
     @javax.annotation.Nullable
     private final Entity source;
     private final float radius;
-    private final DamageSource damageSource;
+    private final String damageSource;
     private final ExplosionDamageCalculator damageCalculator;
     private final ObjectArrayList<BlockPos> toBlow = new ObjectArrayList<>();
     private final Map<Player, Vec3> hitPlayers = Maps.newHashMap();
@@ -54,8 +54,8 @@ public class MagicalExplosion extends Explosion {
 
     private final double damage = 14D;
 
-    public MagicalExplosion(Level pLevel, @Nullable Entity pSource, @Nullable DamageSource pDamageSource, @Nullable ExplosionDamageCalculator pDamageCalculator, double pToBlowX, double pToBlowY, double pToBlowZ, float pRadius, boolean pFire, BlockInteraction pBlockInteraction) {
-        super(pLevel, pSource, pDamageSource, pDamageCalculator, pToBlowX, pToBlowY, pToBlowZ, pRadius, pFire, pBlockInteraction);
+    public MagicalExplosion(Level pLevel, @Nullable Entity pSource, String pDamageSource, @Nullable ExplosionDamageCalculator pDamageCalculator, double pToBlowX, double pToBlowY, double pToBlowZ, float pRadius, boolean pFire, BlockInteraction pBlockInteraction) {
+        super(pLevel, pSource, null, pDamageCalculator, pToBlowX, pToBlowY, pToBlowZ, pRadius, pFire, pBlockInteraction);
         this.level = pLevel;
         this.source = pSource;
         this.radius = pRadius;
@@ -64,7 +64,7 @@ public class MagicalExplosion extends Explosion {
         this.z = pToBlowZ;
         this.fire = pFire;
         this.blockInteraction = pBlockInteraction;
-        this.damageSource = pDamageSource == null ? DamageSource.explosion(this) : pDamageSource;
+        this.damageSource = pDamageSource;
         this.damageCalculator = pDamageCalculator == null ? this.makeDamageCalculator(pSource) : pDamageCalculator;
         this.position = new Vec3(this.x, this.y, this.z);
     }
@@ -154,12 +154,12 @@ public class MagicalExplosion extends Explosion {
                             player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                 player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                     if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                        entity.hurt(ModDamageSource.flareBlitz(entity), num);
+                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
                                     }
                                 });
                             });
                         } else {
-                            entity.hurt(ModDamageSource.flareBlitz(entity), num);
+                            entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
                         }
 
 

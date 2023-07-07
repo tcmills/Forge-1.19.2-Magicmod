@@ -116,7 +116,7 @@ public class ScorchingRayProjectileEntity extends ThrowableItemProjectile {
             }
 
             if (!level.isClientSide) {
-                this.playSound((SoundEvent) SoundEvents.BLAZE_SHOOT, 5.0F, 1F / (this.random.nextFloat() * 0.2F + 0.9F));
+                this.playSound((SoundEvent) SoundEvents.BLAZE_SHOOT, 5.0F, 1F / (this.random.nextFloat() * 0.2F + 1.2F));
                 this.discard();
             }
         }
