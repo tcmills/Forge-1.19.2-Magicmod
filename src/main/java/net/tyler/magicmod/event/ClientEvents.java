@@ -21,7 +21,7 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-            event.registerAboveAll("mana", ManaHudOverlay.HUD_MANA);
+            event.registerBelowAll("mana", ManaHudOverlay.HUD_MANA);
             event.registerAboveAll("info", InfoHudOverlay.HUD_INFO);
         }
 

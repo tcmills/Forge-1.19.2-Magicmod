@@ -1,8 +1,10 @@
 package net.tyler.magicmod.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.tyler.magicmod.MagicMod;
@@ -92,152 +94,152 @@ public class InfoHudOverlay {
 
         if (ClientInfoData.getPlayerFire() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, FIRE_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerFire() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, FIRE_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerFire() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, FIRE_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerWater() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, WATER_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerWater() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, WATER_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerWater() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, WATER_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerEarth() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, EARTH_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerEarth() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, EARTH_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerEarth() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, EARTH_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerAir() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, AIR_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerAir() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, AIR_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerAir() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, AIR_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerSummoning() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, SUMMONING_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerSummoning() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, SUMMONING_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerSummoning() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, SUMMONING_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerForge() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, FORGE_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerForge() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, FORGE_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerForge() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, FORGE_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerStorm() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, STORM_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerStorm() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, STORM_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerStorm() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, STORM_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerEnder() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, ENDER_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerEnder() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, ENDER_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerEnder() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, ENDER_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerLife() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, LIFE_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerLife() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, LIFE_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerLife() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, LIFE_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerDeath() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, DEATH_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerDeath() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, DEATH_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerDeath() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, DEATH_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerSun() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, SUN_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerSun() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, SUN_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerSun() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, SUN_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if (ClientInfoData.getPlayerMoon() && ClientInfoData.getPlayerSchoolLevel() == 1) {
             RenderSystem.setShaderTexture(0, MOON_1);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerMoon() && ClientInfoData.getPlayerSchoolLevel() == 2) {
             RenderSystem.setShaderTexture(0, MOON_2);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
         else if  (ClientInfoData.getPlayerMoon() && ClientInfoData.getPlayerSchoolLevel() == 3) {
             RenderSystem.setShaderTexture(0, MOON_3);
-            GuiComponent.blit(poseStack, x - 238, y - 250, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 3, 0, 0, 18, 18, 18, 18);
         }
 
         if (ClientInfoData.getPlayerDungeonParty()) {
             RenderSystem.setShaderTexture(0, DUNGEON_PARTY);
-            GuiComponent.blit(poseStack, x - 238, y - 230, 0, 0, 18, 18, 18, 18);
+            GuiComponent.blit(poseStack, 2, 23, 0, 0, 18, 18, 18, 18);
         }
 
     });
