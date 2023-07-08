@@ -52,9 +52,9 @@ public class MagicalExplosion extends Explosion {
     private final Map<Player, Vec3> hitPlayers = Maps.newHashMap();
     private final Vec3 position;
 
-    private final double damage = 14D;
+    private final double damage;
 
-    public MagicalExplosion(Level pLevel, @Nullable Entity pSource, String pDamageSource, @Nullable ExplosionDamageCalculator pDamageCalculator, double pToBlowX, double pToBlowY, double pToBlowZ, float pRadius, boolean pFire, BlockInteraction pBlockInteraction) {
+    public MagicalExplosion(Level pLevel, @Nullable Entity pSource, String pDamageSource, @Nullable ExplosionDamageCalculator pDamageCalculator, double pToBlowX, double pToBlowY, double pToBlowZ, float pRadius, double damage, boolean pFire, BlockInteraction pBlockInteraction) {
         super(pLevel, pSource, null, pDamageCalculator, pToBlowX, pToBlowY, pToBlowZ, pRadius, pFire, pBlockInteraction);
         this.level = pLevel;
         this.source = pSource;
@@ -62,6 +62,7 @@ public class MagicalExplosion extends Explosion {
         this.x = pToBlowX;
         this.y = pToBlowY;
         this.z = pToBlowZ;
+        this.damage = damage;
         this.fire = pFire;
         this.blockInteraction = pBlockInteraction;
         this.damageSource = pDamageSource;

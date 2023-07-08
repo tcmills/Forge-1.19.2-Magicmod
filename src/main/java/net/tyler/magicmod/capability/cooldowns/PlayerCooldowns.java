@@ -10,6 +10,7 @@ public class PlayerCooldowns {
     private float teleportHome = 0.0F;
     private float flareBlitz = 0.0F;
     private float scorchingRay = 0.0F;
+    private float fireball = 0.0F;
 
     public float getMagicMissileCD() {
         return magicMissile;
@@ -59,6 +60,14 @@ public class PlayerCooldowns {
         scorchingRay = sec;
     }
 
+    public float getFireballCD() {
+        return fireball;
+    }
+
+    public void setFireballCD(float sec) {
+        fireball = sec;
+    }
+
     public void clearCD() {
         magicMissile = 0.0F;
         aid = 0.0F;
@@ -66,6 +75,7 @@ public class PlayerCooldowns {
         teleportHome = 0.0F;
         flareBlitz = 0.0F;
         scorchingRay = 0.0F;
+        fireball = 0.0F;
     }
 
     public void copyFrom(PlayerCooldowns source) {
@@ -75,6 +85,7 @@ public class PlayerCooldowns {
         this.teleportHome = source.teleportHome;
         this.flareBlitz = source.flareBlitz;
         this.scorchingRay = source.scorchingRay;
+        this.fireball = source.fireball;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -84,6 +95,7 @@ public class PlayerCooldowns {
         nbt.putFloat("teleportHome", teleportHome);
         nbt.putFloat("flareBlitz", flareBlitz);
         nbt.putFloat("scorchingRay", scorchingRay);
+        nbt.putFloat("fireball", fireball);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -93,5 +105,6 @@ public class PlayerCooldowns {
         teleportHome = nbt.getFloat("teleportHome");
         flareBlitz = nbt.getFloat("flareBlitz");
         scorchingRay = nbt.getFloat("scorchingRay");
+        fireball = nbt.getFloat("fireball");
     }
 }

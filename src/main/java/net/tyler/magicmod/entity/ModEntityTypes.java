@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
+import net.tyler.magicmod.entity.custom.FireballProjectileEntity;
 import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
 import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
 import net.tyler.magicmod.entity.custom.WispEntity;
@@ -23,6 +24,10 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<ScorchingRayProjectileEntity>of(ScorchingRayProjectileEntity::new, MobCategory.MISC)
                     .sized(0.375f, 0.375f)
                     .build(new ResourceLocation(MagicMod.MOD_ID, "scorching_ray_projectile").toString()));
+    public static final RegistryObject<EntityType<FireballProjectileEntity>> FIREBALL_PROJECTILE = ENTITY_TYPES.register("fireball_projectile",
+            () -> EntityType.Builder.<FireballProjectileEntity>of(FireballProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.125f, 0.125f)
+                    .build(new ResourceLocation(MagicMod.MOD_ID, "fireball_projectile").toString()));
     public static final RegistryObject<EntityType<WispEntity>> WISP = ENTITY_TYPES.register("wisp",
             () -> EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.4f)

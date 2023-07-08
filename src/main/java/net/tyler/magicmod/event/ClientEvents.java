@@ -33,6 +33,8 @@ public class ClientEvents {
                     ThrownItemRenderer::new);
             event.registerEntityRenderer(ModEntityTypes.SCORCHING_RAY_PROJECTILE.get(),
                     ThrownItemRenderer::new);
+            event.registerEntityRenderer(ModEntityTypes.FIREBALL_PROJECTILE.get(),
+                    ThrownItemRenderer::new);
         }
     }
 

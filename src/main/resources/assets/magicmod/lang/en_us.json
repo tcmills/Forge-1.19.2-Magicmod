@@ -35,6 +35,7 @@
   "item.magicmod.teleport_home": "Teleport(Home)",
   "item.magicmod.flare_blitz": "Flare Blitz",
   "item.magicmod.scorching_ray": "Scorching Ray",
+  "item.magicmod.fireball": "Fireball",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -55,6 +56,7 @@
   "death.attack.magicMissile": "%1$s was killed by %2$s using Magic Missile",
   "death.attack.flareBlitz": "%1$s was killed by %2$s using Flare Blitz",
   "death.attack.scorchingRay": "%1$s was killed by %2$s using Scorching Ray",
+  "death.attack.fireball": "%1$s was killed by %2$s using Fireball",
 
   "itemGroup.magictab": "Magic"
 }

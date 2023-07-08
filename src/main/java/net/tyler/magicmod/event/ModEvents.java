@@ -142,6 +142,10 @@ public class ModEvents {
                     for (int i = 0; i < items[5]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.SCORCHING_RAY.get()));
                     }
+
+                    for (int i = 0; i < items[6]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.FIREBALL.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -188,6 +192,7 @@ public class ModEvents {
                         player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
                         player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
                         player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
+                        player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
                     });
                 }
             }
@@ -202,6 +207,7 @@ public class ModEvents {
                 cd.setTeleportHomeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
                 cd.setFlareBlitzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
                 cd.setScorchingRayCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
+                cd.setFireballCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
             });
         }
 
@@ -225,7 +231,7 @@ public class ModEvents {
                                 cast.setFlareBlitzCasting(false);
                                 cast.setFlareBlitzTick(0);
 
-                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, true, Explosion.BlockInteraction.NONE);
+                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, 14D, true, Explosion.BlockInteraction.NONE);
                                 if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                     explosion.explode();
 
@@ -297,6 +303,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SCORCHING_RAY.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(5);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FIREBALL.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(6);
                         }
                     }
                 });
@@ -307,6 +316,7 @@ public class ModEvents {
                     cd.setTeleportHomeCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
                     cd.setFlareBlitzCD(player.getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
                     cd.setScorchingRayCD(player.getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
+                    cd.setFireballCD(player.getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
                 });
             }
         }

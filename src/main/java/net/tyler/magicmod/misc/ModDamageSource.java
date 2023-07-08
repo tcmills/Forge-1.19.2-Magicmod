@@ -17,10 +17,6 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("magicMissile", pSource, pIndirectEntity)).setProjectile();
     }
 
-    public static DamageSource flareBlitz(@Nullable Entity pIndirectEntity) {
-        return (new EntityDamageSource("flareBlitz", pIndirectEntity)).setExplosion();
-    }
-
     public static DamageSource scorchingRay(Entity pSource, @Nullable Entity pIndirectEntity) {
         return (new IndirectEntityDamageSource("scorchingRay", pSource, pIndirectEntity)).setProjectile();
     }
