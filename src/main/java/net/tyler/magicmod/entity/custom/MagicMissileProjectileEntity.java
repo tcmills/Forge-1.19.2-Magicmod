@@ -1,7 +1,9 @@
 package net.tyler.magicmod.entity.custom;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
+import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.item.ModItems;
@@ -96,16 +99,30 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 //            }
 //            else entity.hurt(DamageSource.thrown(this, this.getOwner()), damage);
 
-            if (entity instanceof Player player2 && this.getOwner() instanceof Player player1) {
-                player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                    player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
-                        if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                            entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
-                        }
+            if (this.getOwner() instanceof Player player1) {
+                if (entity instanceof Player player2) {
+                    player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                        player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                            if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                    entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 3F);
+                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                } else {
+                                    entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
+                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                }
+                            }
+                        });
                     });
-                });
-            } else {
-                entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
+                } else {
+                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 3F);
+                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                    } else {
+                        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
+                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                    }
+                }
             }
 
             if (!level.isClientSide) {

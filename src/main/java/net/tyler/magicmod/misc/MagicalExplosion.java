@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
+import net.tyler.magicmod.effect.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -151,16 +153,30 @@ public class MagicalExplosion extends Explosion {
                         double d10 = (1.0D - d12) * d14;
                         float num = (float)(d14  * (damage - 1.0D) + 1.0D);
 
-                        if (entity instanceof Player player2 && source instanceof Player player1) {
-                            player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                                player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
-                                    if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
-                                    }
+                        if (source instanceof Player player1) {
+                            if (entity instanceof Player player2) {
+                                player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                    player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                        if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
+                                                //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                            } else {
+                                                entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
+                                                //player1.sendSystemMessage(Component.literal(num + ""));
+                                            }
+                                        }
+                                    });
                                 });
-                            });
-                        } else {
-                            entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
+                            } else {
+                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
+                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                } else {
+                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
+                                    //player1.sendSystemMessage(Component.literal(num + ""));
+                                }
+                            }
                         }
 
 

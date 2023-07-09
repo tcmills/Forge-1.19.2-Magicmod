@@ -36,6 +36,7 @@
   "item.magicmod.flare_blitz": "Flare Blitz",
   "item.magicmod.scorching_ray": "Scorching Ray",
   "item.magicmod.fireball": "Fireball",
+  "item.magicmod.fiery_soul": "Fiery Soul",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -50,6 +51,7 @@
   "block.magicmod.dungeon2_block": "Dungeon Brick Exit",
 
   "effect.magicmod.combat": "In Combat",
+  "effect.magicmod.spell_strength": "Spell Strength",
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 

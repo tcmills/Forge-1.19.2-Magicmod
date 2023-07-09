@@ -16,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.tyler.magicmod.capability.mana.PlayerManaProvider;
+import net.tyler.magicmod.effect.ModEffects;
+import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +41,13 @@ public class Neutral_1_Aid_Item extends Item {
 
                     player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
 
-                    player.heal(7.0f);
+                    if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                        player.heal(10.0f);
+                        //player.sendSystemMessage(Component.literal("10 aid"));
+                    } else {
+                        player.heal(7.0f);
+                        //player.sendSystemMessage(Component.literal("7 aid"));
+                    }
 
                     player.getCooldowns().addCooldown(this, 160);
 

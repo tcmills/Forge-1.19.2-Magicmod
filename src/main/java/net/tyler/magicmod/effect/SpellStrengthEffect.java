@@ -7,8 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CombatEffect extends MobEffect {
-    protected CombatEffect(MobEffectCategory pCategory, int pColor) {
+public class SpellStrengthEffect extends MobEffect {
+    protected SpellStrengthEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 

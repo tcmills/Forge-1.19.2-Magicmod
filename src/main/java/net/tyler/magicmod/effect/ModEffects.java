@@ -15,6 +15,12 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> COMBAT = MOB_EFFECTS.register("combat",
             () -> new CombatEffect(MobEffectCategory.HARMFUL, 0xff990303));
 
+    public static final RegistryObject<MobEffect> SPELL_STRENGTH = MOB_EFFECTS.register("spell_strength",
+            () -> new SpellStrengthEffect(MobEffectCategory.BENEFICIAL, 0xff239193));
+
+//    public static final RegistryObject<MobEffect> SPELL_WEAKNESS = MOB_EFFECTS.register("spell_weakness",
+//            () -> new SpellWeaknessEffect(MobEffectCategory.HARMFUL, 0xff4d484d));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

@@ -38,33 +38,31 @@ public class Fire_2_Fireball_Item extends Item {
 
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
-                player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
-                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-                        if (info.getFire()) {
-                            if (info.getSchoolLevel() >= 2) {
-                                if (mana.getMana() >= manaCost) {
-                                    mana.subMana(manaCost);
-                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                    if (info.getFire()) {
+                        if (info.getSchoolLevel() >= 2) {
+                            if (mana.getMana() >= manaCost) {
+                                mana.subMana(manaCost);
+                                ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                                    player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 2.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+                                player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 2.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
 
-                                    FireballProjectileEntity fireball = new FireballProjectileEntity(player, player.level);
-                                    fireball.setItem(ModItems.FIREBALL_PROJECTILE.get().getDefaultInstance());
-                                    fireball.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
-                                    player.level.addFreshEntity(fireball);
+                                FireballProjectileEntity fireball = new FireballProjectileEntity(player, player.level);
+                                fireball.setItem(ModItems.FIREBALL_PROJECTILE.get().getDefaultInstance());
+                                fireball.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
+                                player.level.addFreshEntity(fireball);
 
-                                    player.getCooldowns().addCooldown(this, 1200);
-                                } else {
-                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
-                                }
+                                player.getCooldowns().addCooldown(this, 1200);
                             } else {
-                                player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));
+                                player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                             }
                         } else {
-                            player.sendSystemMessage(Component.literal("You don't understand the runes for this spell!").withStyle(ChatFormatting.YELLOW));
+                            player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));
                         }
+                    } else {
+                        player.sendSystemMessage(Component.literal("You don't understand the runes for this spell!").withStyle(ChatFormatting.YELLOW));
                     }
-                });
+                }
             });
         });
 
@@ -74,7 +72,7 @@ public class Fire_2_Fireball_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: ?\nCooldown Time: ? seconds\nDamage: ?\n\nRight click to launch a fiery bolt!\nThe bolt creates a large explosion of fire on impact!").withStyle(ChatFormatting.RED));
+            components.add(Component.literal("Mana Cost: 50\nCooldown Time: 60 seconds\nDamage: 20\n\nRight click to launch a fiery bolt!\nThe bolt creates a large explosion of fire on impact!").withStyle(ChatFormatting.RED));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
