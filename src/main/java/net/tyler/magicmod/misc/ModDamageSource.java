@@ -21,4 +21,8 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("scorchingRay", pSource, pIndirectEntity)).setProjectile();
     }
 
+    public static DamageSource superCritical(Entity pSource, @Nullable Entity pIndirectEntity) {
+        return (new IndirectEntityDamageSource("superCritical", pSource, pIndirectEntity));
+    }
+
 }

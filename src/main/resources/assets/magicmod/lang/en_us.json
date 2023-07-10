@@ -37,6 +37,7 @@
   "item.magicmod.scorching_ray": "Scorching Ray",
   "item.magicmod.fireball": "Fireball",
   "item.magicmod.fiery_soul": "Fiery Soul",
+  "item.magicmod.super_critical": "Super Critical",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -52,6 +53,7 @@
 
   "effect.magicmod.combat": "In Combat",
   "effect.magicmod.spell_strength": "Spell Strength",
+  "effect.magicmod.meltdown": "Meltdown",
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 
@@ -59,6 +61,7 @@
   "death.attack.flareBlitz": "%1$s was killed by %2$s using Flare Blitz",
   "death.attack.scorchingRay": "%1$s was killed by %2$s using Scorching Ray",
   "death.attack.fireball": "%1$s was killed by %2$s using Fireball",
+  "death.attack.superCritical": "%1$s was killed by %2$s using Super Critical",
 
   "itemGroup.magictab": "Magic"
 }

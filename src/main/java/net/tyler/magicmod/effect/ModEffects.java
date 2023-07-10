@@ -21,6 +21,9 @@ public class ModEffects {
 //    public static final RegistryObject<MobEffect> SPELL_WEAKNESS = MOB_EFFECTS.register("spell_weakness",
 //            () -> new SpellWeaknessEffect(MobEffectCategory.HARMFUL, 0xff4d484d));
 
+    public static final RegistryObject<MobEffect> MELTDOWN = MOB_EFFECTS.register("meltdown",
+            () -> new MeltdownEffect(MobEffectCategory.BENEFICIAL, 0xffcf210c));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }
