@@ -45,6 +45,7 @@ import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
 import net.tyler.magicmod.entity.custom.WispEntity;
 import net.tyler.magicmod.capability.info.PlayerInfo;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
+import net.tyler.magicmod.item.custom.Fire_3_SuperCritical_Item;
 import net.tyler.magicmod.misc.MagicalExplosion;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.capability.location.PlayerLocation;
@@ -197,14 +198,20 @@ public class ModEvents {
                                 info.getMoon(), info.getDungeonParty()), player);
                     });
                     player.getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(cd -> {
-                        player.getCooldowns().addCooldown(ModItems.MAGIC_MISSILE.get(), (int)(80 * cd.getMagicMissileCD()));
-                        player.getCooldowns().addCooldown(ModItems.AID.get(), (int)(160 * cd.getAidCD()));
-                        player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
-                        player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
-                        player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
-                        player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
-                        player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
-                        player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(60 * cd.getSuperCriticalCD()));
+                        player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
+                            player.getCooldowns().addCooldown(ModItems.MAGIC_MISSILE.get(), (int)(80 * cd.getMagicMissileCD()));
+                            player.getCooldowns().addCooldown(ModItems.AID.get(), (int)(160 * cd.getAidCD()));
+                            player.getCooldowns().addCooldown(ModItems.TELEPORT.get(), (int)(3600 * cd.getTeleportCD()));
+                            player.getCooldowns().addCooldown(ModItems.TELEPORT_HOME.get(), (int)(3600 * cd.getTeleportHomeCD()));
+                            player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
+                            player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
+                            player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
+                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
+
+                            if (player.isAlive()) {
+                                cd.clearCD();
+                            }
+                        });
                     });
                 }
             }
@@ -315,6 +322,30 @@ public class ModEvents {
                             ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
                             ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
 
+                        }
+
+                        if (cast.getSuperCriticalCasting()) {
+                            if (player.hasEffect(ModEffects.MELTDOWN.get())) {
+                                if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
+                                    cast.setSuperCriticalCasting(false);
+
+                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 6F, 30D, true, Explosion.BlockInteraction.NONE);
+                                    if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                        explosion.explode();
+
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+
+                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                    }
+
+                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                }
+                            } else {
+                                cast.setSuperCriticalCasting(false);
+                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                            }
                         }
                     });
                 });

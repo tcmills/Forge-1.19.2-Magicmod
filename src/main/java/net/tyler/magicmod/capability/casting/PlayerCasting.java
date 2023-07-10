@@ -17,6 +17,8 @@ public class PlayerCasting {
 
     private int fierySoulTick = 0;
 
+    private boolean superCriticalCasting = false;
+
     public boolean getFlareBlitzCasting() {
         return flareBlitzCasting;
     }
@@ -89,6 +91,14 @@ public class PlayerCasting {
         fierySoulTick = tick;
     }
 
+    public boolean getSuperCriticalCasting() {
+        return superCriticalCasting;
+    }
+
+    public void setSuperCriticalCasting(boolean cast) {
+        superCriticalCasting = cast;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.flareBlitzCasting = false;
         this.flareBlitzTick = 0;
@@ -97,6 +107,7 @@ public class PlayerCasting {
         this.scorchingRayTick = 0;
         this.fierySoulCasting = false;
         this.fierySoulTick = 0;
+        this.superCriticalCasting = source.superCriticalCasting;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -107,6 +118,7 @@ public class PlayerCasting {
         nbt.putInt("scorchingRayTick", scorchingRayTick);
         nbt.putBoolean("fierySoulCasting", fierySoulCasting);
         nbt.putInt("fierySoulTick", fierySoulTick);
+        nbt.putBoolean("superCriticalCasting", superCriticalCasting);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -117,5 +129,6 @@ public class PlayerCasting {
         scorchingRayTick = nbt.getInt("scorchingRayTick");
         fierySoulCasting = nbt.getBoolean("fierySoulCasting");
         fierySoulTick = nbt.getInt("fierySoulTick");
+        superCriticalCasting = nbt.getBoolean("superCriticalCasting");
     }
 }

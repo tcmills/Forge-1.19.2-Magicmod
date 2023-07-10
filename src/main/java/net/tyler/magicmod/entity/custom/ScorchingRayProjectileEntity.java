@@ -103,30 +103,32 @@ public class ScorchingRayProjectileEntity extends ThrowableItemProjectile {
 //            }
 //            else entity.hurt(DamageSource.thrown(this, this.getOwner()), damage);
 
-            if (this.getOwner() instanceof Player player1) {
-                if (entity instanceof Player player2) {
-                    player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                        player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
-                            if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                entity.setSecondsOnFire(7);
-                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                    entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
-                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                } else {
-                                    entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
-                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+            if (entity instanceof LivingEntity) {
+                if (this.getOwner() instanceof Player player1) {
+                    if (entity instanceof Player player2) {
+                        player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                            player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                    entity.setSecondsOnFire(7);
+                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                        entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
+                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                    } else {
+                                        entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
+                                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
-                } else {
-                    entity.setSecondsOnFire(7);
-                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                        entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
-                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                     } else {
-                        entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
-                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                        entity.setSecondsOnFire(7);
+                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                            entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
+                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                        } else {
+                            entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage);
+                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                        }
                     }
                 }
             }

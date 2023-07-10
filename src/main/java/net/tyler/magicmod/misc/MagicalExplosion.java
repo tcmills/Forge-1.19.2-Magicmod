@@ -153,28 +153,30 @@ public class MagicalExplosion extends Explosion {
                         double d10 = (1.0D - d12) * d14;
                         float num = (float)(d14  * (damage - 1.0D) + 1.0D);
 
-                        if (source instanceof Player player1) {
-                            if (entity instanceof Player player2) {
-                                player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                                    player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
-                                        if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
-                                                //player1.sendSystemMessage(Component.literal(num + 3F + ""));
-                                            } else {
-                                                entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
-                                                //player1.sendSystemMessage(Component.literal(num + ""));
+                        if (entity instanceof LivingEntity) {
+                            if (source instanceof Player player1) {
+                                if (entity instanceof Player player2) {
+                                    player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                        player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                            if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
+                                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                                } else {
+                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
+                                                    //player1.sendSystemMessage(Component.literal(num + ""));
+                                                }
                                             }
-                                        }
+                                        });
                                     });
-                                });
-                            } else {
-                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
-                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
                                 } else {
-                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
-                                    //player1.sendSystemMessage(Component.literal(num + ""));
+                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
+                                        //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                    } else {
+                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
+                                        //player1.sendSystemMessage(Component.literal(num + ""));
+                                    }
                                 }
                             }
                         }

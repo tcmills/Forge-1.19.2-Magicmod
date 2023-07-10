@@ -19,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
+import net.tyler.magicmod.capability.casting.PlayerCastingProvider;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.capability.mana.PlayerManaProvider;
 import net.tyler.magicmod.effect.ModEffects;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Fire_3_SuperCritical_Item extends Item {
-    private int manaCost = 5;
+    private int manaCost = 75;
 
     public Fire_3_SuperCritical_Item(Item.Properties properties) {
         super(properties);
@@ -43,43 +44,49 @@ public class Fire_3_SuperCritical_Item extends Item {
 
         player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
-                if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-                    if (info.getFire()) {
-                        if (info.getSchoolLevel() >= 3) {
-                            if (!player.hasEffect(ModEffects.MELTDOWN.get())) {
-                                if (mana.getMana() >= manaCost) {
-                                    mana.subMana(manaCost);
-                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
+                    if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+                        if (info.getFire()) {
+                            if (info.getSchoolLevel() >= 3) {
+                                if (!player.hasEffect(ModEffects.MELTDOWN.get())) {
+                                    if (mana.getMana() >= manaCost) {
+                                        mana.subMana(manaCost);
+                                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                                    player.addEffect(new MobEffectInstance(ModEffects.MELTDOWN.get(), 1200, 0, false, false, true));
+                                        cast.setSuperCriticalCasting(true);
 
-                                    player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+                                        player.addEffect(new MobEffectInstance(ModEffects.MELTDOWN.get(), 1200, 0, false, false, true));
+
+                                        player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+                                    } else {
+                                        player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                    }
                                 } else {
-                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                    cast.setSuperCriticalCasting(false);
+
+                                    player.removeEffect(ModEffects.MELTDOWN.get());
+
+                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 6F, 30D, true, Explosion.BlockInteraction.NONE);
+                                    if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                        explosion.explode();
+
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+
+                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                    }
+
+                                    player.getCooldowns().addCooldown(this, 9600);
                                 }
                             } else {
-                                player.removeEffect(ModEffects.MELTDOWN.get());
-
-                                MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 6F, 20D, true, Explosion.BlockInteraction.NONE);
-                                if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
-                                    explosion.explode();
-
-                                    player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                    player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                    player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-
-                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
-                                }
-
-                                player.getCooldowns().addCooldown(this, 60);
+                                player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));
                             }
                         } else {
-                            player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));
+                            player.sendSystemMessage(Component.literal("You don't understand the runes for this spell!").withStyle(ChatFormatting.YELLOW));
                         }
-                    } else {
-                        player.sendSystemMessage(Component.literal("You don't understand the runes for this spell!").withStyle(ChatFormatting.YELLOW));
                     }
-                }
+                });
             });
         });
 
@@ -89,7 +96,7 @@ public class Fire_3_SuperCritical_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: ?\nCooldown Time: ? seconds\nDamage: ?\n\nRight click to start a Meltdown!\nRight click again to release an explosion!").withStyle(ChatFormatting.RED));
+            components.add(Component.literal("Mana Cost: 75\nCooldown Time: 8 minutes\nAura Damage: 2 per second\nExplosion Damage: 30\n\nRight click to start a Meltdown!\nRight click again to go Super Critical and release all your flames at once!").withStyle(ChatFormatting.RED));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
