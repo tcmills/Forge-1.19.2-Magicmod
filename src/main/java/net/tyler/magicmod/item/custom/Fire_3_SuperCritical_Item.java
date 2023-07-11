@@ -78,7 +78,7 @@ public class Fire_3_SuperCritical_Item extends Item {
                                         ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                     }
 
-                                    player.getCooldowns().addCooldown(this, 60);
+                                    player.getCooldowns().addCooldown(this, 9600);
                                 }
                             } else {
                                 player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));

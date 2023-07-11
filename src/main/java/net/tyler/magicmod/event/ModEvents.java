@@ -206,7 +206,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
                             player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
                             player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
-                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(60 * cd.getSuperCriticalCD()));
+                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -340,11 +340,11 @@ public class ModEvents {
                                         ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                     }
 
-                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 60);
+                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
                                 }
                             } else {
                                 cast.setSuperCriticalCasting(false);
-                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 60);
+                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
                             }
                         }
                     });
