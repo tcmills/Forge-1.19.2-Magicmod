@@ -28,6 +28,7 @@ import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.misc.MagicalExplosion;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.sound.ModSounds;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class Fire_3_SuperCritical_Item extends Item {
 
                                         player.addEffect(new MobEffectInstance(ModEffects.MELTDOWN.get(), 1200, 0, false, false, true));
 
-                                        player.level.playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+                                        player.level.playSound(null, player, ModSounds.SUPER_CRITICAL.get(), SoundSource.PLAYERS, 2.0F, 1F);
                                     } else {
                                         player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                                     }
@@ -66,7 +67,7 @@ public class Fire_3_SuperCritical_Item extends Item {
 
                                     player.removeEffect(ModEffects.MELTDOWN.get());
 
-                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 6F, 30D, true, Explosion.BlockInteraction.NONE);
+                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
                                     if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                         explosion.explode();
 
@@ -77,7 +78,7 @@ public class Fire_3_SuperCritical_Item extends Item {
                                         ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                     }
 
-                                    player.getCooldowns().addCooldown(this, 9600);
+                                    player.getCooldowns().addCooldown(this, 60);
                                 }
                             } else {
                                 player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));

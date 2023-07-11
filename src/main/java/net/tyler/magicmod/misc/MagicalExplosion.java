@@ -93,7 +93,7 @@ public class MagicalExplosion extends Explosion {
                         d0 /= d3;
                         d1 /= d3;
                         d2 /= d3;
-                        float f = this.radius * (0.7F + this.level.random.nextFloat() * 0.6F);
+                        float f = (this.radius / 2F) * (0.7F + this.level.random.nextFloat() * 0.6F);
                         double d4 = this.x;
                         double d6 = this.y;
                         double d8 = this.z;
@@ -125,7 +125,7 @@ public class MagicalExplosion extends Explosion {
         }
 
         this.toBlow.addAll(set);
-        float f2 = this.radius * 2.0F;
+        float f2 = this.radius;
         int k1 = Mth.floor(this.x - (double)f2 - 1.0D);
         int l1 = Mth.floor(this.x + (double)f2 + 1.0D);
         int i2 = Mth.floor(this.y - (double)f2 - 1.0D);

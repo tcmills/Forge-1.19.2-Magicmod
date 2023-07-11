@@ -99,7 +99,7 @@ public class FireballProjectileEntity extends ThrowableItemProjectile {
 
         if (!level.isClientSide && this.getOwner() instanceof ServerPlayer player) {
 
-            MagicalExplosion explosion = new MagicalExplosion(this.getLevel(), player, "fireball", (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 5F, 20D, true, Explosion.BlockInteraction.NONE);
+            MagicalExplosion explosion = new MagicalExplosion(this.getLevel(), player, "fireball", (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 6F, 20D, true, Explosion.BlockInteraction.NONE);
             if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(this.getLevel(), explosion)) {
                 explosion.explode();
 

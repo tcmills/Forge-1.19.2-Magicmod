@@ -1,0 +1,8 @@
+{
+  "super_critical": {
+    "subtitle": "sounds.magicmod.super_critical",
+    "sounds": [
+      "magicmod:super_critical"
+    ]
+  }
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.misc.MagicalExplosion;
 import net.tyler.magicmod.misc.ModDamageSource;
@@ -30,7 +31,7 @@ public class MeltdownEffect extends MobEffect {
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
 
         if (!pLivingEntity.level.isClientSide()) {
-            float f2 = 6F * 2.0F;
+            float f2 = 6F;
             int k1 = Mth.floor(pLivingEntity.getX() - (double)f2 - 1.0D);
             int l1 = Mth.floor(pLivingEntity.getX() + (double)f2 + 1.0D);
             int i2 = Mth.floor(pLivingEntity.getY() - (double)f2 - 1.0D);
@@ -38,35 +39,39 @@ public class MeltdownEffect extends MobEffect {
             int j2 = Mth.floor(pLivingEntity.getZ() - (double)f2 - 1.0D);
             int j1 = Mth.floor(pLivingEntity.getZ() + (double)f2 + 1.0D);
             List<Entity> list = pLivingEntity.level.getEntities(pLivingEntity, new AABB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
+            Vec3 vec3 = new Vec3(pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ());
 
             for(int k2 = 0; k2 < list.size(); ++k2) {
                 Entity entity = list.get(k2);
                 if (entity instanceof LivingEntity) {
                     if (pLivingEntity instanceof Player player1) {
-                        if (entity instanceof Player player2) {
-                            player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
-                                player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
-                                    if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                            entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
-                                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                        } else {
-                                            entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
-                                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                        double d12 = Math.sqrt(entity.distanceToSqr(vec3)) / (double)f2;
+                        if (d12 <= 1.0D) {
+                            if (entity instanceof Player player2) {
+                                player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                    player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                        if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
+                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                            } else {
+                                                entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
+                                                //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                            }
+                                            entity.setSecondsOnFire(2);
                                         }
-                                        entity.setSecondsOnFire(2);
-                                    }
+                                    });
                                 });
-                            });
-                        } else {
-                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
-                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                             } else {
-                                entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
-                                //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                    entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
+                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                } else {
+                                    entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
+                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                }
+                                entity.setSecondsOnFire(2);
                             }
-                            entity.setSecondsOnFire(2);
                         }
                     }
                 }

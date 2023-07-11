@@ -206,7 +206,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
                             player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
                             player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
-                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
+                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(60 * cd.getSuperCriticalCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -252,7 +252,7 @@ public class ModEvents {
                                     cast.setFlareBlitzCasting(false);
                                     cast.setFlareBlitzTick(0);
 
-                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 3F, 14D, true, Explosion.BlockInteraction.NONE);
+                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 4F, 14D, true, Explosion.BlockInteraction.NONE);
                                     if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                         explosion.explode();
 
@@ -329,7 +329,7 @@ public class ModEvents {
                                 if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
                                     cast.setSuperCriticalCasting(false);
 
-                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 6F, 30D, true, Explosion.BlockInteraction.NONE);
+                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
                                     if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                         explosion.explode();
 
@@ -340,11 +340,11 @@ public class ModEvents {
                                         ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                     }
 
-                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 60);
                                 }
                             } else {
                                 cast.setSuperCriticalCasting(false);
-                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 60);
                             }
                         }
                     });

@@ -20,6 +20,7 @@ import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.painting.ModPaintings;
 import net.tyler.magicmod.screen.ManaDistillerScreen;
 import net.tyler.magicmod.screen.ModMenuTypes;
+import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.villager.ModVillagers;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
@@ -41,6 +42,7 @@ public class MagicMod {
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModEffects.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
