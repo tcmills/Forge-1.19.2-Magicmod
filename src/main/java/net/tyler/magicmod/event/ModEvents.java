@@ -243,110 +243,114 @@ public class ModEvents {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
                     player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
-                        if (cast.getFlareBlitzCasting()) {
-                            if (cast.getFlareBlitzTick() <= 100) {
-                                ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
-                                cast.addFlareBlitzTick(1);
+                        player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
+                            if (info.getFire()) {
+                                if (cast.getFlareBlitzCasting()) {
+                                    if (cast.getFlareBlitzTick() <= 100) {
+                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
+                                        cast.addFlareBlitzTick(1);
 
-                                if (player.isOnGround()) {
-                                    cast.setFlareBlitzCasting(false);
-                                    cast.setFlareBlitzTick(0);
+                                        if (player.isOnGround()) {
+                                            cast.setFlareBlitzCasting(false);
+                                            cast.setFlareBlitzTick(0);
 
-                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 4F, 14D, true, Explosion.BlockInteraction.NONE);
-                                    if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
-                                        explosion.explode();
+                                            MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 4F, 14D, true, Explosion.BlockInteraction.NONE);
+                                            if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                                explosion.explode();
 
-                                        player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
+                                                player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
 
-                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                                ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                            }
+                                        }
+                                    } else {
+                                        cast.setFlareBlitzCasting(false);
+                                        cast.setFlareBlitzTick(0);
                                     }
                                 }
-                            } else {
-                                cast.setFlareBlitzCasting(false);
-                                cast.setFlareBlitzTick(0);
-                            }
-                        }
 
-                        if (cast.getScorchingRayCasting()) {
+                                if (cast.getScorchingRayCasting()) {
 
-                            if (cast.getScorchingRayTick() == 0) {
-                                int speed = 2;
+                                    if (cast.getScorchingRayTick() == 0) {
+                                        int speed = 2;
 
-                                player.getLevel().playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
+                                        player.getLevel().playSound(null, player, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.2F + 0.9F));
 
-                                ScorchingRayProjectileEntity scorching_ray = new ScorchingRayProjectileEntity(player, player.level);
-                                scorching_ray.setItem(ModItems.SCORCHING_RAY_PROJECTILE.get().getDefaultInstance());
-                                scorching_ray.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
-                                player.level.addFreshEntity(scorching_ray);
+                                        ScorchingRayProjectileEntity scorching_ray = new ScorchingRayProjectileEntity(player, player.level);
+                                        scorching_ray.setItem(ModItems.SCORCHING_RAY_PROJECTILE.get().getDefaultInstance());
+                                        scorching_ray.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
+                                        player.level.addFreshEntity(scorching_ray);
 
-                                cast.subScorchingRayProjectiles(1);
-                                cast.addScorchingRayTick(1);
-                            }
-                            else if (cast.getScorchingRayTick() >= 10) {
-                                cast.setScorchingRayTick(0);
-                            } else {
-                                cast.addScorchingRayTick(1);
-                            }
-
-                            if (cast.getScorchingRayProjectiles() <= 0) {
-                                cast.setScorchingRayCasting(false);
-                                cast.setScorchingRayProjectiles(3);
-                                cast.setScorchingRayTick(0);
-                            }
-                        }
-
-                        if (cast.getFierySoulCasting()) {
-                            if (cast.getFierySoulTick() == 0) {
-                                if (mana.getMana() >= 5) {
-                                    mana.subMana(5);
-                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
-                                    cast.addFierySoulTick(1);
-                                } else {
-                                    player.removeEffect(ModEffects.SPELL_STRENGTH.get());
-                                    player.removeEffect(MobEffects.FIRE_RESISTANCE);
-                                    cast.setFierySoulCasting(false);
-                                    cast.setFierySoulTick(0);
-                                    player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
-                                }
-                            }
-                            else if (cast.getFierySoulTick() >= 200) {
-                                cast.setFierySoulTick(0);
-                            } else {
-                                cast.addFierySoulTick(1);
-                            }
-
-                            if (player.getLevel().random.nextInt(24) == 0) {
-                                player.getLevel().playSound(null, player, SoundEvents.FIRE_AMBIENT, SoundSource.PLAYERS, 1.0F + player.getLevel().random.nextFloat(), player.getLevel().random.nextFloat() * 0.7F);
-                            }
-
-                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
-                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
-
-                        }
-
-                        if (cast.getSuperCriticalCasting()) {
-                            if (player.hasEffect(ModEffects.MELTDOWN.get())) {
-                                if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
-                                    cast.setSuperCriticalCasting(false);
-
-                                    MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
-                                    if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
-                                        explosion.explode();
-
-                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                        player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-
-                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                        cast.subScorchingRayProjectiles(1);
+                                        cast.addScorchingRayTick(1);
+                                    }
+                                    else if (cast.getScorchingRayTick() >= 10) {
+                                        cast.setScorchingRayTick(0);
+                                    } else {
+                                        cast.addScorchingRayTick(1);
                                     }
 
-                                    player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                    if (cast.getScorchingRayProjectiles() <= 0) {
+                                        cast.setScorchingRayCasting(false);
+                                        cast.setScorchingRayProjectiles(3);
+                                        cast.setScorchingRayTick(0);
+                                    }
                                 }
-                            } else {
-                                cast.setSuperCriticalCasting(false);
-                                player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+
+                                if (cast.getFierySoulCasting()) {
+                                    if (cast.getFierySoulTick() == 0) {
+                                        if (mana.getMana() >= 5) {
+                                            mana.subMana(5);
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                            cast.addFierySoulTick(1);
+                                        } else {
+                                            player.removeEffect(ModEffects.SPELL_STRENGTH.get());
+                                            player.removeEffect(MobEffects.FIRE_RESISTANCE);
+                                            cast.setFierySoulCasting(false);
+                                            cast.setFierySoulTick(0);
+                                            player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
+                                        }
+                                    }
+                                    else if (cast.getFierySoulTick() >= 200) {
+                                        cast.setFierySoulTick(0);
+                                    } else {
+                                        cast.addFierySoulTick(1);
+                                    }
+
+                                    if (player.getLevel().random.nextInt(24) == 0) {
+                                        player.getLevel().playSound(null, player, SoundEvents.FIRE_AMBIENT, SoundSource.PLAYERS, 1.0F + player.getLevel().random.nextFloat(), player.getLevel().random.nextFloat() * 0.7F);
+                                    }
+
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+
+                                }
+
+                                if (cast.getSuperCriticalCasting()) {
+                                    if (player.hasEffect(ModEffects.MELTDOWN.get())) {
+                                        if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
+                                            cast.setSuperCriticalCasting(false);
+
+                                            MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
+                                            if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                                explosion.explode();
+
+                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+
+                                                ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                            }
+
+                                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                        }
+                                    } else {
+                                        cast.setSuperCriticalCasting(false);
+                                        player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                    }
+                                }
                             }
-                        }
+                        });
                     });
                 });
             }
