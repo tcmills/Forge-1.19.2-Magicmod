@@ -105,4 +105,9 @@ public class Fire_3_SuperCritical_Item extends Item {
 
         super.appendHoverText(stack, level, components, flag);
     }
+
+    @Override
+    public boolean isFoil(ItemStack pStack) {
+        return super.isFoil(pStack) || pStack.hasTag();
+    }
 }

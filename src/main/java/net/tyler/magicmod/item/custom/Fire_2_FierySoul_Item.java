@@ -88,4 +88,9 @@ public class Fire_2_FierySoul_Item extends Item {
 
         super.appendHoverText(stack, level, components, flag);
     }
+
+    @Override
+    public boolean isFoil(ItemStack pStack) {
+        return super.isFoil(pStack) || pStack.hasTag();
+    }
 }

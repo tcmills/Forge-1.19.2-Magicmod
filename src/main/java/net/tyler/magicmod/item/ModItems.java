@@ -59,6 +59,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> DUNGEON_BELL = ITEMS.register("dungeon_bell",
             () -> new DungeonBell_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> MANA_MITIGATOR = ITEMS.register("mana_mitigator",
+            () -> new ManaMitigator_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+
     public static final RegistryObject<Item> SET_HOME_CHARGE = ITEMS.register("set_home_charge",
             () -> new SetHomeCharge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 

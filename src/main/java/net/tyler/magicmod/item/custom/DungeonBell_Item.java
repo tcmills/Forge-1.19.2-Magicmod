@@ -1,5 +1,7 @@
 package net.tyler.magicmod.item.custom;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -7,14 +9,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DungeonBell_Item extends Item {
     private static final int USE_DURATION = 1;
@@ -61,5 +63,12 @@ public class DungeonBell_Item extends Item {
         player.level.playSound(null, player, SoundEvents.BELL_BLOCK, SoundSource.PLAYERS, 1f, 1.5f);
         player.level.playSound(null, player, SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1f, 2f);
         return ItemUtils.startUsingInstantly(level, player, hand);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        components.add(Component.literal("Dev Item").withStyle(ChatFormatting.GREEN));
+
+        super.appendHoverText(stack, level, components, flag);
     }
 }

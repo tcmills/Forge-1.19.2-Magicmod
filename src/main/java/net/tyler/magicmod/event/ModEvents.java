@@ -3,6 +3,7 @@ package net.tyler.magicmod.event;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -55,6 +56,7 @@ import net.tyler.magicmod.capability.mana.PlayerManaProvider;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
 
 import java.util.List;
@@ -297,7 +299,17 @@ public class ModEvents {
                                     }
                                 }
 
+                                int index_fierySoul = InventoryUtil.getFirstInventoryIndex(player, ModItems.FIERY_SOUL.get());
                                 if (cast.getFierySoulCasting()) {
+                                    if (index_fierySoul != -1) {
+                                        ItemStack fiery_soul = player.getInventory().getItem(index_fierySoul);
+                                        if (!fiery_soul.hasTag()) {
+                                            CompoundTag nbtData = new CompoundTag();
+                                            nbtData.putString("magicmod.fiery_soul_cast", "Fiery Soul has been cast");
+                                            fiery_soul.setTag(nbtData);
+                                        }
+                                    }
+
                                     if (cast.getFierySoulTick() == 0) {
                                         if (mana.getMana() >= 5) {
                                             mana.subMana(5);
@@ -324,9 +336,26 @@ public class ModEvents {
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
 
+                                } else {
+                                    if (index_fierySoul != -1) {
+                                        ItemStack fiery_soul = player.getInventory().getItem(index_fierySoul);
+                                        if (fiery_soul.hasTag()) {
+                                            fiery_soul.removeTagKey("magicmod.fiery_soul_cast");
+                                        }
+                                    }
                                 }
 
+                                int index_superCritical = InventoryUtil.getFirstInventoryIndex(player, ModItems.SUPER_CRITICAL.get());
                                 if (cast.getSuperCriticalCasting()) {
+                                    if (index_superCritical != -1) {
+                                        ItemStack super_critical = player.getInventory().getItem(index_superCritical);
+                                        if (!super_critical.hasTag()) {
+                                            CompoundTag nbtData = new CompoundTag();
+                                            nbtData.putString("magicmod.super_critical_cast", "Super Critical has been cast");
+                                            super_critical.setTag(nbtData);
+                                        }
+                                    }
+
                                     if (player.hasEffect(ModEffects.MELTDOWN.get())) {
                                         if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
                                             cast.setSuperCriticalCasting(false);
@@ -347,6 +376,13 @@ public class ModEvents {
                                     } else {
                                         cast.setSuperCriticalCasting(false);
                                         player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                    }
+                                } else {
+                                    if (index_superCritical != -1) {
+                                        ItemStack super_critical = player.getInventory().getItem(index_superCritical);
+                                        if (super_critical.hasTag()) {
+                                            super_critical.removeTagKey("magicmod.super_critical_cast");
+                                        }
                                     }
                                 }
                             }
