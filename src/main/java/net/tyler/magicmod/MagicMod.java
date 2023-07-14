@@ -15,6 +15,7 @@ import net.tyler.magicmod.block.entity.ModBlockEntities;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.entity.client.WispRenderer;
+import net.tyler.magicmod.event.loot.ModAdditionModifiers;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.painting.ModPaintings;
@@ -43,6 +44,7 @@ public class MagicMod {
         ModMenuTypes.register(modEventBus);
         ModEffects.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModAdditionModifiers.LOOT_MODIFIER.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

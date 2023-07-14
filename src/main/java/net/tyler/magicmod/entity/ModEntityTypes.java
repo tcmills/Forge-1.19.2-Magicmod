@@ -8,10 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.tyler.magicmod.MagicMod;
-import net.tyler.magicmod.entity.custom.FireballProjectileEntity;
-import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
-import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
-import net.tyler.magicmod.entity.custom.WispEntity;
+import net.tyler.magicmod.entity.custom.*;
 
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MagicMod.MOD_ID);
@@ -32,7 +29,6 @@ public class ModEntityTypes {
             () -> EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.4f)
                     .build(new ResourceLocation(MagicMod.MOD_ID, "wisp").toString()));
-
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

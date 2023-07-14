@@ -1,0 +1,10 @@
+{
+  "type": "magicmod:add_to_loot_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:gameplay/fishing"
+    }
+  ],
+  "loot_table": "magicmod:gameplay/fishing/add_magic"
+}
