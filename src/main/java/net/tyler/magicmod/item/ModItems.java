@@ -92,6 +92,8 @@ public class ModItems {
             () -> new Fire_2_FierySoul_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> SUPER_CRITICAL = ITEMS.register("super_critical",
             () -> new Fire_3_SuperCritical_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> AQUAMARINE_BLESSING = ITEMS.register("aquamarine_blessing",
+            () -> new Water_1_AquamarineBlessing_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

@@ -19,6 +19,10 @@ public class PlayerCasting {
 
     private boolean superCriticalCasting = false;
 
+    private boolean aquamarineBlessingCasting = false;
+
+    private int aquamarineBlessingTick = 0;
+
     public boolean getFlareBlitzCasting() {
         return flareBlitzCasting;
     }
@@ -99,6 +103,26 @@ public class PlayerCasting {
         superCriticalCasting = cast;
     }
 
+    public boolean getAquamarineBlessingCasting() {
+        return aquamarineBlessingCasting;
+    }
+
+    public void setAquamarineBlessingCasting(boolean cast) {
+        aquamarineBlessingCasting = cast;
+    }
+
+    public int getAquamarineBlessingTick() {
+        return aquamarineBlessingTick;
+    }
+
+    public void addAquamarineBlessingTick(int add) {
+        aquamarineBlessingTick += add;
+    }
+
+    public void setAquamarineBlessingTick(int tick) {
+        aquamarineBlessingTick = tick;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.flareBlitzCasting = false;
         this.flareBlitzTick = 0;
@@ -108,6 +132,8 @@ public class PlayerCasting {
         this.fierySoulCasting = false;
         this.fierySoulTick = 0;
         this.superCriticalCasting = source.superCriticalCasting;
+        this.aquamarineBlessingCasting = false;
+        this.aquamarineBlessingTick = 0;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -119,6 +145,8 @@ public class PlayerCasting {
         nbt.putBoolean("fierySoulCasting", fierySoulCasting);
         nbt.putInt("fierySoulTick", fierySoulTick);
         nbt.putBoolean("superCriticalCasting", superCriticalCasting);
+        nbt.putBoolean("aquamarineBlessingCasting", aquamarineBlessingCasting);
+        nbt.putInt("aquamarineBlessingTick", aquamarineBlessingTick);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -130,5 +158,7 @@ public class PlayerCasting {
         fierySoulCasting = nbt.getBoolean("fierySoulCasting");
         fierySoulTick = nbt.getInt("fierySoulTick");
         superCriticalCasting = nbt.getBoolean("superCriticalCasting");
+        aquamarineBlessingCasting = nbt.getBoolean("aquamarineBlessingCasting");
+        aquamarineBlessingTick = nbt.getInt("aquamarineBlessingTick");
     }
 }

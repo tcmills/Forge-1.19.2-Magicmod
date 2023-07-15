@@ -160,6 +160,10 @@ public class ModEvents {
                     for (int i = 0; i < items[8]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.SUPER_CRITICAL.get()));
                     }
+
+                    for (int i = 0; i < items[9]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.AQUAMARINE_BLESSING.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -386,6 +390,56 @@ public class ModEvents {
                                     }
                                 }
                             }
+
+                            if (info.getWater()) {
+                                int index_aquamarineBlessing = InventoryUtil.getFirstInventoryIndex(player, ModItems.AQUAMARINE_BLESSING.get());
+                                if (cast.getAquamarineBlessingCasting()) {
+                                    if (index_aquamarineBlessing != -1) {
+                                        ItemStack aquamarine_blessing = player.getInventory().getItem(index_aquamarineBlessing);
+                                        if (!aquamarine_blessing.hasTag()) {
+                                            CompoundTag nbtData = new CompoundTag();
+                                            nbtData.putString("magicmod.aquamarine_blessing_cast", "Aquamarine Blessing has been cast");
+                                            aquamarine_blessing.setTag(nbtData);
+                                        }
+                                    }
+
+                                    if (cast.getAquamarineBlessingTick() == 0) {
+                                        if (mana.getMana() >= 5) {
+                                            mana.subMana(5);
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                            cast.addAquamarineBlessingTick(1);
+                                        } else {
+                                            player.removeEffect(MobEffects.CONDUIT_POWER);
+                                            player.removeEffect(MobEffects.DOLPHINS_GRACE);
+                                            cast.setAquamarineBlessingCasting(false);
+                                            cast.setAquamarineBlessingTick(0);
+                                            player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
+                                        }
+                                    }
+                                    else if (cast.getAquamarineBlessingTick() >= 600) {
+                                        cast.setAquamarineBlessingTick(0);
+                                    } else {
+                                        cast.addAquamarineBlessingTick(1);
+                                    }
+
+                                    if (player.getLevel().random.nextInt(100) == 0) {
+                                        player.getLevel().playSound(null, player, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.PLAYERS, 1.0F + player.getLevel().random.nextFloat(), 0.7F + (player.getLevel().random.nextFloat() * 0.4F));
+                                    }
+
+                                    if (player.getLevel().random.nextInt(2) == 0) {
+                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SCRAPE, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+                                    }
+
+                                } else {
+                                    if (index_aquamarineBlessing != -1) {
+                                        ItemStack aquamarine_blessing = player.getInventory().getItem(index_aquamarineBlessing);
+                                        if (aquamarine_blessing.hasTag()) {
+                                            aquamarine_blessing.removeTagKey("magicmod.aquamarine_blessing_cast");
+                                        }
+                                    }
+                                }
+                            }
+
                         });
                     });
                 });
@@ -426,6 +480,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SUPER_CRITICAL.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(8);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AQUAMARINE_BLESSING.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(9);
                         }
                     }
                 });

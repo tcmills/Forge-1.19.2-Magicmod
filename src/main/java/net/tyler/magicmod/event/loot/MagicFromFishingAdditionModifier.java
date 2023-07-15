@@ -49,12 +49,6 @@ public class MagicFromFishingAdditionModifier extends LootModifier {
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                 if (info.getWater()) {
                     LootTable extraTable = context.getLootTable(this.lootTableId);
-//
-//            ObjectArrayList<ItemStack> extraLoot = extraTable.getRandomItems(context);
-//            for (ItemStack loot : extraLoot) {
-//                generatedLoot.add(loot);
-//            }
-
                     extraTable.getRandomItems(context, generatedLoot::add);
                 }
             });
