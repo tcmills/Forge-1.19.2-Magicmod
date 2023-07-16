@@ -13,6 +13,10 @@ public class ModDamageSource extends DamageSource {
         super(pMessageId);
     }
 
+    public static DamageSource bleed() {
+        return (new DamageSource("bleed")).bypassArmor();
+    }
+
     public static DamageSource magicMissile(Entity pSource, @Nullable Entity pIndirectEntity) {
         return (new IndirectEntityDamageSource("magicMissile", pSource, pIndirectEntity)).setProjectile();
     }
@@ -21,12 +25,12 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("scorchingRay", pSource, pIndirectEntity)).setProjectile();
     }
 
-    public static DamageSource superCritical(Entity pSource, @Nullable Entity pIndirectEntity) {
-        return (new IndirectEntityDamageSource("superCritical", pSource, pIndirectEntity));
+    public static DamageSource superCritical() {
+        return (new DamageSource("superCritical")).bypassArmor();
     }
 
-    public static DamageSource bleed() {
-        return (new DamageSource("bleed")).bypassArmor();
+    public static DamageSource sharkLunge(Entity pSource, @Nullable Entity pIndirectEntity) {
+        return (new IndirectEntityDamageSource("sharkLunge", pSource, pIndirectEntity));
     }
 
 }

@@ -52,10 +52,10 @@ public class MeltdownEffect extends MobEffect {
                                     player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                         if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
                                             if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
+                                                entity.hurt(ModDamageSource.superCritical(), 2F);
                                                 //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                             } else {
-                                                entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
+                                                entity.hurt(ModDamageSource.superCritical(), 1F);
                                                 //player1.sendSystemMessage(Component.literal(baseDamage + ""));
                                             }
                                             entity.setSecondsOnFire(2);
@@ -64,10 +64,10 @@ public class MeltdownEffect extends MobEffect {
                                 });
                             } else {
                                 if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                    entity.hurt(ModDamageSource.superCritical(null, player1), 2F);
+                                    entity.hurt(ModDamageSource.superCritical(), 2F);
                                     //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                 } else {
-                                    entity.hurt(ModDamageSource.superCritical(null, player1), 1F);
+                                    entity.hurt(ModDamageSource.superCritical(), 1F);
                                     //player1.sendSystemMessage(Component.literal(baseDamage + ""));
                                 }
                                 entity.setSecondsOnFire(2);

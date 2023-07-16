@@ -26,6 +26,10 @@ public class PlayerCasting {
 
     private int aquamarineBlessingTick = 0;
 
+    private boolean sharkLungeCasting = false;
+
+    private int sharkLungeTick = 0;
+
     public int getBleedTick() {
         return bleedTick;
     }
@@ -138,6 +142,26 @@ public class PlayerCasting {
         aquamarineBlessingTick = tick;
     }
 
+    public boolean getSharkLungeCasting() {
+        return sharkLungeCasting;
+    }
+
+    public void setSharkLungeCasting(boolean cast) {
+        sharkLungeCasting = cast;
+    }
+
+    public int getSharkLungeTick() {
+        return sharkLungeTick;
+    }
+
+    public void addSharkLungeTick(int add) {
+        sharkLungeTick += add;
+    }
+
+    public void setSharkLungeTick(int tick) {
+        sharkLungeTick = tick;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.bleedTick = 0;
         this.flareBlitzCasting = false;
@@ -150,6 +174,8 @@ public class PlayerCasting {
         this.superCriticalCasting = source.superCriticalCasting;
         this.aquamarineBlessingCasting = false;
         this.aquamarineBlessingTick = 0;
+        this.sharkLungeCasting = false;
+        this.sharkLungeTick = 0;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -164,6 +190,8 @@ public class PlayerCasting {
         nbt.putBoolean("superCriticalCasting", superCriticalCasting);
         nbt.putBoolean("aquamarineBlessingCasting", aquamarineBlessingCasting);
         nbt.putInt("aquamarineBlessingTick", aquamarineBlessingTick);
+        nbt.putBoolean("sharkLungeCasting", sharkLungeCasting);
+        nbt.putInt("sharkLungeTick", sharkLungeTick);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -178,5 +206,7 @@ public class PlayerCasting {
         superCriticalCasting = nbt.getBoolean("superCriticalCasting");
         aquamarineBlessingCasting = nbt.getBoolean("aquamarineBlessingCasting");
         aquamarineBlessingTick = nbt.getInt("aquamarineBlessingTick");
+        sharkLungeCasting = nbt.getBoolean("sharkLungeCasting");
+        sharkLungeTick = nbt.getInt("sharkLungeTick");
     }
 }

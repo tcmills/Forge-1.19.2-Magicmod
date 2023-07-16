@@ -10,17 +10,23 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -53,6 +59,7 @@ import net.tyler.magicmod.capability.location.PlayerLocation;
 import net.tyler.magicmod.capability.location.PlayerLocationProvider;
 import net.tyler.magicmod.capability.mana.PlayerMana;
 import net.tyler.magicmod.capability.mana.PlayerManaProvider;
+import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
@@ -164,6 +171,10 @@ public class ModEvents {
                     for (int i = 0; i < items[9]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.AQUAMARINE_BLESSING.get()));
                     }
+
+                    for (int i = 0; i < items[10]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.SHARK_LUNGE.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -213,6 +224,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
                             player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
                             player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
+                            player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), (int)(400 * cd.getSharkLungeCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -234,6 +246,7 @@ public class ModEvents {
                 cd.setScorchingRayCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
                 cd.setFireballCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
                 cd.setSuperCriticalCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
+                cd.setSharkLungeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
             });
         }
 
@@ -453,6 +466,83 @@ public class ModEvents {
                                         }
                                     }
                                 }
+
+                                if (cast.getSharkLungeCasting()) {
+                                    if (cast.getSharkLungeTick() <= 100) {
+                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FISHING, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
+                                        cast.addSharkLungeTick(1);
+
+                                        if (player.isOnGround()) {
+                                            cast.setSharkLungeCasting(false);
+                                            cast.setSharkLungeTick(0);
+
+                                            float f2 = 4F;
+                                            int k1 = Mth.floor(player.getX() - (double)f2 - 1.0D);
+                                            int l1 = Mth.floor(player.getX() + (double)f2 + 1.0D);
+                                            int i2 = Mth.floor(player.getY() - (double)f2 - 1.0D);
+                                            int i1 = Mth.floor(player.getY() + (double)f2 + 1.0D);
+                                            int j2 = Mth.floor(player.getZ() - (double)f2 - 1.0D);
+                                            int j1 = Mth.floor(player.getZ() + (double)f2 + 1.0D);
+                                            List<Entity> list = player.level.getEntities(player, new AABB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
+                                            Vec3 vec3 = new Vec3(player.getX(), player.getY(), player.getZ());
+
+                                            for(int k2 = 0; k2 < list.size(); ++k2) {
+                                                Entity entity = list.get(k2);
+                                                if (entity instanceof LivingEntity entity1) {
+                                                    double d12 = Math.sqrt(entity1.distanceToSqr(vec3)) / (double)f2;
+                                                    if (d12 <= 1.0D) {
+                                                        if (entity1 instanceof Player player2) {
+                                                            player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                                                player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                                                    if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                                                        if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                                            player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
+                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                        } else {
+                                                                            player2.hurt(ModDamageSource.sharkLunge(null, player), 14F);
+                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                                        }
+
+                                                                        if (player.getLevel().random.nextInt(2) == 0) {
+                                                                            player2.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200, 0, false, false, true));
+                                                                        }
+
+                                                                    }
+                                                                });
+                                                            });
+                                                        } else {
+                                                            if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
+                                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                            } else {
+                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 14F);
+                                                                //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                            }
+
+                                                            if (player.getLevel().random.nextInt(2) == 0) {
+                                                                entity1.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 140, 0, false, false, true));
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+
+                                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
+
+                                            player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+                                            player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+                                            player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+
+                                            ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX(), player.getY()+1, player.getZ(), 10,2.0D, 0.5D, 2.0D, 1.0D);
+
+                                        }
+                                    } else {
+                                        cast.setSharkLungeCasting(false);
+                                        cast.setSharkLungeTick(0);
+                                    }
+                                }
                             }
 
                         });
@@ -498,6 +588,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AQUAMARINE_BLESSING.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(9);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SHARK_LUNGE.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(10);
                         }
                     }
                 });
@@ -510,6 +603,7 @@ public class ModEvents {
                     cd.setScorchingRayCD(player.getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
                     cd.setFireballCD(player.getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
                     cd.setSuperCriticalCD(player.getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
+                    cd.setSharkLungeCD(player.getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
                 });
             }
         }

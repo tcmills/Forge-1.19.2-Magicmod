@@ -11,8 +11,8 @@ public class PlayerCooldowns {
     private float flareBlitz = 0.0F;
     private float scorchingRay = 0.0F;
     private float fireball = 0.0F;
-
     private float superCritical = 0.0F;
+    private float sharkLunge = 0.0F;
 
     public float getMagicMissileCD() {
         return magicMissile;
@@ -78,6 +78,14 @@ public class PlayerCooldowns {
         superCritical = sec;
     }
 
+    public float getSharkLungeCD() {
+        return sharkLunge;
+    }
+
+    public void setSharkLungeCD(float sec) {
+        sharkLunge = sec;
+    }
+
     public void clearCD() {
         magicMissile = 0.0F;
         aid = 0.0F;
@@ -87,6 +95,7 @@ public class PlayerCooldowns {
         scorchingRay = 0.0F;
         fireball = 0.0F;
         superCritical = 0.0F;
+        sharkLunge = 0.0F;
     }
 
     public void copyFrom(PlayerCooldowns source) {
@@ -98,6 +107,7 @@ public class PlayerCooldowns {
         this.scorchingRay = source.scorchingRay;
         this.fireball = source.fireball;
         this.superCritical = source.superCritical;
+        this.sharkLunge = source.sharkLunge;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -109,6 +119,7 @@ public class PlayerCooldowns {
         nbt.putFloat("scorchingRay", scorchingRay);
         nbt.putFloat("fireball", fireball);
         nbt.putFloat("superCritical", superCritical);
+        nbt.putFloat("sharkLunge", sharkLunge);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -120,5 +131,6 @@ public class PlayerCooldowns {
         scorchingRay = nbt.getFloat("scorchingRay");
         fireball = nbt.getFloat("fireball");
         superCritical = nbt.getFloat("superCritical");
+        sharkLunge = nbt.getFloat("sharkLunge");
     }
 }

@@ -41,6 +41,7 @@
   "item.magicmod.fiery_soul": "Fiery Soul",
   "item.magicmod.super_critical": "Super Critical",
   "item.magicmod.aquamarine_blessing": "Aquamarine Blessing",
+  "item.magicmod.shark_lunge": "Shark Lunge",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -61,14 +62,15 @@
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 
+  "death.attack.bleed": "%1$s bled to death",
+  "death.attack.bleed.item": "%1$s bled out whilst fighting %2$s wielding %3$s",
+  "death.attack.bleed.player": "%1$s bled out whilst fighting %2$s",
   "death.attack.magicMissile": "%1$s was killed by %2$s using Magic Missile",
   "death.attack.flareBlitz": "%1$s was killed by %2$s using Flare Blitz",
   "death.attack.scorchingRay": "%1$s was killed by %2$s using Scorching Ray",
   "death.attack.fireball": "%1$s was killed by %2$s using Fireball",
   "death.attack.superCritical": "%1$s was killed by %2$s using Super Critical",
-  "death.attack.bleed": "%1$s bled to death",
-  "death.attack.bleed.item": "%1$s bled out whilst fighting %2$s wielding %3$s",
-  "death.attack.bleed.player": "%1$s bled out whilst fighting %2$s",
+  "death.attack.sharkLunge": "%1$s was killed by %2$s using Shark Lunge",
 
   "itemGroup.magictab": "Magic"
 }

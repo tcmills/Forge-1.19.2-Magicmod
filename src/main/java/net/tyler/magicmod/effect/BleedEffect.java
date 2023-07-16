@@ -42,14 +42,14 @@ public class BleedEffect extends MobEffect {
                     pLivingEntity.hurt(ModDamageSource.bleed(), 1F);
                     //pLivingEntity.sendSystemMessage(Component.literal("" + pLivingEntity.getSpeed() + "\n"));
 
-                    ((ServerLevel)pLivingEntity.getLevel()).sendParticles(new DustParticleOptions(new Vector3f(Vec3.fromRGB24(16711680)), 1.0F), pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 20,0.25D, 0.25D, 0.25D, 0.0D);
-                    ((ServerLevel)pLivingEntity.getLevel()).sendParticles(ParticleTypes.LANDING_LAVA, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 20,0.25D, 0.25D, 0.25D, 0.0D);
+                    ((ServerLevel)pLivingEntity.getLevel()).sendParticles(new DustParticleOptions(new Vector3f(Vec3.fromRGB24(16711680)), 1.0F), pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 40,0.25D, 0.25D, 0.25D, 0.0D);
+                    ((ServerLevel)pLivingEntity.getLevel()).sendParticles(ParticleTypes.LANDING_LAVA, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 40,0.25D, 0.25D, 0.25D, 0.0D);
                 }
             } else {
                 pLivingEntity.hurt(ModDamageSource.bleed(), 1F);
 
-                ((ServerLevel)pLivingEntity.getLevel()).sendParticles(new DustParticleOptions(new Vector3f(Vec3.fromRGB24(16711680)), 1.0F), pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 20,0.25D, 0.25D, 0.25D, 0.0D);
-                ((ServerLevel)pLivingEntity.getLevel()).sendParticles(ParticleTypes.LANDING_LAVA, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 20,0.25D, 0.25D, 0.25D, 0.0D);
+                ((ServerLevel)pLivingEntity.getLevel()).sendParticles(new DustParticleOptions(new Vector3f(Vec3.fromRGB24(16711680)), 1.0F), pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 40,0.25D, 0.25D, 0.25D, 0.0D);
+                ((ServerLevel)pLivingEntity.getLevel()).sendParticles(ParticleTypes.LANDING_LAVA, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), 40,0.25D, 0.25D, 0.25D, 0.0D);
             }
         }
 
