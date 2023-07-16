@@ -14,12 +14,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.tyler.magicmod.capability.casting.PlayerCastingProvider;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
@@ -27,6 +30,7 @@ import net.tyler.magicmod.capability.mana.PlayerManaProvider;
 import net.tyler.magicmod.client.ClientInfoData;
 import net.tyler.magicmod.client.ClientManaData;
 import net.tyler.magicmod.effect.ModEffects;
+import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import org.jetbrains.annotations.Nullable;
@@ -71,18 +75,85 @@ public class Water_2_SharkLunge_Item extends Item {
                     if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
                         if (info.getWater()) {
                             if (info.getSchoolLevel() >= 2) {
-                                if (mana.getMana() >= manaCost) {
-                                    cast.setSharkLungeCasting(true);
+                                if (!cast.getSharkLungeCasting()) {
+                                    if (mana.getMana() >= manaCost) {
+                                        cast.setSharkLungeCasting(true);
 
-                                    mana.subMana(manaCost);
-                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                        mana.subMana(manaCost);
+                                        ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                                    player.level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_2, SoundSource.PLAYERS, 1f, 1f);
-                                    ((ServerLevel)level).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                        player.level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_2, SoundSource.PLAYERS, 1f, 1f);
+                                        ((ServerLevel)level).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                    } else {
+                                        player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                    }
+                                } else {
+                                    cast.setSharkLungeCasting(false);
+                                    cast.setSharkLungeTick(0);
+
+                                    float f2 = 4F;
+                                    int k1 = Mth.floor(player.getX() - (double)f2 - 1.0D);
+                                    int l1 = Mth.floor(player.getX() + (double)f2 + 1.0D);
+                                    int i2 = Mth.floor(player.getY() - (double)f2 - 1.0D);
+                                    int i1 = Mth.floor(player.getY() + (double)f2 + 1.0D);
+                                    int j2 = Mth.floor(player.getZ() - (double)f2 - 1.0D);
+                                    int j1 = Mth.floor(player.getZ() + (double)f2 + 1.0D);
+                                    List<Entity> list = player.level.getEntities(player, new AABB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
+                                    Vec3 vec3 = new Vec3(player.getX(), player.getY(), player.getZ());
+
+                                    for(int k2 = 0; k2 < list.size(); ++k2) {
+                                        Entity entity = list.get(k2);
+                                        if (entity instanceof LivingEntity entity1) {
+                                            double d12 = Math.sqrt(entity1.distanceToSqr(vec3)) / (double)f2;
+                                            if (d12 <= 1.0D) {
+                                                if (entity1 instanceof Player player2) {
+                                                    player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
+                                                        player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
+                                                            if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                                                if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
+                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                } else {
+                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 14F);
+                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                                }
+
+                                                                if (player.getLevel().random.nextInt(2) == 0) {
+                                                                    player2.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200, 0, false, false, true));
+                                                                }
+
+                                                            }
+                                                        });
+                                                    });
+                                                } else {
+                                                    if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
+                                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                    } else {
+                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 14F);
+                                                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                    }
+
+                                                    if (player.getLevel().random.nextInt(2) == 0) {
+                                                        entity1.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 140, 0, false, false, true));
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
+
+                                    player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+                                    player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+                                    player.getLevel().playSound(null, player, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.PLAYERS, 2.0F,  0.6F + (player.getLevel().random.nextFloat() * 0.6F));
+
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX(), player.getY()+1, player.getZ(), 10,2.0D, 0.5D, 2.0D, 1.0D);
+
 
                                     player.getCooldowns().addCooldown(this, 400);
-                                } else {
-                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                                 }
                             } else {
                                 player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));

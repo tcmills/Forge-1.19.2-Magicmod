@@ -537,10 +537,12 @@ public class ModEvents {
 
                                             ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX(), player.getY()+1, player.getZ(), 10,2.0D, 0.5D, 2.0D, 1.0D);
 
+                                            player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), 400);
                                         }
                                     } else {
                                         cast.setSharkLungeCasting(false);
                                         cast.setSharkLungeTick(0);
+                                        player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), 400);
                                     }
                                 }
                             }
