@@ -49,6 +49,8 @@ public class Neutral_1_Aid_Item extends Item {
                         //player.sendSystemMessage(Component.literal("7 aid"));
                     }
 
+                    player.removeEffect(ModEffects.BLEED.get());
+
                     player.getCooldowns().addCooldown(this, 160);
 
                     if (level instanceof ServerLevel) {

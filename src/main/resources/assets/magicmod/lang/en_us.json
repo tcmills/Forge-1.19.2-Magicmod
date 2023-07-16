@@ -57,6 +57,7 @@
   "effect.magicmod.combat": "In Combat",
   "effect.magicmod.spell_strength": "Spell Strength",
   "effect.magicmod.meltdown": "Meltdown",
+  "effect.magicmod.bleed": "Bleed",
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
 
@@ -65,6 +66,9 @@
   "death.attack.scorchingRay": "%1$s was killed by %2$s using Scorching Ray",
   "death.attack.fireball": "%1$s was killed by %2$s using Fireball",
   "death.attack.superCritical": "%1$s was killed by %2$s using Super Critical",
+  "death.attack.bleed": "%1$s bled to death",
+  "death.attack.bleed.item": "%1$s bled out whilst fighting %2$s wielding %3$s",
+  "death.attack.bleed.player": "%1$s bled out whilst fighting %2$s",
 
   "itemGroup.magictab": "Magic"
 }

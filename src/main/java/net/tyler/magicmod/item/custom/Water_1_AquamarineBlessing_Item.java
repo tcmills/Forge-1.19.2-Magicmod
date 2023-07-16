@@ -70,7 +70,7 @@ public class Water_1_AquamarineBlessing_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: 5 per 30 seconds\n\nRight click to give yourself a buff while underwater!\nRight click again to stop!").withStyle(ChatFormatting.BLUE));
+            components.add(Component.literal("Mana Cost: 5 per 30 seconds\n\nRight click to give yourself a blessing while underwater!\nRight click again to stop!").withStyle(ChatFormatting.BLUE));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }

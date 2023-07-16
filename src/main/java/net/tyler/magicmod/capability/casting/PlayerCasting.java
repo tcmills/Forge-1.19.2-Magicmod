@@ -3,6 +3,9 @@ package net.tyler.magicmod.capability.casting;
 import net.minecraft.nbt.CompoundTag;
 
 public class PlayerCasting {
+
+    private int bleedTick = 0;
+
     private boolean flareBlitzCasting = false;
 
     private int flareBlitzTick = 0;
@@ -22,6 +25,18 @@ public class PlayerCasting {
     private boolean aquamarineBlessingCasting = false;
 
     private int aquamarineBlessingTick = 0;
+
+    public int getBleedTick() {
+        return bleedTick;
+    }
+
+    public void addBleedTick(int add) {
+        bleedTick += add;
+    }
+
+    public void setBleedTick(int tick) {
+        bleedTick = tick;
+    }
 
     public boolean getFlareBlitzCasting() {
         return flareBlitzCasting;
@@ -124,6 +139,7 @@ public class PlayerCasting {
     }
 
     public void copyFrom(PlayerCasting source) {
+        this.bleedTick = 0;
         this.flareBlitzCasting = false;
         this.flareBlitzTick = 0;
         this.scorchingRayCasting = false;
@@ -137,6 +153,7 @@ public class PlayerCasting {
     }
 
     public void saveNBTData(CompoundTag nbt) {
+        nbt.putInt("bleedTick", bleedTick);
         nbt.putBoolean("flareBlitzCasting", flareBlitzCasting);
         nbt.putInt("flareBlitzTick", flareBlitzTick);
         nbt.putBoolean("scorchingRayCasting", scorchingRayCasting);
@@ -150,6 +167,7 @@ public class PlayerCasting {
     }
 
     public void loadNBTData(CompoundTag nbt) {
+        bleedTick = nbt.getInt("bleedTick");
         flareBlitzCasting = nbt.getBoolean("flareBlitzCasting");
         flareBlitzTick = nbt.getInt("flareBlitzTick");
         scorchingRayCasting = nbt.getBoolean("scorchingRayCasting");

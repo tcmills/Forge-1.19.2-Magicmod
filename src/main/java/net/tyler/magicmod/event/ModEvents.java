@@ -250,6 +250,21 @@ public class ModEvents {
                 player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
                     player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                         player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
+
+                            if (player.hasEffect(ModEffects.BLEED.get())) {
+                                if (player.isCrouching()) {
+                                    cast.addBleedTick(1);
+                                    if (cast.getBleedTick() >= 100) {
+                                        player.removeEffect(ModEffects.BLEED.get());
+                                        cast.setBleedTick(0);
+                                    }
+                                } else {
+                                    cast.setBleedTick(0);
+                                }
+                            } else {
+                                cast.setBleedTick(0);
+                            }
+
                             if (info.getFire()) {
                                 if (cast.getFlareBlitzCasting()) {
                                     if (cast.getFlareBlitzTick() <= 100) {

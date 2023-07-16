@@ -25,4 +25,8 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("superCritical", pSource, pIndirectEntity));
     }
 
+    public static DamageSource bleed() {
+        return (new DamageSource("bleed")).bypassArmor();
+    }
+
 }
