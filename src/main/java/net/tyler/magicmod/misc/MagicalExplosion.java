@@ -159,7 +159,10 @@ public class MagicalExplosion extends Explosion {
                                     player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                         player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                             if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 6F);
+                                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                                } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                     entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
                                                     //player1.sendSystemMessage(Component.literal(num + 3F + ""));
                                                 } else {
@@ -170,7 +173,10 @@ public class MagicalExplosion extends Explosion {
                                         });
                                     });
                                 } else {
-                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 6F);
+                                        //player1.sendSystemMessage(Component.literal(num + 3F + ""));
+                                    } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                         entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
                                         //player1.sendSystemMessage(Component.literal(num + 3F + ""));
                                     } else {

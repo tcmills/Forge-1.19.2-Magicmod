@@ -110,7 +110,10 @@ public class ScorchingRayProjectileEntity extends ThrowableItemProjectile {
                             player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                 if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
                                     entity.setSecondsOnFire(7);
-                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                        entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 6F);
+                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                    } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                         entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
                                         //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                     } else {
@@ -122,7 +125,10 @@ public class ScorchingRayProjectileEntity extends ThrowableItemProjectile {
                         });
                     } else {
                         entity.setSecondsOnFire(7);
-                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                            entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 6F);
+                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                        } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                             entity.hurt(ModDamageSource.scorchingRay(this, this.getOwner()), baseDamage + 3F);
                             //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                         } else {

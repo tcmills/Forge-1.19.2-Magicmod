@@ -51,7 +51,10 @@ public class MeltdownEffect extends MobEffect {
                                 player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                     player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                         if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                entity.hurt(ModDamageSource.superCritical(), 3F);
+                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                            } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                 entity.hurt(ModDamageSource.superCritical(), 2F);
                                                 //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                             } else {
@@ -63,7 +66,10 @@ public class MeltdownEffect extends MobEffect {
                                     });
                                 });
                             } else {
-                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                    entity.hurt(ModDamageSource.superCritical(), 3F);
+                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                     entity.hurt(ModDamageSource.superCritical(), 2F);
                                     //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                 } else {

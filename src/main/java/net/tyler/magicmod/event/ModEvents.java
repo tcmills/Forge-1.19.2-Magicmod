@@ -175,6 +175,10 @@ public class ModEvents {
                     for (int i = 0; i < items[10]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.SHARK_LUNGE.get()));
                     }
+
+                    for (int i = 0; i < items[11]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.AMPHIBIOUS.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -264,6 +268,10 @@ public class ModEvents {
                     player.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                         player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
 
+                            if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get()) && player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                player.removeEffect(ModEffects.SPELL_STRENGTH.get());
+                            }
+
                             if (player.hasEffect(ModEffects.BLEED.get())) {
                                 if (player.isCrouching()) {
                                     cast.addBleedTick(1);
@@ -340,6 +348,10 @@ public class ModEvents {
                                             nbtData.putString("magicmod.fiery_soul_cast", "Fiery Soul has been cast");
                                             fiery_soul.setTag(nbtData);
                                         }
+                                    }
+
+                                    if (!player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
+                                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 72000, 0, false, false, true));
                                     }
 
                                     if (cast.getFierySoulTick() == 0) {
@@ -495,7 +507,10 @@ public class ModEvents {
                                                             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                                                 player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                                                     if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                                                        if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                                        if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                                            entity.hurt(ModDamageSource.sharkLunge(null, player), 20F);
+                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                        } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                                             player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
                                                                             //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                                                         } else {
@@ -511,7 +526,10 @@ public class ModEvents {
                                                                 });
                                                             });
                                                         } else {
-                                                            if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                            if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 20F);
+                                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                            } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                                 entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
                                                                 //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                                             } else {
@@ -543,6 +561,68 @@ public class ModEvents {
                                         cast.setSharkLungeCasting(false);
                                         cast.setSharkLungeTick(0);
                                         player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), 400);
+                                    }
+                                }
+
+                                int index_amphibious = InventoryUtil.getFirstInventoryIndex(player, ModItems.AMPHIBIOUS.get());
+                                if (cast.getAmphibiousCasting()) {
+                                    if (index_amphibious != -1) {
+                                        ItemStack amphibious = player.getInventory().getItem(index_amphibious);
+                                        if (!amphibious.hasTag()) {
+                                            CompoundTag nbtData = new CompoundTag();
+                                            nbtData.putString("magicmod.amphibious_cast", "Amphibious has been cast");
+                                            amphibious.setTag(nbtData);
+                                        }
+                                    }
+
+                                    if (player.isInWater()) {
+                                        if (!player.hasEffect(ModEffects.SPELL_STRENGTH_2.get()) || !player.hasEffect(MobEffects.REGENERATION)) {
+                                            player.removeEffect(MobEffects.REGENERATION);
+                                            player.removeEffect(ModEffects.SPELL_STRENGTH.get());
+
+                                            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 72000, 1, false, false, true));
+                                            player.addEffect(new MobEffectInstance(ModEffects.SPELL_STRENGTH_2.get(), 72000, 0, false, false, true));
+                                        }
+                                    } else {
+                                        if (!player.hasEffect(ModEffects.SPELL_STRENGTH.get()) || !player.hasEffect(MobEffects.REGENERATION)) {
+                                            player.removeEffect(MobEffects.REGENERATION);
+                                            player.removeEffect(ModEffects.SPELL_STRENGTH_2.get());
+
+                                            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 72000, 0, false, false, true));
+                                            player.addEffect(new MobEffectInstance(ModEffects.SPELL_STRENGTH.get(), 72000, 0, false, false, true));
+                                        }
+                                    }
+
+                                    if (cast.getAmphibiousTick() == 0) {
+                                        if (mana.getMana() >= 5) {
+                                            mana.subMana(5);
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                            cast.addAmphibiousTick(1);
+                                        } else {
+                                            player.removeEffect(MobEffects.REGENERATION);
+                                            player.removeEffect(ModEffects.SPELL_STRENGTH.get());
+                                            player.removeEffect(ModEffects.SPELL_STRENGTH_2.get());
+
+                                            cast.setAmphibiousCasting(false);
+                                            cast.setAmphibiousTick(0);
+                                            player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
+                                        }
+                                    }
+                                    else if (cast.getAmphibiousTick() >= 100) {
+                                        cast.setAmphibiousTick(0);
+                                    } else {
+                                        cast.addAmphibiousTick(1);
+                                    }
+
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FALLING_HONEY, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+
+                                } else {
+                                    if (index_amphibious != -1) {
+                                        ItemStack amphibious = player.getInventory().getItem(index_amphibious);
+                                        if (amphibious.hasTag()) {
+                                            amphibious.removeTagKey("magicmod.amphibious_cast");
+                                        }
                                     }
                                 }
                             }
@@ -593,6 +673,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SHARK_LUNGE.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(10);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AMPHIBIOUS.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(11);
                         }
                     }
                 });

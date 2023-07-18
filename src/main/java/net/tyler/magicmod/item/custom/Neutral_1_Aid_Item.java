@@ -41,7 +41,10 @@ public class Neutral_1_Aid_Item extends Item {
 
                     player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
 
-                    if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                    if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                        player.heal(13.0f);
+                        //player.sendSystemMessage(Component.literal("13 aid"));
+                    } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                         player.heal(10.0f);
                         //player.sendSystemMessage(Component.literal("10 aid"));
                     } else {

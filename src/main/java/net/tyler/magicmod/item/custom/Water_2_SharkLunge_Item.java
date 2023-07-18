@@ -110,7 +110,10 @@ public class Water_2_SharkLunge_Item extends Item {
                                                     player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                                         player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                                             if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                                                if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                                if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 20F);
+                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                                     player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
                                                                     //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                                                 } else {
@@ -126,7 +129,10 @@ public class Water_2_SharkLunge_Item extends Item {
                                                         });
                                                     });
                                                 } else {
-                                                    if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                                    if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 20F);
+                                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                    } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
                                                         entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
                                                         //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
                                                     } else {

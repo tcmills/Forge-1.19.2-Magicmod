@@ -30,6 +30,10 @@ public class PlayerCasting {
 
     private int sharkLungeTick = 0;
 
+    private boolean amphibiousCasting = false;
+
+    private int amphibiousTick = 0;
+
     public int getBleedTick() {
         return bleedTick;
     }
@@ -162,6 +166,26 @@ public class PlayerCasting {
         sharkLungeTick = tick;
     }
 
+    public boolean getAmphibiousCasting() {
+        return amphibiousCasting;
+    }
+
+    public void setAmphibiousCasting(boolean cast) {
+        amphibiousCasting = cast;
+    }
+
+    public int getAmphibiousTick() {
+        return amphibiousTick;
+    }
+
+    public void addAmphibiousTick(int add) {
+        amphibiousTick += add;
+    }
+
+    public void setAmphibiousTick(int tick) {
+        amphibiousTick = tick;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.bleedTick = 0;
         this.flareBlitzCasting = false;
@@ -176,6 +200,8 @@ public class PlayerCasting {
         this.aquamarineBlessingTick = 0;
         this.sharkLungeCasting = false;
         this.sharkLungeTick = 0;
+        this.amphibiousCasting = false;
+        this.amphibiousTick = 0;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -192,6 +218,8 @@ public class PlayerCasting {
         nbt.putInt("aquamarineBlessingTick", aquamarineBlessingTick);
         nbt.putBoolean("sharkLungeCasting", sharkLungeCasting);
         nbt.putInt("sharkLungeTick", sharkLungeTick);
+        nbt.putBoolean("amphibiousCasting", amphibiousCasting);
+        nbt.putInt("amphibiousTick", amphibiousTick);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -208,5 +236,7 @@ public class PlayerCasting {
         aquamarineBlessingTick = nbt.getInt("aquamarineBlessingTick");
         sharkLungeCasting = nbt.getBoolean("sharkLungeCasting");
         sharkLungeTick = nbt.getInt("sharkLungeTick");
+        amphibiousCasting = nbt.getBoolean("amphibiousCasting");
+        amphibiousTick = nbt.getInt("amphibiousTick");
     }
 }
