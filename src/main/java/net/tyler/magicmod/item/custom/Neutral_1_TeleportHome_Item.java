@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
@@ -47,6 +48,10 @@ public class Neutral_1_TeleportHome_Item extends Item {
 
                             serverplayer.teleportTo(location.getHomeX(), location.getHomeY(), location.getHomeZ());
                             serverplayer.resetFallDistance();
+
+                            if (serverplayer.gameMode.getGameModeForPlayer() == GameType.ADVENTURE) {
+                                serverplayer.setGameMode(GameType.SURVIVAL);
+                            }
 
                             player.level.playSound(null, player, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
 

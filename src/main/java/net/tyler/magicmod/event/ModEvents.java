@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -123,6 +124,9 @@ public class ModEvents {
                     event.getOriginal().getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(oldStore2 -> {
                         newStore2.copyFrom(oldStore2);
                     });
+                    if (((ServerPlayer) event.getEntity()).gameMode.getGameModeForPlayer() == GameType.ADVENTURE && !newStore2.getDungeonParty()) {
+                        ((ServerPlayer) event.getEntity()).setGameMode(GameType.SURVIVAL);
+                    }
                 });
                 event.getEntity().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(newStore3 ->{
                     event.getOriginal().getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(oldStore3 -> {
