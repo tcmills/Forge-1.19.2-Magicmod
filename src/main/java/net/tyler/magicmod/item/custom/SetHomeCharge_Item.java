@@ -29,7 +29,7 @@ public class SetHomeCharge_Item extends Item {
 
         Player player = entity instanceof Player ? (Player)entity : null;
 
-        if (entity instanceof ServerPlayer serverplayer && !level.isClientSide()) {
+        if (!level.isClientSide() && entity instanceof ServerPlayer serverplayer) {
             serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
                 location.setHome(serverplayer.getX(), serverplayer.getY(), serverplayer.getZ());
             });
