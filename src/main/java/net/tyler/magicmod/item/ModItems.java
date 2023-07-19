@@ -94,6 +94,9 @@ public class ModItems {
             () -> new Fire_3_SuperCritical_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> AQUAMARINE_BLESSING = ITEMS.register("aquamarine_blessing",
             () -> new Water_1_AquamarineBlessing_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+
+    public static final RegistryObject<Item> MAGICAL_ANGLER = ITEMS.register("magical_angler",
+            () -> new Water_1_MagicalAngler_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> SHARK_LUNGE = ITEMS.register("shark_lunge",
             () -> new Water_2_SharkLunge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> AMPHIBIOUS = ITEMS.register("amphibious",
