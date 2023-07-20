@@ -101,6 +101,10 @@ public class ModItems {
             () -> new Water_2_SharkLunge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> AMPHIBIOUS = ITEMS.register("amphibious",
             () -> new Water_2_Amphibious_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> WATERFALL = ITEMS.register("waterfall",
+            () -> new Water_3_Waterfall_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> WATERFALL_PROJECTILE = ITEMS.register("waterfall_projectile",
+            () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

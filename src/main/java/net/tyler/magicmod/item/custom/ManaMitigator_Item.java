@@ -54,6 +54,7 @@ public class ManaMitigator_Item extends Item {
         player.getCooldowns().removeCooldown(ModItems.FIREBALL.get());
         player.getCooldowns().removeCooldown(ModItems.SUPER_CRITICAL.get());
         player.getCooldowns().removeCooldown(ModItems.SHARK_LUNGE.get());
+        player.getCooldowns().removeCooldown(ModItems.WATERFALL.get());
 
         player.level.playSound(null, player, SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1.0F, 1.8F);
         player.level.playSound(null, player, SoundEvents.BOAT_PADDLE_LAND, SoundSource.PLAYERS, 1.0F, 0.7F);

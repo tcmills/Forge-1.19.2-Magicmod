@@ -29,6 +29,10 @@ public class ModDamageSource extends DamageSource {
         return (new DamageSource("superCritical")).bypassArmor();
     }
 
+    public static DamageSource waterfall(Entity pSource, @Nullable Entity pIndirectEntity) {
+        return (new IndirectEntityDamageSource("waterfall", pSource, pIndirectEntity));
+    }
+
     public static DamageSource sharkLunge(Entity pSource, @Nullable Entity pIndirectEntity) {
         return (new IndirectEntityDamageSource("sharkLunge", pSource, pIndirectEntity));
     }

@@ -25,6 +25,10 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<FireballProjectileEntity>of(FireballProjectileEntity::new, MobCategory.MISC)
                     .sized(0.125f, 0.125f)
                     .build(new ResourceLocation(MagicMod.MOD_ID, "fireball_projectile").toString()));
+    public static final RegistryObject<EntityType<WaterfallProjectileEntity>> WATERFALL_PROJECTILE = ENTITY_TYPES.register("waterfall_projectile",
+            () -> EntityType.Builder.<WaterfallProjectileEntity>of(WaterfallProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.484375f, 0.484375f)
+                    .build(new ResourceLocation(MagicMod.MOD_ID, "waterfall_projectile").toString()));
     public static final RegistryObject<EntityType<WispEntity>> WISP = ENTITY_TYPES.register("wisp",
             () -> EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.4f)

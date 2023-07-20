@@ -183,6 +183,10 @@ public class ModEvents {
                     for (int i = 0; i < items[11]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.AMPHIBIOUS.get()));
                     }
+
+                    for (int i = 0; i < items[12]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.WATERFALL.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -233,6 +237,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
                             player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
                             player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), (int)(400 * cd.getSharkLungeCD()));
+                            player.getCooldowns().addCooldown(ModItems.WATERFALL.get(), (int)(2400 * cd.getWaterfallCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -255,6 +260,7 @@ public class ModEvents {
                 cd.setFireballCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
                 cd.setSuperCriticalCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
                 cd.setSharkLungeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
+                cd.setWaterfallCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
             });
         }
 
@@ -680,6 +686,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AMPHIBIOUS.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(11);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.WATERFALL.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(12);
                         }
                     }
                 });
@@ -693,6 +702,7 @@ public class ModEvents {
                     cd.setFireballCD(player.getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
                     cd.setSuperCriticalCD(player.getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
                     cd.setSharkLungeCD(player.getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
+                    cd.setWaterfallCD(player.getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
                 });
             }
         }

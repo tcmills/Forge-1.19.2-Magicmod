@@ -4,5 +4,11 @@
     "sounds": [
       "magicmod:super_critical"
     ]
+  },
+  "waterfall": {
+    "subtitle": "sounds.magicmod.waterfall",
+    "sounds": [
+      "magicmod:waterfall"
+    ]
   }
 }

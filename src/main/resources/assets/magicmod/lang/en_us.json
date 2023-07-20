@@ -44,6 +44,7 @@
   "item.magicmod.magical_angler": "Passive: Magical Angler",
   "item.magicmod.shark_lunge": "Shark Lunge",
   "item.magicmod.amphibious": "Amphibious",
+  "item.magicmod.waterfall": "Waterfall",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -74,6 +75,7 @@
   "death.attack.fireball": "%1$s was killed by %2$s using Fireball",
   "death.attack.superCritical": "%1$s was killed by %2$s using Super Critical",
   "death.attack.sharkLunge": "%1$s was killed by %2$s using Shark Lunge",
+  "death.attack.waterfall": "%1$s was killed by %2$s using Waterfall",
 
   "itemGroup.magictab": "Magic"
 }

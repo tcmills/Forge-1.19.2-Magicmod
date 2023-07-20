@@ -14,6 +14,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> SUPER_CRITICAL = registerSoundEvent("super_critical");
 
+    public static final RegistryObject<SoundEvent> WATERFALL = registerSoundEvent("waterfall");
+
     public static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         ResourceLocation id = new ResourceLocation(MagicMod.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> new SoundEvent(id));
