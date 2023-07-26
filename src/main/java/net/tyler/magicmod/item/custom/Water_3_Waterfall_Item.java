@@ -74,7 +74,7 @@ public class Water_3_Waterfall_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: 85\nCooldown Time: 2 minutes\nDamage: 25\nSlowness II Duration: 20 seconds\n\nRight click to launch a massive torrent of water!\nThe Waterfall pushes everything out of its way and restricts movement!").withStyle(ChatFormatting.BLUE));
+            components.add(Component.literal("Mana Cost: 85\nCooldown Time: 120 seconds\nDamage: 25\nSlowness II Duration: 20 seconds\n\nRight click to launch a massive torrent of water!\nThe Waterfall pushes everything out of its way and restricts movement!").withStyle(ChatFormatting.BLUE));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
