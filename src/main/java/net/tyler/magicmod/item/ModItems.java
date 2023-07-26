@@ -94,7 +94,6 @@ public class ModItems {
             () -> new Fire_3_SuperCritical_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> AQUAMARINE_BLESSING = ITEMS.register("aquamarine_blessing",
             () -> new Water_1_AquamarineBlessing_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
-
     public static final RegistryObject<Item> MAGICAL_ANGLER = ITEMS.register("magical_angler",
             () -> new Water_1_MagicalAngler_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> SHARK_LUNGE = ITEMS.register("shark_lunge",
@@ -105,6 +104,8 @@ public class ModItems {
             () -> new Water_3_Waterfall_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> WATERFALL_PROJECTILE = ITEMS.register("waterfall_projectile",
             () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> GALEFORCE = ITEMS.register("galeforce",
+            () -> new Air_1_Galeforce_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,
