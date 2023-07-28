@@ -121,7 +121,7 @@ public class Air_1_Yeet_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: 10\nCooldown Time: 20 seconds\n\nThis B*tch Empty!").withStyle(ChatFormatting.GREEN));
+            components.add(Component.literal("Mana Cost: 10\nCooldown Time: 20 seconds\n\nRight click to push everything away from you!").withStyle(ChatFormatting.GREEN));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
