@@ -15,6 +15,7 @@ public class PlayerCooldowns {
     private float sharkLunge = 0.0F;
     private float waterfall = 0.0F;
     private float galeforce = 0.0F;
+    private float yeet = 0.0F;
 
     public float getMagicMissileCD() {
         return magicMissile;
@@ -104,6 +105,14 @@ public class PlayerCooldowns {
         galeforce = sec;
     }
 
+    public float getYeetCD() {
+        return yeet;
+    }
+
+    public void setYeetCD(float sec) {
+        yeet = sec;
+    }
+
     public void clearCD() {
         magicMissile = 0.0F;
         aid = 0.0F;
@@ -116,6 +125,7 @@ public class PlayerCooldowns {
         sharkLunge = 0.0F;
         waterfall = 0.0F;
         galeforce = 0.0F;
+        yeet = 0.0F;
     }
 
     public void copyFrom(PlayerCooldowns source) {
@@ -130,6 +140,7 @@ public class PlayerCooldowns {
         this.sharkLunge = source.sharkLunge;
         this.waterfall = source.waterfall;
         this.galeforce = source.galeforce;
+        this.yeet = source.yeet;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -144,6 +155,7 @@ public class PlayerCooldowns {
         nbt.putFloat("sharkLunge", sharkLunge);
         nbt.putFloat("waterfall", waterfall);
         nbt.putFloat("galeforce", galeforce);
+        nbt.putFloat("yeet", yeet);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -158,5 +170,6 @@ public class PlayerCooldowns {
         sharkLunge = nbt.getFloat("sharkLunge");
         waterfall = nbt.getFloat("waterfall");
         galeforce = nbt.getFloat("galeforce");
+        yeet = nbt.getFloat("yeet");
     }
 }

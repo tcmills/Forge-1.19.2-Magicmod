@@ -191,6 +191,10 @@ public class ModEvents {
                     for (int i = 0; i < items[13]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.GALEFORCE.get()));
                     }
+
+                    for (int i = 0; i < items[14]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.YEET.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -243,6 +247,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), (int)(400 * cd.getSharkLungeCD()));
                             player.getCooldowns().addCooldown(ModItems.WATERFALL.get(), (int)(2400 * cd.getWaterfallCD()));
                             player.getCooldowns().addCooldown(ModItems.GALEFORCE.get(), (int)(600 * cd.getGaleforceCD()));
+                            player.getCooldowns().addCooldown(ModItems.YEET.get(), (int)(400 * cd.getYeetCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -267,6 +272,7 @@ public class ModEvents {
                 cd.setSharkLungeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
                 cd.setWaterfallCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
                 cd.setGaleforceCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
+                cd.setYeetCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
             });
         }
 
@@ -698,6 +704,9 @@ public class ModEvents {
                         } else if (finalDroppedItems[i].getItem().getItem() == ModItems.GALEFORCE.get()) {
                             finalDroppedItems[i].kill();
                             drops.addDropNumber(13);
+                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.YEET.get()) {
+                            finalDroppedItems[i].kill();
+                            drops.addDropNumber(14);
                         }
                     }
                 });
@@ -713,6 +722,7 @@ public class ModEvents {
                     cd.setSharkLungeCD(player.getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
                     cd.setWaterfallCD(player.getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
                     cd.setGaleforceCD(player.getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
+                    cd.setYeetCD(player.getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
                 });
             }
         }

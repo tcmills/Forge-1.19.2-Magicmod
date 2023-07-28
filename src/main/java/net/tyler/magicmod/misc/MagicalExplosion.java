@@ -139,17 +139,23 @@ public class MagicalExplosion extends Explosion {
         for(int k2 = 0; k2 < list.size(); ++k2) {
             Entity entity = list.get(k2);
             if (!entity.ignoreExplosion()) {
+                //d12 is the entity's percentage of distance between the source and the max distance(radius)
                 double d12 = Math.sqrt(entity.distanceToSqr(vec3)) / (double)f2;
                 if (d12 <= 1.0D) {
+                    //d5, d7, and d9 are the x, y, and z of the distance between the two entities
+                    //d13 is the total distance between the two entities
                     double d5 = entity.getX() - this.x;
                     double d7 = (entity instanceof PrimedTnt ? entity.getY() : entity.getEyeY()) - this.y;
                     double d9 = entity.getZ() - this.z;
                     double d13 = Math.sqrt(d5 * d5 + d7 * d7 + d9 * d9);
                     if (d13 != 0.0D) {
+                        //Dividing by d13 scales d5, d7, and d9 to a total distance of 1
                         d5 /= d13;
                         d7 /= d13;
                         d9 /= d13;
+                        //d14 is the exposure
                         double d14 = (double)getSeenPercent(vec3, entity);
+                        //d10 is d12 inverted (because damage/knockback should decrease as the entity is further away, not increase) and multiplied by the percentage of exposure
                         double d10 = (1.0D - d12) * d14;
                         float num = (float)(d14  * (damage - 1.0D) + 1.0D);
 
