@@ -47,6 +47,8 @@
   "item.magicmod.waterfall": "Waterfall",
   "item.magicmod.galeforce": "Galeforce",
   "item.magicmod.yeet": "Yeet",
+  "item.magicmod.air_darts": "Air Darts",
+  "item.magicmod.air_dart": "Air Dart",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -78,6 +80,7 @@
   "death.attack.superCritical": "%1$s was killed by %2$s using Super Critical",
   "death.attack.sharkLunge": "%1$s was killed by %2$s using Shark Lunge",
   "death.attack.waterfall": "%1$s was killed by %2$s using Waterfall",
+  "death.attack.airDart": "%1$s was killed by %2$s using Air Darts",
 
   "itemGroup.magictab": "Magic"
 }

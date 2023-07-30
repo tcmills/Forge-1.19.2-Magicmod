@@ -32,6 +32,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -48,6 +49,7 @@ import net.tyler.magicmod.capability.drops.PlayerDrops;
 import net.tyler.magicmod.capability.drops.PlayerDropsProvider;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
+import net.tyler.magicmod.entity.custom.AirDartProjectileEntity;
 import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
 import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
 import net.tyler.magicmod.entity.custom.WispEntity;
@@ -195,6 +197,10 @@ public class ModEvents {
                     for (int i = 0; i < items[14]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.YEET.get()));
                     }
+
+                    for (int i = 0; i < items[15]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.AIR_DARTS.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -248,6 +254,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.WATERFALL.get(), (int)(2400 * cd.getWaterfallCD()));
                             player.getCooldowns().addCooldown(ModItems.GALEFORCE.get(), (int)(600 * cd.getGaleforceCD()));
                             player.getCooldowns().addCooldown(ModItems.YEET.get(), (int)(400 * cd.getYeetCD()));
+                            player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), (int)(1200 * cd.getAirDartsCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -273,6 +280,7 @@ public class ModEvents {
                 cd.setWaterfallCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
                 cd.setGaleforceCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
                 cd.setYeetCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
+                cd.setAirDartsCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
             });
         }
 
@@ -280,6 +288,14 @@ public class ModEvents {
         public static void onPlayerDamage(LivingDamageEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.addEffect(new MobEffectInstance(ModEffects.COMBAT.get(), 200, 0, false, false, true));
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerToss(ItemTossEvent event) {
+            if (event.getEntity().getItem().getItem() == ModItems.AIR_DART.get()) {
+                event.setCanceled(true);
+                event.getPlayer().addItem(event.getEntity().getItem());
             }
         }
 
@@ -649,6 +665,27 @@ public class ModEvents {
                                 }
                             }
 
+                            if (info.getAir()) {
+
+//                                player.sendSystemMessage(Component.literal("" + cast.getAirDartsCasting()).withStyle(ChatFormatting.YELLOW));
+//                                player.sendSystemMessage(Component.literal("" + cast.getAirDartsProjectiles()).withStyle(ChatFormatting.YELLOW));
+
+                                if (cast.getAirDartsCasting()) {
+                                    if (cast.getAirDartsProjectiles() == 0) {
+                                        player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), 1200);
+
+                                        int index_airDart = InventoryUtil.getFirstInventoryIndex(player, ModItems.AIR_DART.get());
+                                        while (index_airDart != -1) {
+                                            player.getInventory().removeItem(index_airDart, 16);
+                                            index_airDart = InventoryUtil.getFirstInventoryIndex(player, ModItems.AIR_DART.get());
+                                        }
+
+                                        cast.setAirDartsCasting(false);
+                                    }
+                                }
+
+                            }
+
                         });
                     });
                 });
@@ -660,69 +697,83 @@ public class ModEvents {
             if (event.getEntity() instanceof ServerPlayer player) {
                 ItemEntity[] droppedItems = new ItemEntity[event.getDrops().size()];
                 ItemEntity[] finalDroppedItems = event.getDrops().toArray(droppedItems);
-                event.getEntity().getCapability(PlayerDropsProvider.PLAYER_DROPS).ifPresent(drops -> {
-                    for (int i = 0; i < finalDroppedItems.length; i++) {
-                        if (finalDroppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(0);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AID.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(1);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(2);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(3);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FLARE_BLITZ.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(4);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SCORCHING_RAY.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(5);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FIREBALL.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(6);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FIERY_SOUL.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(7);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SUPER_CRITICAL.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(8);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AQUAMARINE_BLESSING.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(9);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SHARK_LUNGE.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(10);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AMPHIBIOUS.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(11);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.WATERFALL.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(12);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.GALEFORCE.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(13);
-                        } else if (finalDroppedItems[i].getItem().getItem() == ModItems.YEET.get()) {
-                            finalDroppedItems[i].kill();
-                            drops.addDropNumber(14);
+                player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
+                    player.getCapability(PlayerDropsProvider.PLAYER_DROPS).ifPresent(drops -> {
+                        for (int i = 0; i < finalDroppedItems.length; i++) {
+                            if (finalDroppedItems[i].getItem().getItem() == ModItems.MAGIC_MISSILE.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(0);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AID.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(1);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(2);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TELEPORT_HOME.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(3);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FLARE_BLITZ.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(4);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SCORCHING_RAY.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(5);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FIREBALL.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(6);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.FIERY_SOUL.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(7);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SUPER_CRITICAL.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(8);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AQUAMARINE_BLESSING.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(9);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.SHARK_LUNGE.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(10);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AMPHIBIOUS.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(11);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.WATERFALL.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(12);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.GALEFORCE.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(13);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.YEET.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(14);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AIR_DARTS.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(15);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AIR_DART.get()) {
+                                cast.subAirDartsProjectiles(finalDroppedItems[i].getItem().getCount());
+                                finalDroppedItems[i].kill();
+                            }
                         }
-                    }
-                });
-                player.getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(cd -> {
-                    cd.setMagicMissileCD(player.getCooldowns().getCooldownPercent(ModItems.MAGIC_MISSILE.get(), 0.0F));
-                    cd.setAidCD(player.getCooldowns().getCooldownPercent(ModItems.AID.get(), 0.0F));
-                    cd.setTeleportCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
-                    cd.setTeleportHomeCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
-                    cd.setFlareBlitzCD(player.getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
-                    cd.setScorchingRayCD(player.getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
-                    cd.setFireballCD(player.getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
-                    cd.setSuperCriticalCD(player.getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
-                    cd.setSharkLungeCD(player.getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
-                    cd.setWaterfallCD(player.getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
-                    cd.setGaleforceCD(player.getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
-                    cd.setYeetCD(player.getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
+                    });
+
+                    player.getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(cd -> {
+                        cd.setMagicMissileCD(player.getCooldowns().getCooldownPercent(ModItems.MAGIC_MISSILE.get(), 0.0F));
+                        cd.setAidCD(player.getCooldowns().getCooldownPercent(ModItems.AID.get(), 0.0F));
+                        cd.setTeleportCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT.get(), 0.0F));
+                        cd.setTeleportHomeCD(player.getCooldowns().getCooldownPercent(ModItems.TELEPORT_HOME.get(), 0.0F));
+                        cd.setFlareBlitzCD(player.getCooldowns().getCooldownPercent(ModItems.FLARE_BLITZ.get(), 0.0F));
+                        cd.setScorchingRayCD(player.getCooldowns().getCooldownPercent(ModItems.SCORCHING_RAY.get(), 0.0F));
+                        cd.setFireballCD(player.getCooldowns().getCooldownPercent(ModItems.FIREBALL.get(), 0.0F));
+                        cd.setSuperCriticalCD(player.getCooldowns().getCooldownPercent(ModItems.SUPER_CRITICAL.get(), 0.0F));
+                        cd.setSharkLungeCD(player.getCooldowns().getCooldownPercent(ModItems.SHARK_LUNGE.get(), 0.0F));
+                        cd.setWaterfallCD(player.getCooldowns().getCooldownPercent(ModItems.WATERFALL.get(), 0.0F));
+                        cd.setGaleforceCD(player.getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
+                        cd.setYeetCD(player.getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
+                        if (cast.getAirDartsCasting() && cast.getAirDartsProjectiles() == 0) {
+                            cd.setAirDartsCD(1.0F);
+                        } else {
+                            cd.setAirDartsCD(player.getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
+                        }
+                    });
                 });
             }
         }

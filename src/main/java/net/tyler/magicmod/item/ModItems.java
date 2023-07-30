@@ -108,6 +108,12 @@ public class ModItems {
             () -> new Air_1_Galeforce_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> YEET = ITEMS.register("yeet",
             () -> new Air_1_Yeet_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> AIR_DARTS = ITEMS.register("air_darts",
+            () -> new Air_1_AirDarts_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> AIR_DART = ITEMS.register("air_dart",
+            () -> new AirDart_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(16)));
+    public static final RegistryObject<Item> AIR_DART_PROJECTILE = ITEMS.register("air_dart_projectile",
+            () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

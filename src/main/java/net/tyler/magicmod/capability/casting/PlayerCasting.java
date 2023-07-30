@@ -34,6 +34,10 @@ public class PlayerCasting {
 
     private int amphibiousTick = 0;
 
+    private boolean airDartsCasting = false;
+
+    private int airDartsProjectiles = 0;
+
     public int getBleedTick() {
         return bleedTick;
     }
@@ -82,8 +86,8 @@ public class PlayerCasting {
         scorchingRayProjectiles -= sub;
     }
 
-    public void setScorchingRayProjectiles(int tick) {
-        scorchingRayProjectiles = tick;
+    public void setScorchingRayProjectiles(int num) {
+        scorchingRayProjectiles = num;
     }
 
     public int getScorchingRayTick() {
@@ -186,6 +190,30 @@ public class PlayerCasting {
         amphibiousTick = tick;
     }
 
+    public boolean getAirDartsCasting() {
+        return airDartsCasting;
+    }
+
+    public void setAirDartsCasting(boolean cast) {
+        airDartsCasting = cast;
+    }
+
+    public int getAirDartsProjectiles() {
+        return airDartsProjectiles;
+    }
+
+    public void subAirDartsProjectiles(int sub) {
+        if (airDartsProjectiles - sub < 0) {
+            airDartsProjectiles = 0;
+        } else {
+            airDartsProjectiles -= sub;
+        }
+    }
+
+    public void setAirDartsProjectiles(int num) {
+        airDartsProjectiles = num;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.bleedTick = 0;
         this.flareBlitzCasting = false;
@@ -202,6 +230,8 @@ public class PlayerCasting {
         this.sharkLungeTick = 0;
         this.amphibiousCasting = false;
         this.amphibiousTick = 0;
+        this.airDartsCasting = source.airDartsCasting;
+        this.airDartsProjectiles = source.airDartsProjectiles;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -220,6 +250,8 @@ public class PlayerCasting {
         nbt.putInt("sharkLungeTick", sharkLungeTick);
         nbt.putBoolean("amphibiousCasting", amphibiousCasting);
         nbt.putInt("amphibiousTick", amphibiousTick);
+        nbt.putBoolean("airDartsCasting", airDartsCasting);
+        nbt.putInt("airDartsProjectiles", airDartsProjectiles);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -238,5 +270,7 @@ public class PlayerCasting {
         sharkLungeTick = nbt.getInt("sharkLungeTick");
         amphibiousCasting = nbt.getBoolean("amphibiousCasting");
         amphibiousTick = nbt.getInt("amphibiousTick");
+        airDartsCasting = nbt.getBoolean("airDartsCasting");
+        airDartsProjectiles = nbt.getInt("airDartsProjectiles");
     }
 }

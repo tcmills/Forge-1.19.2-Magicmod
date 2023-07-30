@@ -29,6 +29,10 @@ public class ModEntityTypes {
             () -> EntityType.Builder.<WaterfallProjectileEntity>of(WaterfallProjectileEntity::new, MobCategory.MISC)
                     .sized(0.484375f, 0.484375f)
                     .build(new ResourceLocation(MagicMod.MOD_ID, "waterfall_projectile").toString()));
+    public static final RegistryObject<EntityType<AirDartProjectileEntity>> AIR_DART_PROJECTILE = ENTITY_TYPES.register("air_dart_projectile",
+            () -> EntityType.Builder.<AirDartProjectileEntity>of(AirDartProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.125f, 0.125f)
+                    .build(new ResourceLocation(MagicMod.MOD_ID, "air_dart_projectile").toString()));
     public static final RegistryObject<EntityType<WispEntity>> WISP = ENTITY_TYPES.register("wisp",
             () -> EntityType.Builder.of(WispEntity::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.4f)

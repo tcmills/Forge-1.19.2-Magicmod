@@ -37,6 +37,8 @@ public class ClientEvents {
                     ThrownItemRenderer::new);
             event.registerEntityRenderer(ModEntityTypes.WATERFALL_PROJECTILE.get(),
                     ThrownItemRenderer::new);
+            event.registerEntityRenderer(ModEntityTypes.AIR_DART_PROJECTILE.get(),
+                    ThrownItemRenderer::new);
         }
     }
 

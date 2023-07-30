@@ -33,6 +33,10 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("waterfall", pSource, pIndirectEntity));
     }
 
+    public static DamageSource airDart(Entity pSource, @Nullable Entity pIndirectEntity) {
+        return (new IndirectEntityDamageSource("airDart", pSource, pIndirectEntity)).setProjectile();
+    }
+
     public static DamageSource sharkLunge(Entity pSource, @Nullable Entity pIndirectEntity) {
         return (new IndirectEntityDamageSource("sharkLunge", pSource, pIndirectEntity));
     }
