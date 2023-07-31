@@ -201,6 +201,10 @@ public class ModEvents {
                     for (int i = 0; i < items[15]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.AIR_DARTS.get()));
                     }
+
+                    for (int i = 0; i < items[16]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.TOSS.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -255,6 +259,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.GALEFORCE.get(), (int)(600 * cd.getGaleforceCD()));
                             player.getCooldowns().addCooldown(ModItems.YEET.get(), (int)(400 * cd.getYeetCD()));
                             player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), (int)(1200 * cd.getAirDartsCD()));
+                            player.getCooldowns().addCooldown(ModItems.TOSS.get(), (int)(600 * cd.getTossCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -281,6 +286,7 @@ public class ModEvents {
                 cd.setGaleforceCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.GALEFORCE.get(), 0.0F));
                 cd.setYeetCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
                 cd.setAirDartsCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
+                cd.setTossCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
             });
         }
 
@@ -751,6 +757,9 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.AIR_DART.get()) {
                                 cast.subAirDartsProjectiles(finalDroppedItems[i].getItem().getCount());
                                 finalDroppedItems[i].kill();
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TOSS.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(16);
                             }
                         }
                     });
@@ -773,6 +782,7 @@ public class ModEvents {
                         } else {
                             cd.setAirDartsCD(player.getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
                         }
+                        cd.setTossCD(player.getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
                     });
                 });
             }

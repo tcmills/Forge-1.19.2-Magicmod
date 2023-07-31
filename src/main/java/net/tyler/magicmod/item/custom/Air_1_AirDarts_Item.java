@@ -49,7 +49,6 @@ public class Air_1_AirDarts_Item extends Item {
                             if (mana.getMana() >= manaCost) {
 
                                 if (!cast.getAirDartsCasting()) {
-
                                     ItemStack itemStack = new ItemStack(ModItems.AIR_DART.get(), 8);
                                     boolean flag = player.getInventory().add(itemStack);
                                     if (flag) {
@@ -65,7 +64,7 @@ public class Air_1_AirDarts_Item extends Item {
                                             itementity.setOwner(player.getUUID());
                                         }
 
-                                        player.level.playSound(null, player, SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        player.level.playSound(player, player, SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
                                         player.sendSystemMessage(Component.literal("Your inventory is full!").withStyle(ChatFormatting.YELLOW));
                                     }

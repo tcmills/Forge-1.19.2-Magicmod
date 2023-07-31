@@ -22,7 +22,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerBelowAll("mana", ManaHudOverlay.HUD_MANA);
-            event.registerAboveAll("info", InfoHudOverlay.HUD_INFO);
+            event.registerBelowAll("info", InfoHudOverlay.HUD_INFO);
         }
 
         @SubscribeEvent
