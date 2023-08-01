@@ -205,6 +205,10 @@ public class ModEvents {
                     for (int i = 0; i < items[16]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.TOSS.get()));
                     }
+
+                    for (int i = 0; i < items[17]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.WINGS_OF_QUARTZ.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -260,6 +264,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.YEET.get(), (int)(400 * cd.getYeetCD()));
                             player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), (int)(1200 * cd.getAirDartsCD()));
                             player.getCooldowns().addCooldown(ModItems.TOSS.get(), (int)(600 * cd.getTossCD()));
+                            player.getCooldowns().addCooldown(ModItems.WINGS_OF_QUARTZ.get(), (int)(500 * cd.getWingsOfQuartzCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -287,6 +292,7 @@ public class ModEvents {
                 cd.setYeetCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.YEET.get(), 0.0F));
                 cd.setAirDartsCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
                 cd.setTossCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
+                cd.setWingsOfQuartzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
             });
         }
 
@@ -690,6 +696,20 @@ public class ModEvents {
                                     }
                                 }
 
+                                if (cast.getWingsOfQuartzCasting()) {
+                                    if (cast.getWingsOfQuartzTick() <= 120) {
+
+                                        //effects
+
+                                        cast.addWingsOfQuartzTick(1);
+                                    } else {
+                                        cast.setWingsOfQuartzCasting(false);
+                                        cast.setWingsOfQuartzTick(0);
+                                        player.getAbilities().flying = false;
+                                        player.getAbilities().mayfly = false;
+                                        player.onUpdateAbilities();
+                                    }
+                                }
                             }
 
                         });
@@ -760,6 +780,9 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.TOSS.get()) {
                                 finalDroppedItems[i].kill();
                                 drops.addDropNumber(16);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.WINGS_OF_QUARTZ.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(17);
                             }
                         }
                     });
@@ -783,6 +806,7 @@ public class ModEvents {
                             cd.setAirDartsCD(player.getCooldowns().getCooldownPercent(ModItems.AIR_DARTS.get(), 0.0F));
                         }
                         cd.setTossCD(player.getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
+                        cd.setWingsOfQuartzCD(player.getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
                     });
                 });
             }

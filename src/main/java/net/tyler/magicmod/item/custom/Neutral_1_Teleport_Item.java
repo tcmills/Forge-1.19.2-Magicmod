@@ -40,7 +40,7 @@ public class Neutral_1_Teleport_Item extends Item {
         if (!level.isClientSide() && player instanceof ServerPlayer serverplayer) {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
-                    if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty()) {
+                    if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && player.level.dimension() == Level.OVERWORLD && !info.getDungeonParty()) {
                         mana.subMana(10);
                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
 
@@ -79,11 +79,16 @@ public class Neutral_1_Teleport_Item extends Item {
                 if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
                     if (!info.getDungeonParty()) {
                         if (!player.hasEffect(ModEffects.COMBAT.get())) {
-                            if (mana.getMana() >= 10) {
-                                cast = true;
+                            if (player.level.dimension() == Level.OVERWORLD) {
+                                if (mana.getMana() >= 10) {
+                                    cast = true;
+                                } else {
+                                    cast = false;
+                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                }
                             } else {
                                 cast = false;
-                                player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                player.sendSystemMessage(Component.literal("Your destination is not in this dimension!").withStyle(ChatFormatting.YELLOW));
                             }
                         } else {
                             cast = false;

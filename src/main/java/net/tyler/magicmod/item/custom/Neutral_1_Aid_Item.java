@@ -56,11 +56,9 @@ public class Neutral_1_Aid_Item extends Item {
 
                     player.getCooldowns().addCooldown(this, 160);
 
-                    if (level instanceof ServerLevel) {
-                        for (int i = 0; i < 360; i++) {
-                            if (i % 20 == 0) {
-                                ((ServerLevel)level).sendParticles(ParticleTypes.HEART, (double)player.getX() + Math.cos(i), (double)player.getY() + 1.0D, (double)player.getZ() + Math.sin(i), 1,0.0D, 0.0D, 0.0D, 0.0D);
-                            }
+                    for (int i = 0; i < 360; i++) {
+                        if (i % 20 == 0) {
+                            ((ServerLevel)level).sendParticles(ParticleTypes.HEART, (double)player.getX() + Math.cos(i), (double)player.getY() + 1.0D, (double)player.getZ() + Math.sin(i), 1,0.0D, 0.0D, 0.0D, 0.0D);
                         }
                     }
                 } else {

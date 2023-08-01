@@ -1,5 +1,7 @@
 package net.tyler.magicmod.item.custom;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +19,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.tyler.magicmod.capability.location.PlayerLocationProvider;
 
 public class SetHomeCharge_Item extends Item {
-    private static final int USE_DURATION = 1;
+    private static final int USE_DURATION = 20;
 
     public SetHomeCharge_Item(Properties properties) {
         super(properties);
@@ -29,20 +31,29 @@ public class SetHomeCharge_Item extends Item {
 
         Player player = entity instanceof Player ? (Player)entity : null;
 
-        if (!level.isClientSide() && entity instanceof ServerPlayer serverplayer) {
-            serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
-                location.setHome(serverplayer.getX(), serverplayer.getY(), serverplayer.getZ());
-            });
-        }
+        if (player.level.dimension() == Level.OVERWORLD) {
+            if (!level.isClientSide() && entity instanceof ServerPlayer serverplayer) {
+                serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
+                    player.level.playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 1f, 1.7f);
+                    player.level.playSound(null, player, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.PLAYERS, 1f, 1f);
+                    player.level.playSound(null, player, SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1f, 2f);
 
-        if (player != null) {
-            player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
+                    location.setHome(serverplayer.getX(), serverplayer.getY(), serverplayer.getZ());
+
+                    player.sendSystemMessage(Component.literal("Your home has been set!").withStyle(ChatFormatting.YELLOW));
+                });
             }
+
+            if (player != null) {
+                player.awardStat(Stats.ITEM_USED.get(this));
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+            }
+
+            entity.gameEvent(GameEvent.EAT);
         }
 
-        entity.gameEvent(GameEvent.EAT);
         return stack;
     }
 
@@ -58,9 +69,14 @@ public class SetHomeCharge_Item extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        player.level.playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 1f, 1.7f);
-        player.level.playSound(null, player, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.PLAYERS, 1f, 1f);
-        player.level.playSound(null, player, SoundEvents.BELL_RESONATE, SoundSource.PLAYERS, 1f, 2f);
-        return ItemUtils.startUsingInstantly(level, player, hand);
+        if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+            if (player.level.dimension() == Level.OVERWORLD) {
+                return ItemUtils.startUsingInstantly(level, player, hand);
+            } else {
+                player.sendSystemMessage(Component.literal("You cannot set your home in this dimension!").withStyle(ChatFormatting.YELLOW));
+            }
+        }
+
+        return super.use(level, player, hand);
     }
 }

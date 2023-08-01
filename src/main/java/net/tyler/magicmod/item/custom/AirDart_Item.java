@@ -22,7 +22,7 @@ public class AirDart_Item extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
-        level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.6F + (player.getLevel().random.nextFloat() * 0.3F));
+        level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 0.5F, 0.6F + (player.getLevel().random.nextFloat() * 0.3F));
 
         player.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
             if (!level.isClientSide) {

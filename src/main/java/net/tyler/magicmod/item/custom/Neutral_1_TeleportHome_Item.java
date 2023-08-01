@@ -42,7 +42,7 @@ public class Neutral_1_TeleportHome_Item extends Item {
             serverplayer.getCapability(PlayerManaProvider.PLAYER_MANA).ifPresent(mana -> {
                 serverplayer.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                     serverplayer.getCapability(PlayerLocationProvider.PLAYER_LOCATION).ifPresent(location -> {
-                        if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && !info.getDungeonParty() && location.isHomeSet()) {
+                        if (mana.getMana() >= 10 && !player.hasEffect(ModEffects.COMBAT.get()) && player.level.dimension() == Level.OVERWORLD && !info.getDungeonParty() && location.isHomeSet()) {
                             mana.subMana(10);
                             ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), serverplayer);
 
@@ -83,15 +83,20 @@ public class Neutral_1_TeleportHome_Item extends Item {
                     if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
                         if (!info.getDungeonParty()) {
                             if (!player.hasEffect(ModEffects.COMBAT.get())) {
-                                if (mana.getMana() >= 10) {
-                                    if (location.isHomeSet()) {
-                                        cast = true;
+                                if (player.level.dimension() == Level.OVERWORLD) {
+                                    if (mana.getMana() >= 10) {
+                                        if (location.isHomeSet()) {
+                                            cast = true;
+                                        } else {
+                                            player.sendSystemMessage(Component.literal("You do not have a home!").withStyle(ChatFormatting.YELLOW));
+                                        }
                                     } else {
-                                        player.sendSystemMessage(Component.literal("You do not have a home!").withStyle(ChatFormatting.YELLOW));
+                                        cast = false;
+                                        player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                                     }
                                 } else {
                                     cast = false;
-                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                    player.sendSystemMessage(Component.literal("Your destination is not in this dimension!").withStyle(ChatFormatting.YELLOW));
                                 }
                             } else {
                                 cast = false;

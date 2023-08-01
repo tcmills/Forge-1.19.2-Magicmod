@@ -38,6 +38,10 @@ public class PlayerCasting {
 
     private int airDartsProjectiles = 0;
 
+    private boolean wingsOfQuartzCasting = false;
+
+    private int wingsOfQuartzTick = 0;
+
     public int getBleedTick() {
         return bleedTick;
     }
@@ -214,6 +218,26 @@ public class PlayerCasting {
         airDartsProjectiles = num;
     }
 
+    public boolean getWingsOfQuartzCasting() {
+        return wingsOfQuartzCasting;
+    }
+
+    public void setWingsOfQuartzCasting(boolean cast) {
+        wingsOfQuartzCasting = cast;
+    }
+
+    public int getWingsOfQuartzTick() {
+        return wingsOfQuartzTick;
+    }
+
+    public void addWingsOfQuartzTick(int add) {
+        wingsOfQuartzTick += add;
+    }
+
+    public void setWingsOfQuartzTick(int tick) {
+        wingsOfQuartzTick = tick;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.bleedTick = 0;
         this.flareBlitzCasting = false;
@@ -232,6 +256,8 @@ public class PlayerCasting {
         this.amphibiousTick = 0;
         this.airDartsCasting = source.airDartsCasting;
         this.airDartsProjectiles = source.airDartsProjectiles;
+        this.wingsOfQuartzCasting = false;
+        this.wingsOfQuartzTick = 0;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -252,6 +278,8 @@ public class PlayerCasting {
         nbt.putInt("amphibiousTick", amphibiousTick);
         nbt.putBoolean("airDartsCasting", airDartsCasting);
         nbt.putInt("airDartsProjectiles", airDartsProjectiles);
+        nbt.putBoolean("wingsOfQuartzCasting", wingsOfQuartzCasting);
+        nbt.putInt("wingsOfQuartzTick", wingsOfQuartzTick);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -272,5 +300,7 @@ public class PlayerCasting {
         amphibiousTick = nbt.getInt("amphibiousTick");
         airDartsCasting = nbt.getBoolean("airDartsCasting");
         airDartsProjectiles = nbt.getInt("airDartsProjectiles");
+        wingsOfQuartzCasting = nbt.getBoolean("wingsOfQuartzCasting");
+        wingsOfQuartzTick = nbt.getInt("wingsOfQuartzTick");
     }
 }
