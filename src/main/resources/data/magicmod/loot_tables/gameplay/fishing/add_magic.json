@@ -1,15 +1,16 @@
 {
   "pools": [
     {
-      "rolls": {
-        "type": "minecraft:uniform",
-        "min": 1,
-        "max": 4
-      },
+      "rolls": 1,
       "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 84.5
+        },
         {
           "type": "minecraft:item",
           "name": "magicmod:mana_dust",
+          "weight": 10.5,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -19,11 +20,27 @@
         },
         {
           "type": "minecraft:item",
-          "name": "magicmod:mana_crystal",
+          "name": "magicmod:mana_potion",
+          "weight": 2.5,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": 1
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:enchanted_book",
+          "weight": 2.5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{StoredEnchantments:[{id:\"mending\",lvl:1s}]}"
             }
           ]
         }
