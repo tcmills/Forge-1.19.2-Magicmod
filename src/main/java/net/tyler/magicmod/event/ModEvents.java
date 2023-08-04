@@ -66,6 +66,7 @@ import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
 
@@ -428,7 +429,6 @@ public class ModEvents {
                                     }
 
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
-                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
 
                                 } else {
                                     if (index_fierySoul != -1) {
@@ -665,7 +665,6 @@ public class ModEvents {
                                     }
 
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FALLING_HONEY, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
-                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.WAX_OFF, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
 
                                 } else {
                                     if (index_amphibious != -1) {
@@ -699,7 +698,15 @@ public class ModEvents {
                                 if (cast.getWingsOfQuartzCasting()) {
                                     if (cast.getWingsOfQuartzTick() <= 120) {
 
-                                        //effects
+                                        if (cast.getWingsOfQuartzTick() % 4 == 0) {
+                                            double xRot = (double) player.getYHeadRot();
+
+                                            for (int i = 1; i < 11; i++) {
+                                                double a = i/10D + 0.5D;
+                                                player.getLevel().sendParticles(ParticleTypes.END_ROD, player.getX() + (-1 * Math.sin(Math.toRadians(xRot + 145D)) * a), player.getY() + 1.5D, player.getZ() + (Math.cos(Math.toRadians(xRot + 145D)) * a), 1, 0.0D, i/18D, 0.0D, 0.0D);
+                                                player.getLevel().sendParticles(ParticleTypes.END_ROD, player.getX() + (-1 * Math.sin(Math.toRadians(xRot - 145D)) * a), player.getY() + 1.5D, player.getZ() + (Math.cos(Math.toRadians(xRot - 145D)) * a), 1, 0.0D, i/18D, 0.0D, 0.0D);
+                                            }
+                                        }
 
                                         cast.addWingsOfQuartzTick(1);
                                     } else {
@@ -708,6 +715,8 @@ public class ModEvents {
                                         player.getAbilities().flying = false;
                                         player.getAbilities().mayfly = false;
                                         player.onUpdateAbilities();
+
+                                        player.level.playSound(null, player, ModSounds.WINGS_OF_QUARTZ.get(), SoundSource.PLAYERS, 1.0F, 0.7F);
                                     }
                                 }
                             }

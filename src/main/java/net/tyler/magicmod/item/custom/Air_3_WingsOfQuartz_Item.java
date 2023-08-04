@@ -27,6 +27,7 @@ import net.tyler.magicmod.capability.mana.PlayerManaProvider;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.sound.ModSounds;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class Air_3_WingsOfQuartz_Item extends Item {
                                     player.addEffect(new MobEffectInstance(ModEffects.SPELL_STRENGTH_2.get(), 400, 0, false, false, true));
                                     player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 400, 0, false, false, true));
 
-                                    //effects
+                                    player.level.playSound(null, player, ModSounds.WINGS_OF_QUARTZ.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                                     player.getCooldowns().addCooldown(this, 500);
                                 } else {

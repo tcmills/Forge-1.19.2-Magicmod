@@ -10,5 +10,11 @@
     "sounds": [
       "magicmod:waterfall"
     ]
+  },
+  "wings_of_quartz": {
+    "subtitle": "sounds.magicmod.wings_of_quartz",
+    "sounds": [
+      "magicmod:wings_of_quartz"
+    ]
   }
 }
