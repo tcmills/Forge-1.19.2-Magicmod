@@ -58,6 +58,7 @@ public class SpellScanner_Item extends Item {
 
                 if (result.getEntity() != null && result.getEntity() instanceof Player player2) {
                     player2.getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast2 -> {
+                        player.sendSystemMessage(Component.literal("Player Name: " + player2.getName().getString()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Flare Blitz Cast: " + cast2.getFlareBlitzCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Scorching Ray Cast: " + cast2.getScorchingRayCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Scorching Ray Projectiles: " + cast2.getScorchingRayProjectiles()).withStyle(ChatFormatting.YELLOW));

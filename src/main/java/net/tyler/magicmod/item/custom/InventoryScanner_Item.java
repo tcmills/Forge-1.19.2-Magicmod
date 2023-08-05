@@ -51,6 +51,7 @@ public class InventoryScanner_Item extends Item {
                         (val) -> true);
 
                 if (result.getEntity() != null && result.getEntity() instanceof Player player2) {
+                    player.sendSystemMessage(Component.literal("Player Name: " + player2.getName().getString()).withStyle(ChatFormatting.YELLOW));
                     for(int i = 0; i < player2.getInventory().getContainerSize(); i++) {
                         ItemStack currentStack = player2.getInventory().getItem(i);
                         if (!currentStack.isEmpty()) {
