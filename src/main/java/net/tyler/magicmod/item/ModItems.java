@@ -61,6 +61,12 @@ public class ModItems {
             () -> new DungeonBell_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> MANA_MITIGATOR = ITEMS.register("mana_mitigator",
             () -> new ManaMitigator_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> PLAYER_SCANNER = ITEMS.register("player_scanner",
+            () -> new PlayerScanner_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> INVENTORY_SCANNER = ITEMS.register("inventory_scanner",
+            () -> new InventoryScanner_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> SPELL_SCANNER = ITEMS.register("spell_scanner",
+            () -> new SpellScanner_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> SET_HOME_CHARGE = ITEMS.register("set_home_charge",
             () -> new SetHomeCharge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));

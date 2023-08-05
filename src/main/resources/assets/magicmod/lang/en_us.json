@@ -24,6 +24,9 @@
 
   "item.magicmod.dungeon_bell": "Dungeon Bell",
   "item.magicmod.mana_mitigator": "Mana Mitigator",
+  "item.magicmod.player_scanner": "Scanner (Player)",
+  "item.magicmod.inventory_scanner": "Scanner (Inventory)",
+  "item.magicmod.spell_scanner": "Scanner (Spell)",
 
   "item.magicmod.set_home_charge": "'Set Home' Charge",
 
