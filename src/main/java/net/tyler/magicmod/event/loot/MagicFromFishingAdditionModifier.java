@@ -46,7 +46,7 @@ public class MagicFromFishingAdditionModifier extends LootModifier {
             if (!enchant.isEmpty()) {
                 generatedLoot.clear();
                 generatedLoot.add(new ItemStack(Items.COD));
-                player.sendSystemMessage(Component.literal("Enchanted").withStyle(ChatFormatting.YELLOW));
+                //player.sendSystemMessage(Component.literal("Enchanted").withStyle(ChatFormatting.YELLOW));
             }
 
             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {

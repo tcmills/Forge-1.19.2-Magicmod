@@ -47,6 +47,7 @@ import net.tyler.magicmod.capability.cooldowns.PlayerCooldowns;
 import net.tyler.magicmod.capability.cooldowns.PlayerCooldownsProvider;
 import net.tyler.magicmod.capability.drops.PlayerDrops;
 import net.tyler.magicmod.capability.drops.PlayerDropsProvider;
+import net.tyler.magicmod.client.ClientManaData;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
 import net.tyler.magicmod.entity.custom.AirDartProjectileEntity;
@@ -596,6 +597,8 @@ public class ModEvents {
                                                 }
 
                                             }
+
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                             ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
 

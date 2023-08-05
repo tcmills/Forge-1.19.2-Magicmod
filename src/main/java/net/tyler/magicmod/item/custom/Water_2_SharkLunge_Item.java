@@ -82,6 +82,13 @@ public class Water_2_SharkLunge_Item extends Item {
                                         mana.subMana(manaCost);
                                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
+                                        if (mana.getMana() >= 50) {
+                                            int manaSub = mana.getMana() - 49;
+                                            mana.subMana(manaSub);
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                            mana.addMana(manaSub);
+                                        }
+
                                         player.level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_2, SoundSource.PLAYERS, 1f, 1f);
                                         ((ServerLevel)level).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
                                     } else {
@@ -149,6 +156,8 @@ public class Water_2_SharkLunge_Item extends Item {
                                         }
 
                                     }
+
+                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
 
