@@ -157,38 +157,37 @@ public class MagicalExplosion extends Explosion {
                         double d14 = (double)getSeenPercent(vec3, entity);
                         //d10 is d12 inverted (because damage/knockback should decrease as the entity is further away, not increase) and multiplied by the percentage of exposure
                         double d10 = (1.0D - d12) * d14;
-                        float num = (float)(d14  * (damage - 1.0D) + 1.0D);
 
-                        if (entity instanceof LivingEntity) {
-                            if (source instanceof Player player1) {
-                                if (entity instanceof Player player2) {
+                        if (source instanceof Player player1) {
+                            float num0 = (float)damage;
+
+                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                num0 += 6F;
+                            } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+                                num0 += 3F;
+                            }
+
+                            if (player1.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+                                num0 -= 8F;
+                            } else if (player1.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+                                num0 -= 4F;
+                            }
+
+                            float num = Math.max((float)(d14  * num0), 1F);
+
+                            if (entity instanceof LivingEntity entity1) {
+                                if (entity1 instanceof Player player2) {
                                     player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                         player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                             if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 6F);
-                                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
-                                                } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
-                                                    //player1.sendSystemMessage(Component.literal(num + 3F + ""));
-                                                } else {
-                                                    entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
-                                                    //player1.sendSystemMessage(Component.literal(num + ""));
-                                                }
+                                                //player1.sendSystemMessage(Component.literal(num + ""));
+                                                player2.hurt((new EntityDamageSource(this.damageSource, player2)).setExplosion(), num);
                                             }
                                         });
                                     });
                                 } else {
-                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 6F);
-                                        //player1.sendSystemMessage(Component.literal(num + 3F + ""));
-                                    } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num + 3F);
-                                        //player1.sendSystemMessage(Component.literal(num + 3F + ""));
-                                    } else {
-                                        entity.hurt((new EntityDamageSource(this.damageSource, entity)).setExplosion(), num);
-                                        //player1.sendSystemMessage(Component.literal(num + ""));
-                                    }
+                                    //player1.sendSystemMessage(Component.literal(num + ""));
+                                    entity1.hurt((new EntityDamageSource(this.damageSource, entity1)).setExplosion(), num);
                                 }
                             }
                         }

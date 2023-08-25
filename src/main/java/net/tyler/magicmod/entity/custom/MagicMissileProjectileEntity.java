@@ -10,6 +10,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,8 +28,6 @@ import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.misc.ModDamageSource;
 
 public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
-
-    private int baseDamage = 9;
 
     // Three constructors, also make sure not to miss this line when altering it for copy-pasting
     public MagicMissileProjectileEntity(EntityType<MagicMissileProjectileEntity> type, Level world) {
@@ -99,36 +99,18 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
 //            }
 //            else entity.hurt(DamageSource.thrown(this, this.getOwner()), damage);
 
-            if (entity instanceof LivingEntity) {
+            if (entity instanceof LivingEntity entity1) {
                 if (this.getOwner() instanceof Player player1) {
-                    if (entity instanceof Player player2) {
+                    if (entity1 instanceof Player player2) {
                         player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                             player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                 if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 6F);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                    } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 3F);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                    } else {
-                                        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                    }
+                                    damage(player1, player2);
                                 }
                             });
                         });
                     } else {
-                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                            entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 6F);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                        } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                            entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage + 3F);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                        } else {
-                            entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), baseDamage);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                        }
+                        damage(player1, entity1);
                     }
                 }
             }
@@ -145,5 +127,25 @@ public class MagicMissileProjectileEntity extends ThrowableItemProjectile {
                 this.discard();
             }
         }
+    }
+
+    private void damage(Player player, LivingEntity entity) {
+
+        float num = 9F;
+
+        if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+            num += 6F;
+        } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+            num += 3F;
+        }
+
+        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+            num -= 8F;
+        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+            num -= 4F;
+        }
+
+        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+        entity.hurt(ModDamageSource.magicMissile(this, this.getOwner()), Math.max(num, 0F));
     }
 }

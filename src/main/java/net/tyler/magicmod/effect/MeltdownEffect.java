@@ -7,6 +7,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,40 +45,22 @@ public class MeltdownEffect extends MobEffect {
 
             for(int k2 = 0; k2 < list.size(); ++k2) {
                 Entity entity = list.get(k2);
-                if (entity instanceof LivingEntity) {
+                if (entity instanceof LivingEntity entity1) {
                     if (pLivingEntity instanceof Player player1) {
-                        double d12 = Math.sqrt(entity.distanceToSqr(vec3)) / (double)f2;
+                        double d12 = Math.sqrt(entity1.distanceToSqr(vec3)) / (double)f2;
                         if (d12 <= 1.0D) {
-                            if (entity instanceof Player player2) {
+                            if (entity1 instanceof Player player2) {
                                 player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                     player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                         if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                            if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                entity.hurt(ModDamageSource.superCritical(), 3F);
-                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                            } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                entity.hurt(ModDamageSource.superCritical(), 2F);
-                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                            } else {
-                                                entity.hurt(ModDamageSource.superCritical(), 1F);
-                                                //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                            }
-                                            entity.setSecondsOnFire(2);
+                                            player2.setSecondsOnFire(2);
+                                            damage(player1, player2);
                                         }
                                     });
                                 });
                             } else {
-                                if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                    entity.hurt(ModDamageSource.superCritical(), 3F);
-                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                    entity.hurt(ModDamageSource.superCritical(), 2F);
-                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                } else {
-                                    entity.hurt(ModDamageSource.superCritical(), 1F);
-                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                }
-                                entity.setSecondsOnFire(2);
+                                entity1.setSecondsOnFire(2);
+                                damage(player1, entity1);
                             }
                         }
                     }
@@ -95,6 +79,26 @@ public class MeltdownEffect extends MobEffect {
         }
 
         super.applyEffectTick(pLivingEntity, pAmplifier);
+    }
+
+    private void damage(Player player, LivingEntity entity) {
+
+        float num = 1F;
+
+        if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+            num += 2F;
+        } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+            num += 1F;
+        }
+
+        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+            num -= 3F;
+        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+            num -= 2F;
+        }
+
+        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+        entity.hurt(ModDamageSource.superCritical(), Math.max(num, 0F));
     }
 
     @Override

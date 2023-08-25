@@ -51,6 +51,12 @@ public class ModMessages {
                 .consumerMainThread(ItemStackSyncS2CPacket::handle)
                 .add();
 
+        net.messageBuilder(SharkLungeSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SharkLungeSyncS2CPacket::new)
+                .encoder(SharkLungeSyncS2CPacket::toBytes)
+                .consumerMainThread(SharkLungeSyncS2CPacket::handle)
+                .add();
+
     }
 
     public static <MSG> void sendToServer(MSG message) {

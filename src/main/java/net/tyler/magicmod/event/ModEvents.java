@@ -11,17 +11,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
@@ -47,16 +45,12 @@ import net.tyler.magicmod.capability.cooldowns.PlayerCooldowns;
 import net.tyler.magicmod.capability.cooldowns.PlayerCooldownsProvider;
 import net.tyler.magicmod.capability.drops.PlayerDrops;
 import net.tyler.magicmod.capability.drops.PlayerDropsProvider;
-import net.tyler.magicmod.client.ClientManaData;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.entity.ModEntityTypes;
-import net.tyler.magicmod.entity.custom.AirDartProjectileEntity;
-import net.tyler.magicmod.entity.custom.MagicMissileProjectileEntity;
 import net.tyler.magicmod.entity.custom.ScorchingRayProjectileEntity;
 import net.tyler.magicmod.entity.custom.WispEntity;
 import net.tyler.magicmod.capability.info.PlayerInfo;
 import net.tyler.magicmod.capability.info.PlayerInfoProvider;
-import net.tyler.magicmod.item.custom.Fire_3_SuperCritical_Item;
 import net.tyler.magicmod.misc.MagicalExplosion;
 import net.tyler.magicmod.item.ModItems;
 import net.tyler.magicmod.capability.location.PlayerLocation;
@@ -67,6 +61,7 @@ import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.networking.packet.SharkLungeSyncS2CPacket;
 import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
@@ -324,6 +319,40 @@ public class ModEvents {
                                 player.removeEffect(ModEffects.SPELL_STRENGTH.get());
                             }
 
+                            if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get()) && player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+                                player.removeEffect(ModEffects.SPELL_WEAKNESS.get());
+                            }
+
+                            ItemStack armor0 = player.getInventory().getArmor(0);
+                            ItemStack armor1 = player.getInventory().getArmor(1);
+                            ItemStack armor2 = player.getInventory().getArmor(2);
+                            ItemStack armor3 = player.getInventory().getArmor(3);
+
+                            if (player.getInventory().getItem(40).sameItem(new ItemStack(Items.SHIELD)) ||
+                                    player.getInventory().getSelected().sameItem(new ItemStack(Items.SHIELD))) {
+                                player.addEffect(new MobEffectInstance(ModEffects.SPELL_WEAKNESS_2.get(), 200, 0, false, false, true));
+                            } else {
+                                if (!player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+                                    if (armor3.sameItem(new ItemStack(Items.IRON_HELMET)) ||
+                                            armor3.sameItem(new ItemStack(Items.GOLDEN_HELMET)) ||
+                                            armor3.sameItem(new ItemStack(Items.CHAINMAIL_HELMET))) {
+                                        player.addEffect(new MobEffectInstance(ModEffects.SPELL_WEAKNESS.get(), 200, 0, false, false, true));
+                                    } else if (armor2.sameItem(new ItemStack(Items.IRON_CHESTPLATE)) ||
+                                            armor2.sameItem(new ItemStack(Items.GOLDEN_CHESTPLATE)) ||
+                                            armor2.sameItem(new ItemStack(Items.CHAINMAIL_CHESTPLATE))) {
+                                        player.addEffect(new MobEffectInstance(ModEffects.SPELL_WEAKNESS.get(), 200, 0, false, false, true));
+                                    } else if (armor1.sameItem(new ItemStack(Items.IRON_LEGGINGS)) ||
+                                            armor1.sameItem(new ItemStack(Items.GOLDEN_LEGGINGS)) ||
+                                            armor1.sameItem(new ItemStack(Items.CHAINMAIL_LEGGINGS))) {
+                                        player.addEffect(new MobEffectInstance(ModEffects.SPELL_WEAKNESS.get(), 200, 0, false, false, true));
+                                    } else if (armor0.sameItem(new ItemStack(Items.IRON_BOOTS)) ||
+                                            armor0.sameItem(new ItemStack(Items.GOLDEN_BOOTS)) ||
+                                            armor0.sameItem(new ItemStack(Items.CHAINMAIL_BOOTS))) {
+                                        player.addEffect(new MobEffectInstance(ModEffects.SPELL_WEAKNESS.get(), 200, 0, false, false, true));
+                                    }
+                                }
+                            }
+
                             if (player.hasEffect(ModEffects.BLEED.get())) {
                                 if (player.isCrouching()) {
                                     cast.addBleedTick(1);
@@ -537,6 +566,8 @@ public class ModEvents {
 
                                         if (player.isOnGround()) {
                                             cast.setSharkLungeCasting(false);
+                                            ModMessages.sendToPlayer(new SharkLungeSyncS2CPacket(cast.getSharkLungeCasting()), (ServerPlayer) player);
+
                                             cast.setSharkLungeTick(0);
 
                                             float f2 = 4F;
@@ -558,16 +589,22 @@ public class ModEvents {
                                                             player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                                                 player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                                                     if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
+                                                                        float num = 14F;
+
                                                                         if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                                            entity.hurt(ModDamageSource.sharkLunge(null, player), 20F);
-                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                            num += 6F;
                                                                         } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                                            player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
-                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                                        } else {
-                                                                            player2.hurt(ModDamageSource.sharkLunge(null, player), 14F);
-                                                                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                                            num += 3F;
                                                                         }
+
+                                                                        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+                                                                            num -= 8F;
+                                                                        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+                                                                            num -= 4F;
+                                                                        }
+
+                                                                        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+                                                                        player2.hurt(ModDamageSource.sharkLunge(null, player), Math.max(num, 0F));
 
                                                                         if (player.getLevel().random.nextInt(2) == 0) {
                                                                             player2.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200, 0, false, false, true));
@@ -577,16 +614,22 @@ public class ModEvents {
                                                                 });
                                                             });
                                                         } else {
+                                                            float num = 14F;
+
                                                             if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 20F);
-                                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+                                                                num += 6F;
                                                             } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
-                                                                //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                            } else {
-                                                                entity1.hurt(ModDamageSource.sharkLunge(null, player), 14F);
-                                                                //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+                                                                num += 3F;
                                                             }
+
+                                                            if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+                                                                num -= 8F;
+                                                            } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+                                                                num -= 4F;
+                                                            }
+
+                                                            //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+                                                            entity1.hurt(ModDamageSource.sharkLunge(null, player), Math.max(num, 0F));
 
                                                             if (player.getLevel().random.nextInt(2) == 0) {
                                                                 entity1.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 140, 0, false, false, true));
@@ -597,8 +640,6 @@ public class ModEvents {
                                                 }
 
                                             }
-
-                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                             ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
 
@@ -612,6 +653,8 @@ public class ModEvents {
                                         }
                                     } else {
                                         cast.setSharkLungeCasting(false);
+                                        ModMessages.sendToPlayer(new SharkLungeSyncS2CPacket(cast.getSharkLungeCasting()), (ServerPlayer) player);
+
                                         cast.setSharkLungeTick(0);
                                         player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), 400);
                                     }

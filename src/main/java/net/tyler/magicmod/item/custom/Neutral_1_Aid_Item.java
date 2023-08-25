@@ -41,16 +41,22 @@ public class Neutral_1_Aid_Item extends Item {
 
                     player.level.playSound(null, player, SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 1f, 1f);
 
+                    float num = 7F;
+
                     if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                        player.heal(13.0f);
-                        //player.sendSystemMessage(Component.literal("13 aid"));
+                        num += 6F;
                     } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                        player.heal(10.0f);
-                        //player.sendSystemMessage(Component.literal("10 aid"));
-                    } else {
-                        player.heal(7.0f);
-                        //player.sendSystemMessage(Component.literal("7 aid"));
+                        num += 3F;
                     }
+
+                    if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+                        num -= 8F;
+                    } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+                        num -= 4F;
+                    }
+
+                    //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+                    player.heal(Math.max(num, 0F));
 
                     player.removeEffect(ModEffects.BLEED.get());
 

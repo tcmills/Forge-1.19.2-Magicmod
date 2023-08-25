@@ -70,6 +70,8 @@
   "effect.magicmod.combat": "In Combat",
   "effect.magicmod.spell_strength": "Spell Strength",
   "effect.magicmod.spell_strength_2": "Spell Strength II",
+  "effect.magicmod.spell_weakness": "Spell Weakness",
+  "effect.magicmod.spell_weakness_2": "Spell Weakness II",
   "effect.magicmod.meltdown": "Meltdown",
   "effect.magicmod.bleed": "Bleed",
 

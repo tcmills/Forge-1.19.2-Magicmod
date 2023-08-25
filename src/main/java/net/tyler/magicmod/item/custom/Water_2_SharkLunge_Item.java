@@ -29,10 +29,12 @@ import net.tyler.magicmod.capability.info.PlayerInfoProvider;
 import net.tyler.magicmod.capability.mana.PlayerManaProvider;
 import net.tyler.magicmod.client.ClientInfoData;
 import net.tyler.magicmod.client.ClientManaData;
+import net.tyler.magicmod.client.ClientSharkLungeCastingData;
 import net.tyler.magicmod.effect.ModEffects;
 import net.tyler.magicmod.misc.ModDamageSource;
 import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
+import net.tyler.magicmod.networking.packet.SharkLungeSyncS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -48,7 +50,7 @@ public class Water_2_SharkLunge_Item extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
-        if (hand == InteractionHand.MAIN_HAND && ClientInfoData.getPlayerWater() && ClientInfoData.getPlayerSchoolLevel() >= 2 && ClientManaData.getPlayerMana() >= manaCost) {
+        if (hand == InteractionHand.MAIN_HAND && ClientInfoData.getPlayerWater() && ClientInfoData.getPlayerSchoolLevel() >= 2 && ClientManaData.getPlayerMana() >= manaCost && !ClientSharkLungeCastingData.getPlayerSharkLungeCasting()) {
 
             float f7 = player.getYRot();
             float f = player.getXRot();
@@ -61,7 +63,7 @@ public class Water_2_SharkLunge_Item extends Item {
             f2 *= f5 / f4;
             f3 *= f5 / f4;
             player.push((double)f1, (double)f2, (double)f3);
-            player.startAutoSpinAttack(20);
+//            player.startAutoSpinAttack(20);
             if (player.isOnGround()) {
                 float f6 = 1.1999999F;
                 player.move(MoverType.SELF, new Vec3(0.0D, (double)f6, 0.0D));
@@ -77,17 +79,14 @@ public class Water_2_SharkLunge_Item extends Item {
                             if (info.getSchoolLevel() >= 2) {
                                 if (!cast.getSharkLungeCasting()) {
                                     if (mana.getMana() >= manaCost) {
+
                                         cast.setSharkLungeCasting(true);
+                                        ModMessages.sendToPlayer(new SharkLungeSyncS2CPacket(cast.getSharkLungeCasting()), (ServerPlayer) player);
 
                                         mana.subMana(manaCost);
                                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
-                                        if (mana.getMana() >= 50) {
-                                            int manaSub = mana.getMana() - 49;
-                                            mana.subMana(manaSub);
-                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
-                                            mana.addMana(manaSub);
-                                        }
+                                        player.startAutoSpinAttack(20);
 
                                         player.level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_2, SoundSource.PLAYERS, 1f, 1f);
                                         ((ServerLevel)level).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
@@ -96,6 +95,8 @@ public class Water_2_SharkLunge_Item extends Item {
                                     }
                                 } else {
                                     cast.setSharkLungeCasting(false);
+                                    ModMessages.sendToPlayer(new SharkLungeSyncS2CPacket(cast.getSharkLungeCasting()), (ServerPlayer) player);
+
                                     cast.setSharkLungeTick(0);
 
                                     float f2 = 4F;
@@ -117,16 +118,7 @@ public class Water_2_SharkLunge_Item extends Item {
                                                     player.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                                                         player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                                             if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                                                if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 20F);
-                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                                } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 17F);
-                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                                } else {
-                                                                    player2.hurt(ModDamageSource.sharkLunge(null, player), 14F);
-                                                                    //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                                                }
+                                                                damage(player, player2);
 
                                                                 if (player.getLevel().random.nextInt(2) == 0) {
                                                                     player2.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200, 0, false, false, true));
@@ -136,16 +128,7 @@ public class Water_2_SharkLunge_Item extends Item {
                                                         });
                                                     });
                                                 } else {
-                                                    if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 20F);
-                                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                    } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 17F);
-                                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                                    } else {
-                                                        entity1.hurt(ModDamageSource.sharkLunge(null, player), 14F);
-                                                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                                    }
+                                                    damage(player, entity1);
 
                                                     if (player.getLevel().random.nextInt(2) == 0) {
                                                         entity1.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 140, 0, false, false, true));
@@ -156,8 +139,6 @@ public class Water_2_SharkLunge_Item extends Item {
                                         }
 
                                     }
-
-                                    ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                     ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY(), player.getZ(), 30,2.0D, 2.0D, 2.0D, 1.0D);
 
@@ -182,6 +163,26 @@ public class Water_2_SharkLunge_Item extends Item {
         });
 
         return super.use(level, player, hand);
+    }
+
+    private void damage(Player player, LivingEntity entity) {
+
+        float num = 14F;
+
+        if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+            num += 6F;
+        } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+            num += 3F;
+        }
+
+        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+            num -= 8F;
+        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+            num -= 4F;
+        }
+
+        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+        entity.hurt(ModDamageSource.sharkLunge(null, player), Math.max(num, 0F));
     }
 
     @Override

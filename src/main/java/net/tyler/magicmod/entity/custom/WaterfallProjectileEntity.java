@@ -36,8 +36,6 @@ import net.tyler.magicmod.sound.ModSounds;
 
 public class WaterfallProjectileEntity extends ThrowableItemProjectile {
 
-    private int baseDamage = 25;
-
     // Three constructors, also make sure not to miss this line when altering it for copy-pasting
     public WaterfallProjectileEntity(EntityType<WaterfallProjectileEntity> type, Level world) {
         super(type, world);
@@ -124,16 +122,7 @@ public class WaterfallProjectileEntity extends ThrowableItemProjectile {
                         player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info1 -> {
                             player2.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info2 -> {
                                 if (!info1.getDungeonParty() || !info2.getDungeonParty()) {
-                                    if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                                        player2.hurt(ModDamageSource.waterfall(this, player1), baseDamage + 6F);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                    } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                                        player2.hurt(ModDamageSource.waterfall(this, player1), baseDamage + 3F);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                                    } else {
-                                        player2.hurt(ModDamageSource.waterfall(this, player1), baseDamage);
-                                        //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                                    }
+                                    damage(player1, player2);
 
                                     player2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 1, false, true, true));
 
@@ -161,16 +150,7 @@ public class WaterfallProjectileEntity extends ThrowableItemProjectile {
                             });
                         });
                     } else {
-                        if (player1.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-                            entity1.hurt(ModDamageSource.waterfall(this, player1), baseDamage + 6F);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                        } else if (player1.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-                            entity1.hurt(ModDamageSource.waterfall(this, player1), baseDamage + 3F);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-                        } else {
-                            entity1.hurt(ModDamageSource.waterfall(this, player1), baseDamage);
-                            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
-                        }
+                        damage(player1, entity1);
 
                         entity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 1, false, true, true));
 
@@ -209,5 +189,25 @@ public class WaterfallProjectileEntity extends ThrowableItemProjectile {
                 this.discard();
             }
         }
+    }
+
+    private void damage(Player player, LivingEntity entity) {
+
+        float num = 25F;
+
+        if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+            num += 6F;
+        } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
+            num += 3F;
+        }
+
+        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+            num -= 8F;
+        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+            num -= 4F;
+        }
+
+        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+        entity.hurt(ModDamageSource.waterfall(this, this.getOwner()), Math.max(num, 0F));
     }
 }

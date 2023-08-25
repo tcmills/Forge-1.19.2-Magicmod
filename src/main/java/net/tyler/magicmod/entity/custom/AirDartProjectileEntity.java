@@ -22,8 +22,6 @@ import net.tyler.magicmod.misc.ModDamageSource;
 
 public class AirDartProjectileEntity  extends ThrowableItemProjectile {
 
-    private int baseDamage = 2;
-
     public AirDartProjectileEntity(EntityType<AirDartProjectileEntity> type, Level level) {
         super(type, level);
         //this.setBoundingBox(type.getDimensions().makeBoundingBox(this.getX(), this.getY() + 0.5, this.getZ()));
@@ -90,16 +88,23 @@ public class AirDartProjectileEntity  extends ThrowableItemProjectile {
     }
 
     private void damage(Player player, LivingEntity entity) {
+
+        float num = 2F;
+
         if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
-            entity.hurt(ModDamageSource.airDart(this, this.getOwner()), baseDamage + 6F);
-            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
+            num += 6F;
         } else if (player.hasEffect(ModEffects.SPELL_STRENGTH.get())) {
-            entity.hurt(ModDamageSource.airDart(this, this.getOwner()), baseDamage + 3F);
-            //player1.sendSystemMessage(Component.literal(baseDamage + 3F + ""));
-        } else {
-            entity.hurt(ModDamageSource.airDart(this, this.getOwner()), baseDamage);
-            //player1.sendSystemMessage(Component.literal(baseDamage + ""));
+            num += 3F;
         }
+
+        if (player.hasEffect(ModEffects.SPELL_WEAKNESS_2.get())) {
+            num -= 8F;
+        } else if (player.hasEffect(ModEffects.SPELL_WEAKNESS.get())) {
+            num -= 4F;
+        }
+
+        //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
+        entity.hurt(ModDamageSource.airDart(this, this.getOwner()), Math.max(num, 0F));
 
         if (player.getLevel().random.nextInt(19) == 0) {
             entity.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 100, 0, false, false, true));
