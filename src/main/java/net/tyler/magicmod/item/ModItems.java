@@ -124,6 +124,8 @@ public class ModItems {
             () -> new Air_2_Toss_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> WINGS_OF_QUARTZ = ITEMS.register("wings_of_quartz",
             () -> new Air_3_WingsOfQuartz_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> WEIGHT_OF_PYRITE = ITEMS.register("weight_of_pyrite",
+            () -> new Earth_1_WeightOfPyrite_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

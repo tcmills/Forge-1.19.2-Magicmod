@@ -19,6 +19,7 @@ public class PlayerCooldowns {
     private float airDarts = 0.0F;
     private float toss = 0.0F;
     private float wingsOfQuartz = 0.0F;
+    private float weightOfPyrite = 0.0F;
 
     public float getMagicMissileCD() {
         return magicMissile;
@@ -140,6 +141,14 @@ public class PlayerCooldowns {
         wingsOfQuartz = sec;
     }
 
+    public float getWeightOfPyriteCD() {
+        return weightOfPyrite;
+    }
+
+    public void setWeightOfPyriteCD(float sec) {
+        weightOfPyrite = sec;
+    }
+
     public void clearCD() {
         magicMissile = 0.0F;
         aid = 0.0F;
@@ -156,6 +165,7 @@ public class PlayerCooldowns {
         airDarts = 0.0F;
         toss = 0.0F;
         wingsOfQuartz = 0.0F;
+        weightOfPyrite = 0.0F;
     }
 
     public void copyFrom(PlayerCooldowns source) {
@@ -174,6 +184,7 @@ public class PlayerCooldowns {
         this.airDarts = source.airDarts;
         this.toss = source.toss;
         this.wingsOfQuartz = source.wingsOfQuartz;
+        this.weightOfPyrite = source.weightOfPyrite;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -192,6 +203,7 @@ public class PlayerCooldowns {
         nbt.putFloat("airDarts", airDarts);
         nbt.putFloat("toss", toss);
         nbt.putFloat("wingsOfQuartz", wingsOfQuartz);
+        nbt.putFloat("weightOfPyrite", weightOfPyrite);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -210,5 +222,6 @@ public class PlayerCooldowns {
         airDarts = nbt.getFloat("airDarts");
         toss = nbt.getFloat("toss");
         wingsOfQuartz = nbt.getFloat("wingsOfQuartz");
+        weightOfPyrite = nbt.getFloat("weightOfPyrite");
     }
 }

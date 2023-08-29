@@ -71,10 +71,10 @@ public class Air_2_Toss_Item extends Item {
 
                                                     knockBack(player, player2);
 
-                                                    player.level.playSound(null, entity1, SoundEvents.AMBIENT_BASALT_DELTAS_MOOD, SoundSource.PLAYERS, 3.0F, 1.8F + (player.getLevel().random.nextFloat() * 0.2F));
+                                                    player.level.playSound(null, player2, SoundEvents.AMBIENT_BASALT_DELTAS_MOOD, SoundSource.PLAYERS, 1.0F, 1.8F + (player.getLevel().random.nextFloat() * 0.2F));
 
-                                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, entity1.getX(), entity1.getY(), entity1.getZ(), 3,1.0D, 1.0D, 1.0D, 0.1D);
-                                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.CLOUD, entity1.getX(), entity1.getY(), entity1.getZ(), 5,1.0D, 1.0D, 1.0D, 0.1D);
+                                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player2.getX(), player2.getY(), player2.getZ(), 3,1.0D, 1.0D, 1.0D, 0.1D);
+                                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.CLOUD, player2.getX(), player2.getY(), player2.getZ(), 5,1.0D, 1.0D, 1.0D, 0.1D);
                                                 }
                                             });
                                         } else {
