@@ -210,6 +210,10 @@ public class ModEvents {
                     for (int i = 0; i < items[18]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.WEIGHT_OF_PYRITE.get()));
                     }
+
+                    for (int i = 0; i < items[19]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.BURROW.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -266,7 +270,8 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), (int)(1200 * cd.getAirDartsCD()));
                             player.getCooldowns().addCooldown(ModItems.TOSS.get(), (int)(600 * cd.getTossCD()));
                             player.getCooldowns().addCooldown(ModItems.WINGS_OF_QUARTZ.get(), (int)(500 * cd.getWingsOfQuartzCD()));
-                            player.getCooldowns().addCooldown(ModItems.WEIGHT_OF_PYRITE.get(), (int)(60 * cd.getWeightOfPyriteCD()));
+                            player.getCooldowns().addCooldown(ModItems.WEIGHT_OF_PYRITE.get(), (int)(900 * cd.getWeightOfPyriteCD()));
+                            player.getCooldowns().addCooldown(ModItems.BURROW.get(), (int)(200 * cd.getBurrowCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -296,6 +301,7 @@ public class ModEvents {
                 cd.setTossCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
                 cd.setWingsOfQuartzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
                 cd.setWeightOfPyriteCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
+                cd.setBurrowCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
             });
         }
 
@@ -775,7 +781,7 @@ public class ModEvents {
 
                             if (info.getEarth()) {
 
-                                if (info.getSchoolLevel() >= 2 && player.getY() < 8) {
+                                if (info.getSchoolLevel() >= 2 && player.getY() < 32) {
                                     player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0, false, false, true));
                                     player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0, false, false, true));
                                 }
@@ -856,6 +862,9 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.WEIGHT_OF_PYRITE.get()) {
                                 finalDroppedItems[i].kill();
                                 drops.addDropNumber(18);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.BURROW.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(19);
                             }
                         }
                     });
@@ -881,6 +890,7 @@ public class ModEvents {
                         cd.setTossCD(player.getCooldowns().getCooldownPercent(ModItems.TOSS.get(), 0.0F));
                         cd.setWingsOfQuartzCD(player.getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
                         cd.setWeightOfPyriteCD(player.getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
+                        cd.setBurrowCD(player.getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
                     });
                 });
             }

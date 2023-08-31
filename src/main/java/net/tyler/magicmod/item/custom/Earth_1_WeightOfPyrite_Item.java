@@ -32,7 +32,7 @@ import java.util.List;
 
 public class Earth_1_WeightOfPyrite_Item extends Item {
 
-    private int manaCost = 5;
+    private int manaCost = 15;
 
     public Earth_1_WeightOfPyrite_Item(Item.Properties properties) {
         super(properties);
@@ -49,13 +49,13 @@ public class Earth_1_WeightOfPyrite_Item extends Item {
                             if (mana.getMana() >= manaCost) {
 
                                 Vec3 start = player.getEyePosition();
-                                Vec3 addition = player.getLookAngle().scale(8.0D);
+                                Vec3 addition = player.getLookAngle().scale(10.0D);
                                 EntityHitResult result = ProjectileUtil.getEntityHitResult(
                                         player.level,
                                         player,
                                         start,
                                         start.add(addition),
-                                        player.getBoundingBox().inflate(8.0D),
+                                        player.getBoundingBox().inflate(10.0D),
                                         (val) -> true);
 
                                 if (result.getEntity() != null && result.getEntity() instanceof LivingEntity entity1 && player.hasLineOfSight(entity1)) {
@@ -88,7 +88,7 @@ public class Earth_1_WeightOfPyrite_Item extends Item {
                                         ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.LANDING_HONEY, entity1.getX(), entity1.getEyeY() + 0.5, entity1.getZ(), 30,0.5D, 0.15D, 0.5D, 0.0D);
                                     }
 
-                                    player.getCooldowns().addCooldown(this, 60);
+                                    player.getCooldowns().addCooldown(this, 900);
                                 }
 
                             } else {
@@ -108,7 +108,7 @@ public class Earth_1_WeightOfPyrite_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: ?\nCooldown Time: ? seconds\nRange: 8 blocks\n\nRight click to begin crushing your target!").withStyle(ChatFormatting.GRAY));
+            components.add(Component.literal("Mana Cost: 15\nCooldown Time: 45 seconds\nRange: 10 blocks\n\nRight click to begin crushing your target!").withStyle(ChatFormatting.GRAY));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
