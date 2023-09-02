@@ -2,6 +2,8 @@ package net.tyler.magicmod.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -11,13 +13,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
+import net.minecraft.world.inventory.ResultSlot;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -34,10 +44,13 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.IContainerFactory;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.capability.casting.PlayerCasting;
 import net.tyler.magicmod.capability.casting.PlayerCastingProvider;
@@ -65,8 +78,10 @@ import net.tyler.magicmod.networking.packet.SharkLungeSyncS2CPacket;
 import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
+import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ModEvents {
 
@@ -214,6 +229,10 @@ public class ModEvents {
                     for (int i = 0; i < items[19]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.BURROW.get()));
                     }
+
+                    for (int i = 0; i < items[20]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.ROCK_FORM.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -314,10 +333,38 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void onPlayerToss(ItemTossEvent event) {
-            if (event.getEntity().getItem().getItem() == ModItems.AIR_DART.get()) {
+            if (event.getEntity().getItem().getItem() == ModItems.AIR_DART.get() ||
+                    event.getEntity().getItem().getItem() == ModItems.ROCK_FIST.get()) {
                 event.setCanceled(true);
                 event.getPlayer().addItem(event.getEntity().getItem());
             }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerInteract(PlayerInteractEvent.EntityInteract event) {
+            if (event.getTarget() instanceof ItemFrame || event.getTarget() instanceof Allay) {
+                if (event.getItemStack().getItem() == ModItems.ROCK_FIST.get() || event.getItemStack().getItem() == ModItems.AIR_DART.get()) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerContainerOpen(PlayerContainerEvent.Close event) {
+            Container container = event.getContainer().getSlot(0).container;
+
+            if (event.getContainer() != event.getEntity().inventoryMenu) {
+                NonNullList<ItemStack> items = event.getContainer().getItems();
+
+                for (int i = 0; i < items.size() - 36; i++) {
+                    if (items.get(i).getItem() == ModItems.AIR_DART.get() ||
+                            items.get(i).getItem() == ModItems.ROCK_FIST.get()) {
+                        container.setItem(i, ItemStack.EMPTY);
+                        event.getEntity().addItem(items.get(i));
+                    }
+                }
+            }
+
         }
 
         @SubscribeEvent
@@ -781,6 +828,104 @@ public class ModEvents {
 
                             if (info.getEarth()) {
 
+                                //player.sendSystemMessage(Component.literal(player.getHealth() + "/" + player.getMaxHealth()).withStyle(ChatFormatting.YELLOW));
+                                //player.sendSystemMessage(Component.literal("" + player.getAttribute(Attributes.ARMOR).).withStyle(ChatFormatting.YELLOW));
+
+                                int index_rockForm = InventoryUtil.getFirstInventoryIndex(player, ModItems.ROCK_FORM.get());
+                                if (cast.getRockFormCasting()) {
+                                    if (cast.getRockFormContinue()) {
+                                        if (index_rockForm != -1) {
+                                            ItemStack rock_form = player.getInventory().getItem(index_rockForm);
+                                            if (!rock_form.hasTag()) {
+                                                CompoundTag nbtData = new CompoundTag();
+                                                nbtData.putString("magicmod.rock_form_cast", "Rock Form has been cast");
+                                                rock_form.setTag(nbtData);
+                                            }
+                                        }
+                                    } else {
+                                        if (index_rockForm != -1) {
+                                            ItemStack rock_form = player.getInventory().getItem(index_rockForm);
+                                            if (rock_form.hasTag()) {
+                                                rock_form.removeTagKey("magicmod.rock_form_cast");
+                                            }
+                                        }
+                                    }
+
+                                    if (cast.getRockFormTick() == 0) {
+                                        if (!cast.getRockFormContinue()) {
+
+                                            player.getAttribute(Attributes.MAX_HEALTH).removeModifier(UUID.fromString("00925d7d-6725-4531-8598-014d3bb1e081"));
+                                            if (player.getHealth() > player.getMaxHealth()) {
+                                                player.setHealth(player.getMaxHealth());
+                                            }
+
+                                            player.getAttribute(Attributes.ARMOR).removeModifier(UUID.fromString("feda2c47-ca5a-4f21-bf7b-dab1d843bd2a"));
+
+                                            int index_rockFist = InventoryUtil.getFirstInventoryIndex(player, ModItems.ROCK_FIST.get());
+                                            while (index_rockFist != -1) {
+                                                player.getInventory().removeItem(index_rockFist, 1);
+                                                index_rockFist = InventoryUtil.getFirstInventoryIndex(player, ModItems.ROCK_FIST.get());
+                                            }
+
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, player.getLevel().random.nextFloat() * 0.1F);
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, player.getLevel().random.nextFloat() * 0.1F);
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, player.getLevel().random.nextFloat() * 0.1F);
+
+                                            cast.setRockFormCasting(false);
+                                            cast.setRockFormContinue(false);
+                                            cast.setRockFormTick(0);
+
+                                        } else if (mana.getMana() >= 30) {
+                                            mana.subMana(30);
+                                            ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
+                                            cast.addRockFormTick(1);
+                                        } else {
+
+                                            player.getAttribute(Attributes.MAX_HEALTH).removeModifier(UUID.fromString("00925d7d-6725-4531-8598-014d3bb1e081"));
+                                            if (player.getHealth() > player.getMaxHealth()) {
+                                                player.setHealth(player.getMaxHealth());
+                                            }
+
+                                            player.getAttribute(Attributes.ARMOR).removeModifier(UUID.fromString("feda2c47-ca5a-4f21-bf7b-dab1d843bd2a"));
+
+                                            int index_rockFist = InventoryUtil.getFirstInventoryIndex(player, ModItems.ROCK_FIST.get());
+                                            while (index_rockFist != -1) {
+                                                player.getInventory().removeItem(index_rockFist, 1);
+                                                index_rockFist = InventoryUtil.getFirstInventoryIndex(player, ModItems.ROCK_FIST.get());
+                                            }
+
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 0.5F, player.getLevel().random.nextFloat() * 0.1F);
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 0.5F, player.getLevel().random.nextFloat() * 0.1F);
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 0.5F, player.getLevel().random.nextFloat() * 0.1F);
+
+                                            cast.setRockFormCasting(false);
+                                            cast.setRockFormContinue(false);
+                                            cast.setRockFormTick(0);
+                                            player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
+                                        }
+                                    }
+                                    else if (cast.getRockFormTick() >= 600) {
+                                        cast.setRockFormTick(0);
+                                    } else {
+                                        cast.addRockFormTick(1);
+                                    }
+
+                                    if (player.getLevel().random.nextInt(100) == 0) {
+                                        player.getLevel().playSound(null, player, SoundEvents.GRAVEL_STEP, SoundSource.PLAYERS, 0.5F, player.getLevel().random.nextFloat() * 0.7F);
+                                    }
+
+                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.MYCELIUM, player.getX(), player.getY()+1, player.getZ(), 2,0.5D, 0.5D, 0.5D, 0.0D);
+
+                                } else {
+                                    if (index_rockForm != -1) {
+                                        ItemStack rock_form = player.getInventory().getItem(index_rockForm);
+                                        if (rock_form.hasTag()) {
+                                            rock_form.removeTagKey("magicmod.rock_form_cast");
+                                        }
+                                    }
+                                }
+
+                                //One with Stone
                                 if (info.getSchoolLevel() >= 2 && player.getY() < 32) {
                                     player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0, false, false, true));
                                     player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0, false, false, true));
@@ -865,6 +1010,11 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.BURROW.get()) {
                                 finalDroppedItems[i].kill();
                                 drops.addDropNumber(19);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.ROCK_FORM.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(20);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.ROCK_FIST.get()) {
+                                finalDroppedItems[i].kill();
                             }
                         }
                     });

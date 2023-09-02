@@ -8,6 +8,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
@@ -23,6 +25,7 @@ import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 public class PlayerScanner_Item extends Item {
@@ -40,6 +43,8 @@ public class PlayerScanner_Item extends Item {
                     player1.getCapability(PlayerInfoProvider.PLAYER_INFO).ifPresent(info -> {
                         player.sendSystemMessage(Component.literal("Name: " + player.getName().getString()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Experience Level: " + player.experienceLevel).withStyle(ChatFormatting.YELLOW));
+                        player.sendSystemMessage(Component.literal("HP: " + player.getHealth() + "/" + player.getMaxHealth()).withStyle(ChatFormatting.YELLOW));
+                        player.sendSystemMessage(Component.literal("Armor: " + player.getAttributeValue(Attributes.ARMOR)).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Mana: " + mana.getMana()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Max Mana: " + mana.getMaxMana()).withStyle(ChatFormatting.YELLOW));
                         if (info.getFire()) {
@@ -71,6 +76,12 @@ public class PlayerScanner_Item extends Item {
                         }
 
                         player.sendSystemMessage(Component.literal("Dungeon Party: " + info.getDungeonParty()).withStyle(ChatFormatting.YELLOW));
+
+                        player.sendSystemMessage(Component.literal("Active Effects: ").withStyle(ChatFormatting.YELLOW));
+                        Collection<MobEffectInstance> effects = player.getActiveEffects();
+                        for (MobEffectInstance instance : effects) {
+                            player.sendSystemMessage(Component.literal("" + instance).withStyle(ChatFormatting.DARK_AQUA));
+                        }
                     });
                 });
             } else {

@@ -28,7 +28,7 @@ public class ModCreativeModeTab {
                     ModItems.FLARE_BLITZ.get(), ModItems.SCORCHING_RAY.get(), ModItems.FIREBALL.get(), ModItems.FIERY_SOUL.get(), ModItems.SUPER_CRITICAL.get(),
                     ModItems.AQUAMARINE_BLESSING.get(), ModItems.MAGICAL_ANGLER.get(), ModItems.SHARK_LUNGE.get(), ModItems.AMPHIBIOUS.get(), ModItems.WATERFALL.get(),
                     ModItems.GALEFORCE.get(), ModItems.YEET.get(), ModItems.AIR_DARTS.get(), ModItems.AIR_DART.get(), ModItems.TOSS.get(), ModItems.WINGS_OF_QUARTZ.get(),
-                    ModItems.WEIGHT_OF_PYRITE.get(), ModItems.BURROW.get(),
+                    ModItems.WEIGHT_OF_PYRITE.get(), ModItems.BURROW.get(), ModItems.ROCK_FORM.get(), ModItems.ROCK_FIST.get(),
                     ModItems.WISP_SPAWN_EGG.get(), ModItems.DUNGEON_BELL.get(), ModItems.MANA_MITIGATOR.get(), ModItems.PLAYER_SCANNER.get(), ModItems.INVENTORY_SCANNER.get(), ModItems.SPELL_SCANNER.get());
             Ordering<ItemStack> tabSorter = Ordering.explicit(order).onResultOf(ItemStack::getItem);
             pItems.sort(tabSorter);

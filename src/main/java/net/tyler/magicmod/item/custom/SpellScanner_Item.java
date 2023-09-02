@@ -44,6 +44,8 @@ public class SpellScanner_Item extends Item {
                     player.sendSystemMessage(Component.literal("Air Darts Cast: " + cast.getAirDartsCasting()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Air Darts Projectile: " + cast.getAirDartsProjectiles()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Wings of Quartz Cast: " + cast.getWingsOfQuartzCasting()).withStyle(ChatFormatting.YELLOW));
+                    player.sendSystemMessage(Component.literal("Rock Form Cast: " + cast.getRockFormCasting()).withStyle(ChatFormatting.YELLOW));
+                    player.sendSystemMessage(Component.literal("Rock Form Continue: " + cast.getRockFormContinue()).withStyle(ChatFormatting.YELLOW));
                 });
             } else {
                 Vec3 start = player.getEyePosition();

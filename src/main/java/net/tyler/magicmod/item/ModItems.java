@@ -1,6 +1,7 @@
 package net.tyler.magicmod.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -128,6 +129,10 @@ public class ModItems {
             () -> new Earth_1_WeightOfPyrite_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> BURROW = ITEMS.register("burrow",
             () -> new Earth_1_Burrow_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> ROCK_FORM = ITEMS.register("rock_form",
+            () -> new Earth_2_RockForm_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> ROCK_FIST = ITEMS.register("rock_fist",
+            () -> new RockFist_Item(Tiers.STONE, 5, -3.2F, new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

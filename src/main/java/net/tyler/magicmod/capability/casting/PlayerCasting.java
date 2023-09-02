@@ -42,6 +42,12 @@ public class PlayerCasting {
 
     private int wingsOfQuartzTick = 0;
 
+    private boolean rockFormCasting = false;
+
+    private boolean rockFormContinue = false;
+
+    private int rockFormTick = 0;
+
     public int getBleedTick() {
         return bleedTick;
     }
@@ -238,6 +244,34 @@ public class PlayerCasting {
         wingsOfQuartzTick = tick;
     }
 
+    public boolean getRockFormCasting() {
+        return rockFormCasting;
+    }
+
+    public void setRockFormCasting(boolean cast) {
+        rockFormCasting = cast;
+    }
+
+    public boolean getRockFormContinue() {
+        return rockFormContinue;
+    }
+
+    public void setRockFormContinue(boolean continued) {
+        rockFormContinue = continued;
+    }
+
+    public int getRockFormTick() {
+        return rockFormTick;
+    }
+
+    public void addRockFormTick(int add) {
+        rockFormTick += add;
+    }
+
+    public void setRockFormTick(int tick) {
+        rockFormTick = tick;
+    }
+
     public void copyFrom(PlayerCasting source) {
         this.bleedTick = 0;
         this.flareBlitzCasting = false;
@@ -258,6 +292,9 @@ public class PlayerCasting {
         this.airDartsProjectiles = source.airDartsProjectiles;
         this.wingsOfQuartzCasting = false;
         this.wingsOfQuartzTick = 0;
+        this.rockFormCasting = false;
+        this.rockFormContinue = false;
+        this.rockFormTick = 0;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -280,6 +317,9 @@ public class PlayerCasting {
         nbt.putInt("airDartsProjectiles", airDartsProjectiles);
         nbt.putBoolean("wingsOfQuartzCasting", wingsOfQuartzCasting);
         nbt.putInt("wingsOfQuartzTick", wingsOfQuartzTick);
+        nbt.putBoolean("rockFormCasting", rockFormCasting);
+        nbt.putBoolean("rockFormContinue", rockFormContinue);
+        nbt.putInt("rockFormTick", rockFormTick);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -302,5 +342,8 @@ public class PlayerCasting {
         airDartsProjectiles = nbt.getInt("airDartsProjectiles");
         wingsOfQuartzCasting = nbt.getBoolean("wingsOfQuartzCasting");
         wingsOfQuartzTick = nbt.getInt("wingsOfQuartzTick");
+        rockFormCasting = nbt.getBoolean("rockFormCasting");
+        rockFormContinue = nbt.getBoolean("rockFormContinue");
+        rockFormTick = nbt.getInt("rockFormTick");
     }
 }
