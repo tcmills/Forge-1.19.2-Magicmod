@@ -133,6 +133,8 @@ public class ModItems {
             () -> new Earth_2_RockForm_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> ROCK_FIST = ITEMS.register("rock_fist",
             () -> new RockFist_Item(Tiers.STONE, 5, -3.2F, new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> ONE_WITH_STONE = ITEMS.register("one_with_stone",
+            () -> new Earth_2_OneWithStone_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

@@ -24,10 +24,7 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerListener;
-import net.minecraft.world.inventory.ResultSlot;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -75,6 +72,7 @@ import net.tyler.magicmod.networking.ModMessages;
 import net.tyler.magicmod.networking.packet.InfoDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.ManaDataSyncS2CPacket;
 import net.tyler.magicmod.networking.packet.SharkLungeSyncS2CPacket;
+import net.tyler.magicmod.screen.ManaDistillerMenu;
 import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
@@ -350,10 +348,10 @@ public class ModEvents {
         }
 
         @SubscribeEvent
-        public static void onPlayerContainerOpen(PlayerContainerEvent.Close event) {
+        public static void onPlayerContainerClose(PlayerContainerEvent.Close event) {
             Container container = event.getContainer().getSlot(0).container;
 
-            if (event.getContainer() != event.getEntity().inventoryMenu) {
+            if (!(event.getContainer() instanceof InventoryMenu) && !(event.getContainer() instanceof ManaDistillerMenu)) {
                 NonNullList<ItemStack> items = event.getContainer().getItems();
 
                 for (int i = 0; i < items.size() - 36; i++) {
