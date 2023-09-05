@@ -37,7 +37,6 @@ public class SpellScanner_Item extends Item {
                     player.sendSystemMessage(Component.literal("Scorching Ray Cast: " + cast.getScorchingRayCasting()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Scorching Ray Projectiles: " + cast.getScorchingRayProjectiles()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Fiery Soul Cast: " + cast.getFierySoulCasting()).withStyle(ChatFormatting.YELLOW));
-                    player.sendSystemMessage(Component.literal("Super Critical Cast: " + cast.getSuperCriticalCasting()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Aquamarine Blessing Cast: " + cast.getAquamarineBlessingCasting()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Shark Lunge Cast: " + cast.getSharkLungeCasting()).withStyle(ChatFormatting.YELLOW));
                     player.sendSystemMessage(Component.literal("Amphibious Cast: " + cast.getAmphibiousCasting()).withStyle(ChatFormatting.YELLOW));
@@ -65,7 +64,6 @@ public class SpellScanner_Item extends Item {
                         player.sendSystemMessage(Component.literal("Scorching Ray Cast: " + cast2.getScorchingRayCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Scorching Ray Projectiles: " + cast2.getScorchingRayProjectiles()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Fiery Soul Cast: " + cast2.getFierySoulCasting()).withStyle(ChatFormatting.YELLOW));
-                        player.sendSystemMessage(Component.literal("Super Critical Cast: " + cast2.getSuperCriticalCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Aquamarine Blessing Cast: " + cast2.getAquamarineBlessingCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Shark Lunge Cast: " + cast2.getSharkLungeCasting()).withStyle(ChatFormatting.YELLOW));
                         player.sendSystemMessage(Component.literal("Amphibious Cast: " + cast2.getAmphibiousCasting()).withStyle(ChatFormatting.YELLOW));
