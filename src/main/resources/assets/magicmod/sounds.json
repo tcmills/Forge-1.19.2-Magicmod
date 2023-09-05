@@ -16,5 +16,11 @@
     "sounds": [
       "magicmod:wings_of_quartz"
     ]
+  },
+  "earthquake": {
+    "subtitle": "sounds.magicmod.earthquake",
+    "sounds": [
+      "magicmod:earthquake"
+    ]
   }
 }

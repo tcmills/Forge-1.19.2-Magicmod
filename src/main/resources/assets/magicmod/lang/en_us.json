@@ -59,6 +59,7 @@
   "item.magicmod.rock_form": "Rock Form",
   "item.magicmod.rock_fist": "Rock Fist",
   "item.magicmod.one_with_stone": "Passive: One With Stone",
+  "item.magicmod.earthquake": "Earthquake",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -78,6 +79,7 @@
   "effect.magicmod.spell_weakness": "Spell Weakness",
   "effect.magicmod.spell_weakness_2": "Spell Weakness II",
   "effect.magicmod.meltdown": "Meltdown",
+  "effect.magicmod.quaking": "Quaking",
   "effect.magicmod.bleed": "Bleed",
 
   "entity.minecraft.villager.magicmod.arcanist": "Arcanist",
@@ -93,6 +95,7 @@
   "death.attack.sharkLunge": "%1$s was killed by %2$s using Shark Lunge",
   "death.attack.waterfall": "%1$s was killed by %2$s using Waterfall",
   "death.attack.airDart": "%1$s was killed by %2$s using Air Darts",
+  "death.attack.earthquake": "%1$s was killed by %2$s using Earthquake",
 
   "itemGroup.magictab": "Magic"
 }

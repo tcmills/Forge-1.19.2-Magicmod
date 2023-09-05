@@ -29,6 +29,8 @@ public class ModEffects {
 
     public static final RegistryObject<MobEffect> MELTDOWN = MOB_EFFECTS.register("meltdown",
             () -> new MeltdownEffect(MobEffectCategory.BENEFICIAL, 0xffcf210c));
+    public static final RegistryObject<MobEffect> QUAKING = MOB_EFFECTS.register("quaking",
+            () -> new QuakingEffect(MobEffectCategory.BENEFICIAL, 0xff5a390c));
 
     public static final RegistryObject<MobEffect> BLEED = MOB_EFFECTS.register("bleed",
             () -> new BleedEffect(MobEffectCategory.HARMFUL, 0xff8a0303));

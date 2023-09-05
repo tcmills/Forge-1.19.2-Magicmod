@@ -231,6 +231,10 @@ public class ModEvents {
                     for (int i = 0; i < items[20]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.ROCK_FORM.get()));
                     }
+
+                    for (int i = 0; i < items[21]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.EARTHQUAKE.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -279,7 +283,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.FLARE_BLITZ.get(), (int)(600 * cd.getFlareBlitzCD()));
                             player.getCooldowns().addCooldown(ModItems.SCORCHING_RAY.get(), (int)(600 * cd.getScorchingRayCD()));
                             player.getCooldowns().addCooldown(ModItems.FIREBALL.get(), (int)(1200 * cd.getFireballCD()));
-                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(9600 * cd.getSuperCriticalCD()));
+                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), (int)(6000 * cd.getSuperCriticalCD()));
                             player.getCooldowns().addCooldown(ModItems.SHARK_LUNGE.get(), (int)(400 * cd.getSharkLungeCD()));
                             player.getCooldowns().addCooldown(ModItems.WATERFALL.get(), (int)(2400 * cd.getWaterfallCD()));
                             player.getCooldowns().addCooldown(ModItems.GALEFORCE.get(), (int)(600 * cd.getGaleforceCD()));
@@ -289,6 +293,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.WINGS_OF_QUARTZ.get(), (int)(500 * cd.getWingsOfQuartzCD()));
                             player.getCooldowns().addCooldown(ModItems.WEIGHT_OF_PYRITE.get(), (int)(900 * cd.getWeightOfPyriteCD()));
                             player.getCooldowns().addCooldown(ModItems.BURROW.get(), (int)(200 * cd.getBurrowCD()));
+                            player.getCooldowns().addCooldown(ModItems.EARTHQUAKE.get(), (int)(9600 * cd.getEarthquakeCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -319,6 +324,7 @@ public class ModEvents {
                 cd.setWingsOfQuartzCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
                 cd.setWeightOfPyriteCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
                 cd.setBurrowCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
+                cd.setEarthquakeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
             });
         }
 
@@ -427,20 +433,20 @@ public class ModEvents {
                             if (info.getFire()) {
                                 if (cast.getFlareBlitzCasting()) {
                                     if (cast.getFlareBlitzTick() <= 100) {
-                                        ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1,1.0D, 1.0D, 1.0D, 0.0D);
+                                        ((ServerLevel) player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(), player.getZ(), 1, 1.0D, 1.0D, 1.0D, 0.0D);
                                         cast.addFlareBlitzTick(1);
 
                                         if (player.isOnGround()) {
                                             cast.setFlareBlitzCasting(false);
                                             cast.setFlareBlitzTick(0);
 
-                                            MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 4F, 14D, true, Explosion.BlockInteraction.NONE);
+                                            MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "flareBlitz", (ExplosionDamageCalculator) null, player.getX(), player.getY() + 1, player.getZ(), 4F, 14D, true, Explosion.BlockInteraction.NONE);
                                             if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
                                                 explosion.explode();
 
                                                 player.getLevel().playSound(null, player, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 4.0F, (1.0F + (player.getLevel().random.nextFloat() - player.getLevel().random.nextFloat()) * 0.2F) * 0.7F);
 
-                                                ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
+                                                ((ServerLevel) player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10, 2.0D, 2.0D, 2.0D, 1.0D);
                                             }
                                         }
                                     } else {
@@ -458,13 +464,12 @@ public class ModEvents {
 
                                         ScorchingRayProjectileEntity scorching_ray = new ScorchingRayProjectileEntity(player, player.level);
                                         scorching_ray.setItem(ModItems.SCORCHING_RAY_PROJECTILE.get().getDefaultInstance());
-                                        scorching_ray.setDeltaMovement(player.getLookAngle().x*speed, player.getLookAngle().y*speed, player.getLookAngle().z*speed);
+                                        scorching_ray.setDeltaMovement(player.getLookAngle().x * speed, player.getLookAngle().y * speed, player.getLookAngle().z * speed);
                                         player.level.addFreshEntity(scorching_ray);
 
                                         cast.subScorchingRayProjectiles(1);
                                         cast.addScorchingRayTick(1);
-                                    }
-                                    else if (cast.getScorchingRayTick() >= 10) {
+                                    } else if (cast.getScorchingRayTick() >= 10) {
                                         cast.setScorchingRayTick(0);
                                     } else {
                                         cast.addScorchingRayTick(1);
@@ -504,8 +509,7 @@ public class ModEvents {
                                             cast.setFierySoulTick(0);
                                             player.sendSystemMessage(Component.literal("Mana depleted!").withStyle(ChatFormatting.DARK_AQUA));
                                         }
-                                    }
-                                    else if (cast.getFierySoulTick() >= 200) {
+                                    } else if (cast.getFierySoulTick() >= 200) {
                                         cast.setFierySoulTick(0);
                                     } else {
                                         cast.addFierySoulTick(1);
@@ -515,7 +519,7 @@ public class ModEvents {
                                         player.getLevel().playSound(null, player, SoundEvents.FIRE_AMBIENT, SoundSource.PLAYERS, 1.0F + player.getLevel().random.nextFloat(), player.getLevel().random.nextFloat() * 0.7F);
                                     }
 
-                                    ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY()+1, player.getZ(), 1,0.5D, 0.5D, 0.5D, 0.0D);
+                                    ((ServerLevel) player.getLevel()).sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 1, player.getZ(), 1, 0.5D, 0.5D, 0.5D, 0.0D);
 
                                 } else {
                                     if (index_fierySoul != -1) {
@@ -527,7 +531,7 @@ public class ModEvents {
                                 }
 
                                 int index_superCritical = InventoryUtil.getFirstInventoryIndex(player, ModItems.SUPER_CRITICAL.get());
-                                if (cast.getSuperCriticalCasting()) {
+                                if (player.hasEffect(ModEffects.MELTDOWN.get())) {
                                     if (index_superCritical != -1) {
                                         ItemStack super_critical = player.getInventory().getItem(index_superCritical);
                                         if (!super_critical.hasTag()) {
@@ -536,27 +540,20 @@ public class ModEvents {
                                             super_critical.setTag(nbtData);
                                         }
                                     }
+                                    if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
 
-                                    if (player.hasEffect(ModEffects.MELTDOWN.get())) {
-                                        if (player.getEffect(ModEffects.MELTDOWN.get()).getDuration() <= 1) {
-                                            cast.setSuperCriticalCasting(false);
+                                        MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator) null, player.getX(), player.getY() + 1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
+                                        if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
+                                            explosion.explode();
 
-                                            MagicalExplosion explosion = new MagicalExplosion(player.getLevel(), player, "superCritical", (ExplosionDamageCalculator)null, player.getX(), player.getY()+1, player.getZ(), 7F, 30D, true, Explosion.BlockInteraction.NONE);
-                                            if (!net.minecraftforge.event.ForgeEventFactory.onExplosionStart(player.getLevel(), explosion)) {
-                                                explosion.explode();
+                                            player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                            player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
+                                            player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
 
-                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-                                                player.getLevel().playSound(null, player, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 4.0F, 1F / (player.getLevel().random.nextFloat() * 0.5F + 1.4F));
-
-                                                ((ServerLevel)player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10,2.0D, 2.0D, 2.0D, 1.0D);
-                                            }
-
-                                            player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+                                            ((ServerLevel) player.getLevel()).sendParticles(ParticleTypes.EXPLOSION, player.getX(), player.getY(), player.getZ(), 10, 2.0D, 2.0D, 2.0D, 1.0D);
                                         }
-                                    } else {
-                                        cast.setSuperCriticalCasting(false);
-                                        player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 9600);
+
+                                        player.getCooldowns().addCooldown(ModItems.SUPER_CRITICAL.get(), 6000);
                                     }
                                 } else {
                                     if (index_superCritical != -1) {
@@ -929,6 +926,28 @@ public class ModEvents {
                                     player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0, false, false, true));
                                 }
 
+                                int index_earthquake = InventoryUtil.getFirstInventoryIndex(player, ModItems.EARTHQUAKE.get());
+                                if (player.hasEffect(ModEffects.QUAKING.get())) {
+                                    if (index_earthquake != -1) {
+                                        ItemStack earthquake = player.getInventory().getItem(index_earthquake);
+                                        if (!earthquake.hasTag()) {
+                                            CompoundTag nbtData = new CompoundTag();
+                                            nbtData.putString("magicmod.earthquake_cast", "Earthquake has been cast");
+                                            earthquake.setTag(nbtData);
+                                        }
+                                    }
+                                    if (player.getEffect(ModEffects.QUAKING.get()).getDuration() <= 1) {
+                                        player.getCooldowns().addCooldown(ModItems.EARTHQUAKE.get(), 9600);
+                                    }
+                                } else {
+                                    if (index_earthquake != -1) {
+                                        ItemStack earthquake = player.getInventory().getItem(index_earthquake);
+                                        if (earthquake.hasTag()) {
+                                            earthquake.removeTagKey("magicmod.earthquake_cast");
+                                        }
+                                    }
+                                }
+
                             }
 
                         });
@@ -1013,6 +1032,9 @@ public class ModEvents {
                                 drops.addDropNumber(20);
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.ROCK_FIST.get()) {
                                 finalDroppedItems[i].kill();
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.EARTHQUAKE.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(21);
                             }
                         }
                     });
@@ -1039,6 +1061,7 @@ public class ModEvents {
                         cd.setWingsOfQuartzCD(player.getCooldowns().getCooldownPercent(ModItems.WINGS_OF_QUARTZ.get(), 0.0F));
                         cd.setWeightOfPyriteCD(player.getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
                         cd.setBurrowCD(player.getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
+                        cd.setEarthquakeCD(player.getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
                     });
                 });
             }

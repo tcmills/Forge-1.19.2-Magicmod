@@ -20,8 +20,6 @@ public class PlayerCasting {
 
     private int fierySoulTick = 0;
 
-    private boolean superCriticalCasting = false;
-
     private boolean aquamarineBlessingCasting = false;
 
     private int aquamarineBlessingTick = 0;
@@ -130,14 +128,6 @@ public class PlayerCasting {
 
     public void setFierySoulTick(int tick) {
         fierySoulTick = tick;
-    }
-
-    public boolean getSuperCriticalCasting() {
-        return superCriticalCasting;
-    }
-
-    public void setSuperCriticalCasting(boolean cast) {
-        superCriticalCasting = cast;
     }
 
     public boolean getAquamarineBlessingCasting() {
@@ -281,7 +271,6 @@ public class PlayerCasting {
         this.scorchingRayTick = 0;
         this.fierySoulCasting = false;
         this.fierySoulTick = 0;
-        this.superCriticalCasting = source.superCriticalCasting;
         this.aquamarineBlessingCasting = false;
         this.aquamarineBlessingTick = 0;
         this.sharkLungeCasting = false;
@@ -306,7 +295,6 @@ public class PlayerCasting {
         nbt.putInt("scorchingRayTick", scorchingRayTick);
         nbt.putBoolean("fierySoulCasting", fierySoulCasting);
         nbt.putInt("fierySoulTick", fierySoulTick);
-        nbt.putBoolean("superCriticalCasting", superCriticalCasting);
         nbt.putBoolean("aquamarineBlessingCasting", aquamarineBlessingCasting);
         nbt.putInt("aquamarineBlessingTick", aquamarineBlessingTick);
         nbt.putBoolean("sharkLungeCasting", sharkLungeCasting);
@@ -331,7 +319,6 @@ public class PlayerCasting {
         scorchingRayTick = nbt.getInt("scorchingRayTick");
         fierySoulCasting = nbt.getBoolean("fierySoulCasting");
         fierySoulTick = nbt.getInt("fierySoulTick");
-        superCriticalCasting = nbt.getBoolean("superCriticalCasting");
         aquamarineBlessingCasting = nbt.getBoolean("aquamarineBlessingCasting");
         aquamarineBlessingTick = nbt.getInt("aquamarineBlessingTick");
         sharkLungeCasting = nbt.getBoolean("sharkLungeCasting");

@@ -41,4 +41,8 @@ public class ModDamageSource extends DamageSource {
         return (new IndirectEntityDamageSource("sharkLunge", pSource, pIndirectEntity));
     }
 
+    public static DamageSource earthquake() {
+        return (new DamageSource("earthquake"));
+    }
+
 }

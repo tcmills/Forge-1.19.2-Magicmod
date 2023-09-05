@@ -18,6 +18,8 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> WINGS_OF_QUARTZ = registerSoundEvent("wings_of_quartz");
 
+    public static final RegistryObject<SoundEvent> EARTHQUAKE = registerSoundEvent("earthquake");
+
     public static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         ResourceLocation id = new ResourceLocation(MagicMod.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> new SoundEvent(id));
