@@ -2,7 +2,6 @@ package net.tyler.magicmod.event;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +23,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -41,13 +40,13 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.IContainerFactory;
 import net.tyler.magicmod.MagicMod;
 import net.tyler.magicmod.capability.casting.PlayerCasting;
 import net.tyler.magicmod.capability.casting.PlayerCastingProvider;
@@ -76,7 +75,6 @@ import net.tyler.magicmod.screen.ManaDistillerMenu;
 import net.tyler.magicmod.sound.ModSounds;
 import net.tyler.magicmod.util.InventoryUtil;
 import net.tyler.magicmod.villager.ModVillagers;
-import org.spongepowered.asm.launch.platform.container.IContainerHandle;
 
 import java.util.List;
 import java.util.UUID;
@@ -354,21 +352,41 @@ public class ModEvents {
         }
 
         @SubscribeEvent
-        public static void onPlayerContainerClose(PlayerContainerEvent.Close event) {
-            Container container = event.getContainer().getSlot(0).container;
-
-            if (!(event.getContainer() instanceof InventoryMenu) && !(event.getContainer() instanceof ManaDistillerMenu)) {
-                NonNullList<ItemStack> items = event.getContainer().getItems();
-
-                for (int i = 0; i < items.size() - 36; i++) {
-                    if (items.get(i).getItem() == ModItems.AIR_DART.get() ||
-                            items.get(i).getItem() == ModItems.ROCK_FIST.get()) {
-                        container.setItem(i, ItemStack.EMPTY);
-                        event.getEntity().addItem(items.get(i));
-                    }
-                }
+        public static void onPlayerPickUp(EntityItemPickupEvent event) {
+            Item item = event.getItem().getItem().getItem();
+            if (item == ModItems.AIR_DART.get() || item == ModItems.ROCK_FIST.get()) {
+                event.getItem().kill();
+                event.setCanceled(true);
             }
+        }
 
+        @SubscribeEvent
+        public static void onPlayerContainerOpen(PlayerContainerEvent.Open event) {
+            if (!(event.getContainer() instanceof InventoryMenu) && !(event.getContainer() instanceof ManaDistillerMenu)) {
+                event.getContainer().addSlotListener(new ContainerListener() {
+                    /**
+                     * Sends the contents of an inventory slot to the client-side Container. This doesn't have to match the actual
+                     * contents of that slot.
+                     */
+                    public void slotChanged(AbstractContainerMenu menu, int slot, ItemStack itemStack) {
+                        event.getEntity().getCapability(PlayerCastingProvider.PLAYER_CASTING).ifPresent(cast -> {
+                            NonNullList<ItemStack> items = menu.getItems();
+
+                            for (int i = 0; i < items.size() - 36; i++) {
+                                if (items.get(i).getItem() == ModItems.AIR_DART.get()) {
+                                    cast.subAirDartsProjectiles(items.get(i).getCount());
+                                    menu.getSlot(0).container.setItem(i, ItemStack.EMPTY);
+                                } else if (items.get(i).getItem() == ModItems.ROCK_FIST.get()) {
+                                    menu.getSlot(0).container.setItem(i, ItemStack.EMPTY);
+                                }
+                            }
+                        });
+                    }
+
+                    public void dataChanged(AbstractContainerMenu p_169628_, int p_169629_, int p_169630_) {
+                    }
+                });
+            }
         }
 
         @SubscribeEvent
@@ -785,10 +803,11 @@ public class ModEvents {
                                     if (cast.getAirDartsProjectiles() == 0) {
                                         player.getCooldowns().addCooldown(ModItems.AIR_DARTS.get(), 1200);
 
-                                        int index_airDart = InventoryUtil.getFirstInventoryIndex(player, ModItems.AIR_DART.get());
-                                        while (index_airDart != -1) {
-                                            player.getInventory().removeItem(index_airDart, 16);
-                                            index_airDart = InventoryUtil.getFirstInventoryIndex(player, ModItems.AIR_DART.get());
+                                        for(int j = 0; j < player.getInventory().getContainerSize(); j++) {
+                                            ItemStack currentStack = player.getInventory().getItem(j);
+                                            if (!currentStack.isEmpty() && currentStack.sameItem(new ItemStack(ModItems.AIR_DART.get()))) {
+                                                player.getInventory().removeItem(j, 16);
+                                            }
                                         }
 
                                         cast.setAirDartsCasting(false);

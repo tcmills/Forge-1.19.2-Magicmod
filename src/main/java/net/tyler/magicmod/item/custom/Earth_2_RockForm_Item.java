@@ -53,12 +53,10 @@ public class Earth_2_RockForm_Item extends Item {
                     if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
                         if (info.getEarth()) {
                             if (info.getSchoolLevel() >= 2) {
-                                if (mana.getMana() >= manaCost) {
-
-                                    if (!cast.getRockFormCasting()) {
-                                        ItemStack itemStack = new ItemStack(ModItems.ROCK_FIST.get(), 1);
-                                        boolean flag = player.getInventory().add(itemStack);
-                                        if (flag) {
+                                if (!cast.getRockFormCasting()) {
+                                    if (mana.getMana() >= manaCost) {
+                                        int flag = player.getInventory().getFreeSlot();
+                                        if (flag != -1) {
                                             player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(
                                                     new AttributeModifier(UUID.fromString("00925d7d-6725-4531-8598-014d3bb1e081"),
                                                             "rock_form_health", 20, AttributeModifier.Operation.ADDITION));
@@ -71,27 +69,21 @@ public class Earth_2_RockForm_Item extends Item {
                                             cast.setRockFormCasting(true);
                                             cast.setRockFormContinue(true);
 
-                                            ItemEntity itementity = player.drop(itemStack, false);
-                                            if (itementity != null) {
-                                                itementity.setNoPickUpDelay();
-                                                itementity.setOwner(player.getUUID());
-                                            }
+                                            player.addItem(new ItemStack(ModItems.ROCK_FIST.get(), 1));
 
                                             player.level.playSound(null, player, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
+
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
+                                            player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
                                         } else {
                                             player.sendSystemMessage(Component.literal("Your inventory is full!").withStyle(ChatFormatting.YELLOW));
                                         }
-
-                                        player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
-                                        player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
-                                        player.level.playSound(null, player, SoundEvents.IRON_GOLEM_DAMAGE, SoundSource.PLAYERS, 1.0F, 0.6F + (player.getLevel().random.nextFloat() * 0.1F));
-
                                     } else {
-                                        cast.setRockFormContinue(false);
+                                        player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
                                     }
-
                                 } else {
-                                    player.sendSystemMessage(Component.literal("Not enough mana!").withStyle(ChatFormatting.DARK_AQUA));
+                                    cast.setRockFormContinue(false);
                                 }
                             } else {
                                 player.sendSystemMessage(Component.literal("This spell is too complicated for you to cast!").withStyle(ChatFormatting.YELLOW));

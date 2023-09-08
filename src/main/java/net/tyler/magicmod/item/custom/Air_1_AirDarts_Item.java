@@ -49,20 +49,15 @@ public class Air_1_AirDarts_Item extends Item {
                             if (mana.getMana() >= manaCost) {
 
                                 if (!cast.getAirDartsCasting()) {
-                                    ItemStack itemStack = new ItemStack(ModItems.AIR_DART.get(), 8);
-                                    boolean flag = player.getInventory().add(itemStack);
-                                    if (flag) {
+                                    int flag = player.getInventory().getFreeSlot();
+                                    if (flag != -1) {
                                         mana.subMana(manaCost);
                                         ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                         cast.setAirDartsCasting(true);
                                         cast.setAirDartsProjectiles(8);
-
-                                        ItemEntity itementity = player.drop(itemStack, false);
-                                        if (itementity != null) {
-                                            itementity.setNoPickUpDelay();
-                                            itementity.setOwner(player.getUUID());
-                                        }
+                                        
+                                        player.addItem(new ItemStack(ModItems.AIR_DART.get(), 8));
 
                                         player.level.playSound(null, player, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
                                     } else {
