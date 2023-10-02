@@ -233,6 +233,10 @@ public class ModEvents {
                     for (int i = 0; i < items[21]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.EARTHQUAKE.get()));
                     }
+
+                    for (int i = 0; i < items[22]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.STORM_BRINGER.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -292,6 +296,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.WEIGHT_OF_PYRITE.get(), (int)(900 * cd.getWeightOfPyriteCD()));
                             player.getCooldowns().addCooldown(ModItems.BURROW.get(), (int)(200 * cd.getBurrowCD()));
                             player.getCooldowns().addCooldown(ModItems.EARTHQUAKE.get(), (int)(9600 * cd.getEarthquakeCD()));
+                            player.getCooldowns().addCooldown(ModItems.STORM_BRINGER.get(), (int)(36000 * cd.getStormBringerCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -323,6 +328,7 @@ public class ModEvents {
                 cd.setWeightOfPyriteCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
                 cd.setBurrowCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
                 cd.setEarthquakeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
+                cd.setStormBringerCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.STORM_BRINGER.get(), 0.0F));
             });
         }
 
@@ -969,6 +975,14 @@ public class ModEvents {
 
                             }
 
+                            if (info.getStorm()) {
+
+                                if (player.level.isRaining() && player.level.isThundering() && !player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
+                                    player.addEffect(new MobEffectInstance(ModEffects.SPELL_STRENGTH_2.get(), 100, 0, false, false, true));
+                                }
+
+                            }
+
                         });
                     });
                 });
@@ -1054,6 +1068,9 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.EARTHQUAKE.get()) {
                                 finalDroppedItems[i].kill();
                                 drops.addDropNumber(21);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.STORM_BRINGER.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(22);
                             }
                         }
                     });
@@ -1081,6 +1098,7 @@ public class ModEvents {
                         cd.setWeightOfPyriteCD(player.getCooldowns().getCooldownPercent(ModItems.WEIGHT_OF_PYRITE.get(), 0.0F));
                         cd.setBurrowCD(player.getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
                         cd.setEarthquakeCD(player.getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
+                        cd.setStormBringerCD(player.getCooldowns().getCooldownPercent(ModItems.STORM_BRINGER.get(), 0.0F));
                     });
                 });
             }

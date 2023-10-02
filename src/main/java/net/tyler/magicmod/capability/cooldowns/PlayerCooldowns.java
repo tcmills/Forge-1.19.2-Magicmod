@@ -22,6 +22,7 @@ public class PlayerCooldowns {
     private float weightOfPyrite = 0.0F;
     private float burrow = 0.0F;
     private float earthquake = 0.0F;
+    private float stormBringer = 0.0F;
 
     public float getMagicMissileCD() {
         return magicMissile;
@@ -167,6 +168,14 @@ public class PlayerCooldowns {
         earthquake = sec;
     }
 
+    public float getStormBringerCD() {
+        return stormBringer;
+    }
+
+    public void setStormBringerCD(float sec) {
+        stormBringer = sec;
+    }
+
     public void clearCD() {
         magicMissile = 0.0F;
         aid = 0.0F;
@@ -186,6 +195,7 @@ public class PlayerCooldowns {
         weightOfPyrite = 0.0F;
         burrow = 0.0F;
         earthquake = 0.0F;
+        stormBringer = 0.0F;
     }
 
     public void copyFrom(PlayerCooldowns source) {
@@ -207,6 +217,7 @@ public class PlayerCooldowns {
         this.weightOfPyrite = source.weightOfPyrite;
         this.burrow = source.burrow;
         this.earthquake = source.earthquake;
+        this.stormBringer = source.stormBringer;
     }
 
     public void saveNBTData(CompoundTag nbt) {
@@ -228,6 +239,7 @@ public class PlayerCooldowns {
         nbt.putFloat("weightOfPyrite", weightOfPyrite);
         nbt.putFloat("burrow", burrow);
         nbt.putFloat("earthquake", earthquake);
+        nbt.putFloat("stormBringer", stormBringer);
     }
 
     public void loadNBTData(CompoundTag nbt) {
@@ -249,5 +261,6 @@ public class PlayerCooldowns {
         weightOfPyrite = nbt.getFloat("weightOfPyrite");
         burrow = nbt.getFloat("burrow");
         earthquake = nbt.getFloat("earthquake");
+        stormBringer = nbt.getFloat("stormBringer");
     }
 }
