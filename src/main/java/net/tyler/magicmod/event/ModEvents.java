@@ -237,6 +237,10 @@ public class ModEvents {
                     for (int i = 0; i < items[22]; i++) {
                         event.getEntity().addItem(new ItemStack(ModItems.STORM_BRINGER.get()));
                     }
+
+                    for (int i = 0; i < items[23]; i++) {
+                        event.getEntity().addItem(new ItemStack(ModItems.DISCHARGE.get()));
+                    }
                 });
                 event.getEntity().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(newStore5 -> {
                     event.getOriginal().getCapability(PlayerCooldownsProvider.PLAYER_COOLDOWNS).ifPresent(oldStore5 -> {
@@ -297,6 +301,7 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.BURROW.get(), (int)(200 * cd.getBurrowCD()));
                             player.getCooldowns().addCooldown(ModItems.EARTHQUAKE.get(), (int)(9600 * cd.getEarthquakeCD()));
                             player.getCooldowns().addCooldown(ModItems.STORM_BRINGER.get(), (int)(36000 * cd.getStormBringerCD()));
+                            player.getCooldowns().addCooldown(ModItems.DISCHARGE.get(), (int)(60 * cd.getDischargeCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();
@@ -329,6 +334,7 @@ public class ModEvents {
                 cd.setBurrowCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
                 cd.setEarthquakeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
                 cd.setStormBringerCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.STORM_BRINGER.get(), 0.0F));
+                cd.setDischargeCD(event.getEntity().getCooldowns().getCooldownPercent(ModItems.DISCHARGE.get(), 0.0F));
             });
         }
 
@@ -1071,6 +1077,9 @@ public class ModEvents {
                             } else if (finalDroppedItems[i].getItem().getItem() == ModItems.STORM_BRINGER.get()) {
                                 finalDroppedItems[i].kill();
                                 drops.addDropNumber(22);
+                            } else if (finalDroppedItems[i].getItem().getItem() == ModItems.DISCHARGE.get()) {
+                                finalDroppedItems[i].kill();
+                                drops.addDropNumber(23);
                             }
                         }
                     });
@@ -1099,6 +1108,7 @@ public class ModEvents {
                         cd.setBurrowCD(player.getCooldowns().getCooldownPercent(ModItems.BURROW.get(), 0.0F));
                         cd.setEarthquakeCD(player.getCooldowns().getCooldownPercent(ModItems.EARTHQUAKE.get(), 0.0F));
                         cd.setStormBringerCD(player.getCooldowns().getCooldownPercent(ModItems.STORM_BRINGER.get(), 0.0F));
+                        cd.setDischargeCD(player.getCooldowns().getCooldownPercent(ModItems.DISCHARGE.get(), 0.0F));
                     });
                 });
             }

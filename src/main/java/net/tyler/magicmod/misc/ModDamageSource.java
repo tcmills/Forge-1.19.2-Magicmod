@@ -45,4 +45,8 @@ public class ModDamageSource extends DamageSource {
         return (new DamageSource("earthquake"));
     }
 
+    public static DamageSource discharge(Entity pSource, @Nullable Entity pIndirectEntity) {
+        return (new IndirectEntityDamageSource("discharge", pSource, pIndirectEntity));
+    }
+
 }

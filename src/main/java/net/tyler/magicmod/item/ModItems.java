@@ -139,6 +139,8 @@ public class ModItems {
             () -> new Earth_3_Earthquake_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
     public static final RegistryObject<Item> STORM_BRINGER = ITEMS.register("storm_bringer",
             () -> new Storm_1_StormBringer_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> DISCHARGE = ITEMS.register("discharge",
+            () -> new Storm_1_Discharge_Item(new Item.Properties().tab(ModCreativeModeTab.MAGIC_TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> WISP_SPAWN_EGG = ITEMS.register("wisp_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntityTypes.WISP, 0x0de4e4, 0xe495c8,

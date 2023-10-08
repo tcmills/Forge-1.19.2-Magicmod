@@ -61,6 +61,7 @@
   "item.magicmod.one_with_stone": "Passive: One With Stone",
   "item.magicmod.earthquake": "Earthquake",
   "item.magicmod.storm_bringer": "Storm Bringer",
+  "item.magicmod.discharge": "Discharge",
 
   "block.magicmod.mana_crystal_block": "Block of Mana Crystal",
   "block.magicmod.mana_crystal_ore": "Mana Crystal Ore",
@@ -97,6 +98,7 @@
   "death.attack.waterfall": "%1$s was killed by %2$s using Waterfall",
   "death.attack.airDart": "%1$s was killed by %2$s using Air Darts",
   "death.attack.earthquake": "%1$s was killed by %2$s using Earthquake",
+  "death.attack.discharge": "%1$s was killed by %2$s using Discharge",
 
   "itemGroup.magictab": "Magic"
 }
