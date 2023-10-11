@@ -39,7 +39,7 @@ import java.util.List;
 
 public class Storm_1_Discharge_Item extends Item {
 
-    private int manaCost = 5;
+    private int manaCost = 35;
 
     private List<Entity> target = new ArrayList<Entity>();
 
@@ -106,7 +106,7 @@ public class Storm_1_Discharge_Item extends Item {
                                     player.level.playSound(null, player, SoundEvents.GUARDIAN_ATTACK, SoundSource.PLAYERS, 1.0F, 1.5F + (player.getLevel().random.nextFloat() * 0.3F));
                                     player.level.playSound(null, player, SoundEvents.GUARDIAN_ATTACK, SoundSource.PLAYERS, 1.0F, 1.5F + (player.getLevel().random.nextFloat() * 0.3F));
 
-                                    player.getCooldowns().addCooldown(this, 60);
+                                    player.getCooldowns().addCooldown(this, 800);
                                 }
 
                             } else {
@@ -151,7 +151,7 @@ public class Storm_1_Discharge_Item extends Item {
 
     private void damage(Player player, LivingEntity entity) {
 
-        float num = 10F;
+        float num = 12F;
 
         if (player.hasEffect(ModEffects.SPELL_STRENGTH_2.get())) {
             num += 6F;
@@ -165,7 +165,7 @@ public class Storm_1_Discharge_Item extends Item {
             num -= 4F;
         }
 
-        entity.setSecondsOnFire(8);
+        entity.setSecondsOnFire(3);
 
         //player1.sendSystemMessage(Component.literal(Math.max(num, 0F) + ""));
         entity.hurt(ModDamageSource.discharge(null, player), Math.max(num, 0F));
@@ -179,7 +179,7 @@ public class Storm_1_Discharge_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: ?\nCooldown Time: ? seconds\nDamage per Bolt: ?\nFire Duration: 8 seconds\n\nRight click to release your stored charge at your enemies!").withStyle(ChatFormatting.DARK_BLUE));
+            components.add(Component.literal("Mana Cost: 35\nCooldown Time: 40 seconds\nDamage per Bolt: 12\nFire Duration: 3 seconds\n\nRight click to release your stored charge at your enemies!").withStyle(ChatFormatting.DARK_BLUE));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }

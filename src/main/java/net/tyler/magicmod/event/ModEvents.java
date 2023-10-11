@@ -300,8 +300,8 @@ public class ModEvents {
                             player.getCooldowns().addCooldown(ModItems.WEIGHT_OF_PYRITE.get(), (int)(900 * cd.getWeightOfPyriteCD()));
                             player.getCooldowns().addCooldown(ModItems.BURROW.get(), (int)(200 * cd.getBurrowCD()));
                             player.getCooldowns().addCooldown(ModItems.EARTHQUAKE.get(), (int)(9600 * cd.getEarthquakeCD()));
-                            player.getCooldowns().addCooldown(ModItems.STORM_BRINGER.get(), (int)(36000 * cd.getStormBringerCD()));
-                            player.getCooldowns().addCooldown(ModItems.DISCHARGE.get(), (int)(60 * cd.getDischargeCD()));
+                            player.getCooldowns().addCooldown(ModItems.STORM_BRINGER.get(), (int)(9600 * cd.getStormBringerCD()));
+                            player.getCooldowns().addCooldown(ModItems.DISCHARGE.get(), (int)(800 * cd.getDischargeCD()));
 
                             if (player.isAlive()) {
                                 cd.clearCD();

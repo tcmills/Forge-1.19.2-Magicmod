@@ -32,7 +32,7 @@ import java.util.List;
 
 public class Storm_1_StormBringer_Item extends Item {
 
-    private int manaCost = 5;
+    private int manaCost = 30;
 
     public Storm_1_StormBringer_Item(Item.Properties properties) {
         super(properties);
@@ -52,12 +52,12 @@ public class Storm_1_StormBringer_Item extends Item {
                                 ModMessages.sendToPlayer(new ManaDataSyncS2CPacket(mana.getMana(), mana.getMaxMana()), (ServerPlayer) player);
 
                                 if (player.getLevel() instanceof ServerLevel serverLevel) {
-                                    serverLevel.setWeatherParameters(0, 3600, true, true);
+                                    serverLevel.setWeatherParameters(0, 1200, true, true);
                                 }
 
                                 player.level.playSound(null, player, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0F, 0.8F + (player.getLevel().random.nextFloat() * 0.2F));
 
-                                player.getCooldowns().addCooldown(this, 36000);
+                                player.getCooldowns().addCooldown(this, 9600);
 
 
                             } else {
@@ -77,7 +77,7 @@ public class Storm_1_StormBringer_Item extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("Mana Cost: ?\nCooldown Time: 30 minutes\n\nPassive: Storm Herald\nYou draw upon the storm around you to greatly amplify the strength of your spells!\n\nRight click to summon a thunderstorm!").withStyle(ChatFormatting.DARK_BLUE));
+            components.add(Component.literal("Mana Cost: 30\nCooldown Time: 8 minutes\nDuration: 60 seconds\n\nPassive: Storm Herald\nYou draw upon the storm around you to greatly amplify the strength of your spells!\n\nRight click to summon a thunderstorm!").withStyle(ChatFormatting.DARK_BLUE));
         } else {
             components.add(Component.literal("Press SHIFT for more info").withStyle(ChatFormatting.YELLOW));
         }
